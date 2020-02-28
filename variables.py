@@ -1,0 +1,21 @@
+#Cashier number:
+NUMBER_OF_CASHIER = 5
+
+# IPM information for cashier
+CASHIER_AVERAGE_IPM = 30
+
+CASHIER_STD_DEV_IPM = 10
+
+# Number of customers:
+CUSTOMER_AVERAGE_IPM = 85
+
+CUSTOMER_STD_DEV_IPM = 10
+
+CUSTOMER_CHITCHATNESS = 30
+# Item creation information:
+MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER = 6
+
+STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER = 2
+
+# Self checkour time
+SELF_CHECKOUT_TIME = 0.85
