@@ -19,8 +19,9 @@ class random_line:
     # Initialization implemented
     customer_list = 0
 
-    cashier_list = 0
+    cashier_list = []
 
+    # Array to keep track of automated cashier
     automated_cashier_tracker = 0
 
     cost_for_maintenance = 0
@@ -41,11 +42,34 @@ class random_line:
 
     ''' Initializes line
     '''
-    def __init__(self, number_of_cashiers, number_of_incoming_customers):
+    def __init__(self, number_of_cashiers, number_of_incoming_customers, \
+        number_of_automated_cashiers=0):
         self.number_of_cashiers = number_of_cashiers
         self.total_number_of_customers = number_of_incoming_customers
         self.create_customer_list()
-        
+
+        # Creates boolean array for keeping track of what cashiers 
+        # are automated, and what are 'normal'
+        self.automated_cashier_tracker= \
+            np.concatenate(\
+                (np.ones(number_of_automated_cashiers, dtype=bool),np.zeros(number_of_cashiers, dtype=bool)))
+
+        self.create_cashier_list()
+        print("Creation completed")
+    
+
+    def create_cashier_list(self):
+        '''
+        Precondition:
+        - Creation of self.automated_cashier_tracker
+        - Creation of self.customer_list
+        '''
+        for i in self.automated_cashier_tracker:
+            if(i):
+                self.cashier_list.append("yep")
+            else:
+                self.cashier_list.append("nope")
+
     ''' Create a list of customers
     '''
     def create_customer_list(self):
