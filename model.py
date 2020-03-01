@@ -27,7 +27,10 @@ class model:
         '''
         # Analysis variables:
         self.list_of_customers_out_of_system = []
-
+        self.list_of_customers_in_line = []
+        self.list_of_customers_on_cashier_queue = []
+        self.list_of_items_checked = []
+        
         # Maintenance cost variables:
         self.minimum_wage = minimum_wage
         self.self_checkout_maintenance_cost = self_checkout_maintenance_cost
@@ -50,22 +53,26 @@ class model:
             # Add list
             self.list_of_customers_out_of_system.append(\
                 self.line.customers_that_left)
+            self.list_of_customers_in_line.append(\
+                self.line.customers_being_served)
+            self.list_of_customers_on_cashier_queue = -1
+            self.list_of_items_checked = -1
         
         plt.figure(1)
         plt.title("Customer out of system over time")
         plt.plot(self.list_of_customers_out_of_system)
 
-        # plt.figure(2)
-        # plt.title("Customers in line over time")
-        # plt.plot(self.list_of_customers_out_of_system)
+        plt.figure(2)
+        plt.title("Customers in line over time")
+        plt.plot(self.list_of_customers_in_line)
 
         # plt.figure(3)
-        # plt.title("Customers at queue over time")
-        # plt.plot(self.list_of_customers_out_of_system)
+        # plt.title("Customers at cashier queues over time")
+        # plt.plot(self.list_of_customers_on_cashier_queue)
 
         # plt.figure(4)
         # plt.title("Items checked over time")
-        # plt.plot(self.list_of_customers_out_of_system)
+        # plt.plot(self.list_of_items_checked)
 
         plt.show()
         print("SIMULATION COMPLETE")
