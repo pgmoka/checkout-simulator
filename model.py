@@ -5,10 +5,12 @@
 
 # Python modules
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Create simulation code
 import variables as v
 from random_line import random_line
+from equal_distribution_line import equal_distribution_line
 from cashier import cashier
 
 #=======================================================================
@@ -18,24 +20,80 @@ from cashier import cashier
 class model:
     line = 0
 
-    phase = 0
-    '''Initializes method
-    '''
-    def __init__(self, model_being_ran, model_name="Default Model"):
-        self.line = self.create_line(model_being_ran)
-        self.name = model_name
-        self.phase = 1
-    
-    ''' Executes simulation with a number steps
-    '''
-    def execute_simulation(self, number_of_steps):
-        for i in range(number_of_steps):
-            print("EXECUTE SIMULATION")
+    def __init__(self, model_being_ran, number_of_customers, \
+        number_of_cashiers, number_of_selfcheckouts,\
+        minimum_wage = 12, self_checkout_maintenance_cost=4, model_name="Default Model"):
+        '''Initializes method
+        '''
+        # Analysis variables:
+        self.list_of_customers_out_of_system = []
 
-    ''' Helper method for the creation of lines
-    '''
-    def create_line(self, model_being_ran):
+        # Maintenance cost variables:
+        self.minimum_wage = minimum_wage
+        self.self_checkout_maintenance_cost = self_checkout_maintenance_cost
+
+        # Environment tested selection:
+        self.line = self.create_line(model_being_ran, number_of_customers, \
+            number_of_cashiers, number_of_selfcheckouts)
+
+        # Name:
+        self.name = model_name
+    
+    def execute_simulation(self, number_of_steps):
+        ''' Executes simulation with a number steps
+        '''
+        for i in range(number_of_steps):
+            self.execute_phase_one()
+            self.execute_phase_two()
+            self.execute_phase_three()
+
+            # Add list
+            self.list_of_customers_out_of_system.append(\
+                self.line.customers_that_left)
+        
+        plt.figure(1)
+        plt.title("Customer out of system over time")
+        plt.plot(self.list_of_customers_out_of_system)
+
+        # plt.figure(2)
+        # plt.title("Customers in line over time")
+        # plt.plot(self.list_of_customers_out_of_system)
+
+        # plt.figure(3)
+        # plt.title("Customers at queue over time")
+        # plt.plot(self.list_of_customers_out_of_system)
+
+        # plt.figure(4)
+        # plt.title("Items checked over time")
+        # plt.plot(self.list_of_customers_out_of_system)
+
+        plt.show()
+        print("SIMULATION COMPLETE")
+
+    def execute_phase_one(self):
+        ''' Applies math related to the rotation of customers
+        '''
+        self.line.rotate_customers()
+    
+    def execute_phase_two(self):
+        ''' Applies math related to the checkouts
+        '''
+        self.line.apply_checkouts()
+
+    def execute_phase_three(self):
+        ''' Applies math on updating system
+        '''
+        self.line.update_customers_out_of_system()
+
+    def create_line(self, model_being_ran, number_of_customers, \
+        number_of_cashiers, number_of_selfcheckouts):
+        ''' Helper method for the creation of lines
+        '''
         if(model_being_ran == "random"):
-            return random_line(1,5)
+            return random_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts)
+        elif(model_being_ran =="equal"):
+            return equal_distribution_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
+                self.minimum_wage, self.self_checkout_maintenance_cost)
         else:
-            return random_line(1,5)
+            return random_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts)
+
