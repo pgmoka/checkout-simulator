@@ -4,6 +4,7 @@
 
 # Python modules
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Create simulation code
 import variables as v
@@ -14,7 +15,6 @@ from model import model
 #=======================================================================
 
 number_of_epochs_for_simulation = 20
-
 # -------------------------- start of testing:
 # # random_line tests:
 # random_line_model = model("random", 10, 2,0)
@@ -27,7 +27,7 @@ number_of_epochs_for_simulation = 20
 # model_line = random_line_model.line
 
 # -------------------------- Self-checkout_test:
-self_check_model = model("equal", 10, 1,0)
+self_check_model = model("equal", 10, 4,0)
 
 self_check_model.execute_simulation(number_of_epochs_for_simulation)
 print("END OF EXECUTION")
