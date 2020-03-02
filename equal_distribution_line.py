@@ -14,15 +14,17 @@ from customer import customer
 #================================= Class ===============================
 #=======================================================================
 
-class random_line:
+class equal_distribution_line:
     # List of customers in queue
-    # Initialization implemented
+    # Implemented
     customer_list = 0
 
     # Array to keep track of automated cashier
+    # Implemented
     automated_cashier_tracker = 0
 
-    # Not implemented
+    # Maintain cost of maintecance for all lines
+    # Implemented
     cost_for_maintenance = 0
 
     # Not implemented
@@ -49,7 +51,7 @@ class random_line:
     customers_that_left = 0
 
     def __init__(self, number_of_cashiers, number_of_incoming_customers, \
-        number_of_automated_cashiers):
+        number_of_automated_cashiers, minimum_wage, self_checkout_maintenance_cost):
         ''' Initializes line
         '''
         self.cashier_list = []
@@ -57,6 +59,8 @@ class random_line:
         self.total_number_of_customers = number_of_incoming_customers
         self.customers_waiting_to_queue = number_of_incoming_customers
         self.create_customer_list()
+        self.minimum_wage = minimum_wage 
+        self.self_checkout_maintenance_cost = self_checkout_maintenance_cost
 
         # Creates boolean array for keeping track of what cashiers 
         # are automated, and what are 'normal'
@@ -65,11 +69,12 @@ class random_line:
                 (np.ones(number_of_automated_cashiers, dtype=bool),np.zeros(number_of_cashiers, dtype=bool)))
 
         self.create_cashier_list()
+        self.update_total_maintenance_cost()
         print("Creation completed")
     
 
     def create_cashier_list(self):
-        '''
+        ''' creates list of cashiers
         Precondition:
         - Creation of self.automated_cashier_tracker
         - Creation of self.customer_list
@@ -84,7 +89,8 @@ class random_line:
                         cashier\
                         (\
                             np.random.normal(v.CASHIER_AVERAGE_IPM,v.CASHIER_STD_DEV_IPM),\
-                            int(np.random.rand()*v.CASHIER_CHITCHATNESS)\
+                            int(np.random.rand()*v.CASHIER_CHITCHATNESS),
+                            self.minimum_wage\
                         )\
                     
                     )
@@ -96,6 +102,7 @@ class random_line:
                         (\
                             -1,\
                             0,
+                            self.self_checkout_maintenance_cost,
                             self_checkout=True\
                         )\
                     )
@@ -127,13 +134,7 @@ class random_line:
 
                 # Updates waiting queue:
                 self.customers_waiting_to_queue =  self.customers_waiting_to_queue - 1
-                # if(self.cashier_list[individual_cashier_iterator].self_checkout):
-                #     self.add_customer_to_self_checkout(self.cashier_list[individual_cashier_iterator], self.customer_list.pop())
-                # else:
                 self.cashier_list[individual_cashier_iterator].add_customer_to_queue(self.customer_list.pop())
-
-    # def add_customer_to_self_checkout(self, individual_cashier, individual_customers):
-    #     pass
 
     def update_customers_out_of_system(self):
         ''' updates number of customers that have left the system
@@ -151,3 +152,10 @@ class random_line:
         '''
         for individual_cashier in self.cashier_list:
             individual_cashier.checkout_current_customer_items()
+
+    def update_total_maintenance_cost(self):
+        ''' updates cost for self maintenance of overall system
+        '''
+        for individual_cashier in self.cashier_list:
+            self.cost_for_maintenance = self.cost_for_maintenance +\
+                individual_cashier.maintenance_cost

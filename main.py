@@ -13,9 +13,21 @@ from model import model
 #============================= Exectuion ===============================
 #=======================================================================
 
-# random_line tests:
-random_line_model = model("random")
+number_of_epochs_for_simulation = 20
 
-# Test if customer
-customer_creation_test = random_line_model.line.customer_list
+# -------------------------- start of testing:
+# # random_line tests:
+# random_line_model = model("random", 10, 2,0)
+
+# # Test if customer
+# customer_creation_test = random_line_model.line.customer_list
+
+# random_line_model.execute_simulation(number_of_epochs_for_simulation)
+
+# model_line = random_line_model.line
+
+# -------------------------- Self-checkout_test:
+self_check_model = model("equal", 10, 1,0)
+
+self_check_model.execute_simulation(number_of_epochs_for_simulation)
 print("END OF EXECUTION")
