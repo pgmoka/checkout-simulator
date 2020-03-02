@@ -57,7 +57,8 @@ class model:
                 self.line.customers_waiting_to_queue)
             self.list_of_customers_on_cashier_queue.append(\
                 self.line.customers_being_served)
-            self.list_of_items_checked = -1
+            self.list_of_items_checked.append(\
+                self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
         
         plt.figure(1)
         plt.title("Customer out of system over time")
@@ -71,9 +72,9 @@ class model:
         plt.title("Customers at cashier queues over time")
         plt.plot(self.list_of_customers_on_cashier_queue)
 
-        # plt.figure(4)
-        # plt.title("Items checked over time")
-        # plt.plot(self.list_of_items_checked)
+        plt.figure(4)
+        plt.title("Items checked over time")
+        plt.plot(self.list_of_items_checked)
 
         plt.show()
         print("SIMULATION COMPLETE")
@@ -92,6 +93,7 @@ class model:
         ''' Applies math on updating system
         '''
         self.line.update_customers_out_of_system()
+        self.line.update_checkedout_items()
 
     def create_line(self, model_being_ran, number_of_customers, \
         number_of_cashiers, number_of_selfcheckouts):

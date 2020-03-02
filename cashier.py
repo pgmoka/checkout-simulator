@@ -65,7 +65,8 @@ class cashier:
                 min(self.cashier_queue[-1].number_of_items, subtract_me)
 
             # Adds to total items checked
-            self.total_items_checked = min(self.cashier_queue[-1].number_of_items, subtract_me)
+            self.total_items_checked = self.total_items_checked + \
+                min(self.cashier_queue[-1].number_of_items, subtract_me)
             # if there are no items, customer leaves
             if(self.cashier_queue[-1].number_of_items == 0):
                 self.cashier_queue.pop()
