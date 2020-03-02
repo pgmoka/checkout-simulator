@@ -29,6 +29,8 @@ class cashier:
     # Implemented
     self_checkout = False
 
+    #forgetfullness 
+
     def __init__(self, IPM, chitchatter, maintenance_cost, self_checkout=False):
         ''' Initiates cashier
         '''

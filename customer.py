@@ -17,6 +17,15 @@ class customer:
     are not keeping track of customer behaviors. This
     is a class for helping keep track of information
     '''
+
+    # can have kids
+
+    # age - which can then influence chances to have kids
+
+    # language barrier maybe
+
+    #
+
     IPM = 0
 
     number_of_items = 0
