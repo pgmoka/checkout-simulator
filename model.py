@@ -42,7 +42,7 @@ class model:
         # Name:
         self.name = model_name
     
-    def execute_simulation(self, number_of_steps):
+    def execute_simulation(self, number_of_steps, show=False):
         ''' Executes simulation with a number steps
         '''
         for i in range(number_of_steps):
@@ -50,33 +50,39 @@ class model:
             self.execute_phase_two()
             self.execute_phase_three()
 
+            print(i)
             # Add list
-            self.list_of_customers_out_of_system.append(\
+            self.list_of_customers_out_of_system.append(
                 self.line.customers_that_left)
-            self.list_of_customers_in_line.append(\
+            print("Customers left", self.list_of_customers_out_of_system[-1])
+            self.list_of_customers_in_line.append(
                 self.line.customers_waiting_to_queue)
-            self.list_of_customers_on_cashier_queue.append(\
+            print("Customers in line", self.list_of_customers_in_line[-1])
+            self.list_of_customers_on_cashier_queue.append(
                 self.line.customers_being_served)
-            self.list_of_items_checked.append(\
+            print("Customesr in queue", self.list_of_customers_on_cashier_queue[-1])
+            self.list_of_items_checked.append(
                 self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
-        
-        plt.figure(1)
-        plt.title("Customer out of system over time")
-        plt.plot(self.list_of_customers_out_of_system)
+            print("Items checked", self.list_of_items_checked[-1])
 
-        plt.figure(2)
-        plt.title("Customers in line over time")
-        plt.plot(self.list_of_customers_in_line)
+        if show:
+            plt.figure(1)
+            plt.title("Customer out of system over time")
+            plt.plot(self.list_of_customers_out_of_system)
 
-        plt.figure(3)
-        plt.title("Customers at cashier queues over time")
-        plt.plot(self.list_of_customers_on_cashier_queue)
+            plt.figure(2)
+            plt.title("Customers in line over time")
+            plt.plot(self.list_of_customers_in_line)
 
-        plt.figure(4)
-        plt.title("Items checked over time")
-        plt.plot(self.list_of_items_checked)
+            plt.figure(3)
+            plt.title("Customers at cashier queues over time")
+            plt.plot(self.list_of_customers_on_cashier_queue)
 
-        plt.show()
+            plt.figure(4)
+            plt.title("Items checked over time")
+            plt.plot(self.list_of_items_checked)
+
+            plt.show()
         print("SIMULATION COMPLETE")
 
     def execute_phase_one(self):
