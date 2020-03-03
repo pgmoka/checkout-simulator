@@ -179,10 +179,10 @@ class equal_distribution_line:
         # Number for selection
         random_selector = np.random.rand()
         number_of_items = 0
-        if (random_selector < 0.6):
+        if (random_selector < 0.8):
             # for 0 - 30
             number_of_items = int(np.random.rand() * 30)
-        elif (random_selector < 0.85):
+        elif (random_selector < 0.95):
             # for 30 - 70
             number_of_items = int(np.random.normal(20, 8.9) + 30)
         else:
