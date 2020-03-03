@@ -32,7 +32,7 @@ class cashier:
     # Implemented
     self_checkout = False
 
-    total_number_if_items_by_customers_in_systems = 0
+    total_number_of_items_in_systems = 0
     #forgetfullness 
 
     def __init__(self, IPM, chitchatter, maintenance_cost, self_checkout=False):
@@ -48,9 +48,8 @@ class cashier:
     def add_customer_to_queue(self, customer):
         """ adds a customer to this cashier's queue
         """
-        self.total_number_if_items_by_customers_in_systems = \
-            self.total_number_if_items_by_customers_in_systems\
-            + customer.number_of_items
+        self.total_number_of_items_in_systems = \
+            self.total_number_of_items_in_systems + customer.number_of_items
         self.cashier_queue.insert(0, customer)
         self.complete_queue.append(customer)
 
@@ -87,10 +86,16 @@ class cashier:
         '''
         return len(self.cashier_queue)
 
+    def __lt__(self, other):
+        # sort for smallest to largest
+        return self.queue_size() < other.queue_size() 
+
 if __name__ == "__main__":
     ''' Cashier testing site
     '''
     test_cashier = cashier(45, 3, 9)
+    test_cashier2 = cashier(42, 3, 9)
+
     test_customer = customer(2, 6, 3)
 
     test_cashier.add_customer_to_queue(test_customer)
@@ -110,3 +115,16 @@ if __name__ == "__main__":
 
     if test_cashier.queue_size() == 0:
         print("Pops out cashier correctly")
+    
+    print(test_cashier<test_cashier2)
+    print(test_cashier>test_cashier2)
+
+    test_cashier.add_customer_to_queue(test_customer)
+
+    # Comparison:
+    print(test_cashier<test_cashier2)
+    print(test_cashier>test_cashier2)
+
+    sorter_list = [test_cashier, test_cashier2]
+    sorter_list.sort()
+    print("What")
