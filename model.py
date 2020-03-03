@@ -26,6 +26,7 @@ class model:
         minimum_wage = 12, self_checkout_maintenance_cost=4, model_name="Default Model"):
         '''Initializes method
         '''
+
         # Analysis variables:
         self.list_of_customers_out_of_system = []
         self.list_of_customers_in_line = []
@@ -67,6 +68,11 @@ class model:
             self.list_of_items_checked.append(
                 self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
             #print("Items checked", self.list_of_items_checked[-1])
+
+            if showAnim:
+                visual().print_env(self)
+                plt.pause(1)
+
         # print("Items", self.list_of_items_checked)
         # print("Customers", self.list_of_customers_in_line)
         # print("Queue", self.list_of_customers_on_cashier_queue)
@@ -90,7 +96,8 @@ class model:
 
             plt.show()
         if showAnim:
-            visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
+            visual().display_simulation(self)
+            #visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
 
         print("SIMULATION COMPLETE")
 

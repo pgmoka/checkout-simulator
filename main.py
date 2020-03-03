@@ -27,7 +27,7 @@ number_of_epochs_for_simulation = 20
 # model_line = random_line_model.line
 
 # -------------------------- Self-checkout_test:
-self_check_model = model("equal", 60, 20, 12)
+self_check_model = model("equal", 100, 4, 4)
 
-self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=False)
+self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
 print("END OF EXECUTION")
