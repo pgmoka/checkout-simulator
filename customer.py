@@ -42,7 +42,7 @@ class customer:
         '''
 
         self.IPM = IPM
-        self.number_of_items = number_of_items
+        self.number_of_items = self.number_of_items_per_customer()
         self.chitchatness = chitchatness
 
     def number_of_items_per_customer(self):
