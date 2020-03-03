@@ -130,7 +130,6 @@ class random_line:
     def rotate_customers(self):
         ''' Create a list of customers
         '''
-        sorter_arr = sorted(self.cashier_list, key=operator.attrgetter('score'))
         for individual_cashier_iterator in range(len(self.cashier_list)):
             if (len(self.customer_list) > 0):
                 # Updates waiting queue:

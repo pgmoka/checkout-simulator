@@ -32,6 +32,7 @@ class cashier:
     # Implemented
     self_checkout = False
 
+    toal_number_if_items_by_customers_in_systems = 0
     #forgetfullness 
 
     def __init__(self, IPM, chitchatter, maintenance_cost, self_checkout=False):
@@ -47,6 +48,9 @@ class cashier:
     def add_customer_to_queue(self, customer):
         """ adds a customer to this cashier's queue
         """
+        toal_number_if_items_by_customers_in_systems = \
+            toal_number_if_items_by_customers_in_systems\ 
+            + customer.number_of_items
         self.cashier_queue.insert(0, customer)
         self.complete_queue.append(customer)
 
