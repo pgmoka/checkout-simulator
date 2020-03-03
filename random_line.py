@@ -1,28 +1,30 @@
-
-#=======================================================================
-#============================= Imports==================================
-#=======================================================================
+# =======================================================================
+# ============================= Imports==================================
+# =======================================================================
 
 import variables as v
 import numpy as np
-
+import operator
 
 from cashier import cashier
 from customer import customer
 
-#=======================================================================
-#================================= Class ===============================
-#=======================================================================
+
+# =======================================================================
+# ================================= Class ===============================
+# =======================================================================
 
 class random_line:
     # List of customers in queue
-    # Initialization implemented
+    # Implemented
     customer_list = 0
 
     # Array to keep track of automated cashier
+    # Implemented
     automated_cashier_tracker = 0
 
-    # Not implemented
+    # Maintain cost of maintenance for all lines
+    # Implemented
     cost_for_maintenance = 0
 
     # Not implemented
@@ -48,8 +50,13 @@ class random_line:
     # Implemented
     customers_that_left = 0
 
+    # Implementation
+    total_number_of_checked_items = 0
+
+    total_number_of_items_in_system = 0
+
     def __init__(self, number_of_cashiers, number_of_incoming_customers, \
-        number_of_automated_cashiers):
+                 number_of_automated_cashiers, minimum_wage, self_checkout_maintenance_cost):
         ''' Initializes line
         '''
         self.cashier_list = []
@@ -57,49 +64,47 @@ class random_line:
         self.total_number_of_customers = number_of_incoming_customers
         self.customers_waiting_to_queue = number_of_incoming_customers
         self.create_customer_list()
+        self.minimum_wage = minimum_wage
+        self.self_checkout_maintenance_cost = self_checkout_maintenance_cost
 
         # Creates boolean array for keeping track of what cashiers 
         # are automated, and what are 'normal'
-        self.automated_cashier_tracker= \
-            np.concatenate(\
-                (np.ones(number_of_automated_cashiers, dtype=bool),np.zeros(number_of_cashiers, dtype=bool)))
+        self.automated_cashier_tracker = \
+            np.concatenate( \
+                (np.ones(number_of_automated_cashiers, dtype=bool), np.zeros(number_of_cashiers, dtype=bool)))
 
         self.create_cashier_list()
+        self.update_total_maintenance_cost()
         print("Creation completed")
-    
 
     def create_cashier_list(self):
-        '''
+        ''' creates list of cashiers
         Precondition:
         - Creation of self.automated_cashier_tracker
         - Creation of self.customer_list
         '''
         for i in self.automated_cashier_tracker:
             # Create normal cashier if list demands
-            if(not i):
+            if (not i):
                 # Create IPM from normal distribution from global variables
                 # Create how chatty from global variables
-                self.cashier_list.append\
-                    (\
-                        cashier\
-                        (\
-                            np.random.normal(v.CASHIER_AVERAGE_IPM,v.CASHIER_STD_DEV_IPM),\
-                            int(np.random.rand()*v.CASHIER_CHITCHATNESS)\
-                        )\
-                    
+                self.cashier_list.append(
+                    cashier(
+                        np.random.normal(v.CASHIER_AVERAGE_IPM, v.CASHIER_STD_DEV_IPM),
+                        int(np.random.rand() * v.CASHIER_CHITCHATNESS),
+                        self.minimum_wage
                     )
+                )
             else:
-            # else create automated. No info needed
-                self.cashier_list.append\
-                    (\
-                        cashier\
-                        (\
-                            -1,\
-                            0,
-                            self_checkout=True\
-                        )\
+                # else create automated. No info needed
+                self.cashier_list.append(
+                    cashier(
+                        -1,
+                        0,
+                        self.self_checkout_maintenance_cost,
+                        self_checkout=True
                     )
-
+                )
 
     def create_customer_list(self):
         ''' Create a list of customers
@@ -109,45 +114,80 @@ class random_line:
 
         # Adds customer as numbers increase
         for i in range(self.total_number_of_customers):
-
+            items = self.number_of_items_per_customer()
+            # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
+            self.total_number_of_items_in_system = self.total_number_of_items_in_system \
+                                                   + items
             # Creates customer, and adds them to list:
-            self.customer_list.append\
-                (
-                customer(\
-                    np.random.normal(v.CUSTOMER_AVERAGE_IPM,v.CUSTOMER_STD_DEV_IPM),\
-                    int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER)),\
-                    int(np.random.rand()*v.CUSTOMER_CHITCHATNESS))
+            self.customer_list.append \
+                    (
+                    customer( \
+                        np.random.normal(v.CUSTOMER_AVERAGE_IPM, v.CUSTOMER_STD_DEV_IPM), \
+                        items, \
+                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
                 )
 
     def rotate_customers(self):
         ''' Create a list of customers
         '''
+        sorter_arr = sorted(self.cashier_list, key=operator.attrgetter('score'))
         for individual_cashier_iterator in range(len(self.cashier_list)):
-            if(len(self.customer_list)>0):
-
+            if (len(self.customer_list) > 0):
                 # Updates waiting queue:
-                self.customers_waiting_to_queue =  self.customers_waiting_to_queue - 1
-                # if(self.cashier_list[individual_cashier_iterator].self_checkout):
-                #     self.add_customer_to_self_checkout(self.cashier_list[individual_cashier_iterator], self.customer_list.pop())
-                # else:
+                self.customers_waiting_to_queue = self.customers_waiting_to_queue - 1
                 self.cashier_list[individual_cashier_iterator].add_customer_to_queue(self.customer_list.pop())
-
-    # def add_customer_to_self_checkout(self, individual_cashier, individual_customers):
-    #     pass
 
     def update_customers_out_of_system(self):
         ''' updates number of customers that have left the system
         '''
         self.customers_being_served = 0
-        for individual_cashier in self.cashier_list: 
+        for individual_cashier in self.cashier_list:
             # total customers in all stores
             self.customers_being_served = self.customers_being_served + individual_cashier.queue_size()
         # makes final math
-        self.customers_that_left = self.total_number_of_customers - self.customers_being_served\
-            - self.customers_waiting_to_queue
+        self.customers_that_left = self.total_number_of_customers - \
+            self.customers_being_served - self.customers_waiting_to_queue
+
+    def update_checkedout_items(self):
+        '''Updates total number of checked out items in the system
+        '''
+        total_now = 0
+        for individual_cashier in self.cashier_list:
+            total_now = total_now \
+                        + individual_cashier.total_items_checked
+        self.total_number_of_checked_items = total_now
 
     def apply_checkouts(self):
         ''' Create a list of customers
         '''
         for individual_cashier in self.cashier_list:
             individual_cashier.checkout_current_customer_items()
+
+    def update_total_maintenance_cost(self):
+        ''' updates cost for self maintenance of overall system
+        '''
+        for individual_cashier in self.cashier_list:
+            self.cost_for_maintenance = self.cost_for_maintenance + \
+                                        individual_cashier.maintenance_cost
+
+    def number_of_items_per_customer(self):
+        ''' calculates distribution of of items
+        '''
+        # -(0 - 15)(uniform) = 30% 
+        # -(15-30) (uniform)  = 30% 
+        # -(30-70)(normal->split in the middle) = 25% 
+        # -(70-200)(log distribution(major between 70-100)) = 15%
+
+        # Number for selection
+        random_selector = np.random.rand()
+        number_of_items = 0
+        if (random_selector < 0.6):
+            # for 0 - 30
+            number_of_items = int(np.random.rand() * 30)
+        elif (random_selector < 0.85):
+            # for 30 - 70
+            number_of_items = int(np.random.normal(20, 8.9) + 30)
+        else:
+            # for 70-200
+            number_of_items = int(np.random.lognormal(3, 0.63) + 70)
+        return number_of_items

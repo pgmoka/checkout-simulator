@@ -5,6 +5,9 @@
 import variables as v
 import numpy as np
 
+# Module for testing:
+from customer import customer
+
 #=======================================================================
 #================================= Class ===============================
 #=======================================================================
@@ -79,3 +82,27 @@ class cashier:
         ''' returns size of the queue
         '''
         return len(self.cashier_queue)
+
+if __name__ == "__main__":
+    ''' Cashier testing site
+    '''
+    test_cashier = cashier(45, 3, 9)
+    test_customer = customer(2, 6, 3)
+
+    test_cashier.add_customer_to_queue(test_customer)
+    if test_cashier.queue_size() == 1:
+        print("Customer addition works")
+        print("Queue size works")
+
+    if(not test_cashier.self_checkout):
+        print("Self-checkout casting works")
+
+    test_cashier.checkout_current_customer_items()
+    if test_cashier.total_items_checked == 3:
+        print("Checking works")
+        print("Check for number of items work")
+
+    test_cashier.checkout_current_customer_items()
+
+    if test_cashier.queue_size() == 0:
+        print("Pops out cashier correctly")
