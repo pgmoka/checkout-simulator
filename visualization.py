@@ -32,12 +32,12 @@ class visual():
     def __init__(self):
         pass
 
-    def display_simulation(self, num_cashiers=4, listCustomersLeft=None, listCustomersInLine=[x for x in range(10, -1, -1)], listItemsLeft=None):
+    def display_simulation(self, num_cashiers=4, customer_left=[x for x in range(0, 10)], queue_values=[x for x in range(0, 10)], line_values=[x for x in range(10, -1, -1)], items_left=[x for x in range(10, -1, -1)]):
         active = True
         print_time = 0
         cur_time_step = 0
-        total_time_ticks = len(listCustomersInLine)
-        customers_to_cashiers = self.update_customer_count(num_cashiers, listCustomersInLine[cur_time_step])
+        total_time_ticks = len(line_values)
+        customers_to_cashiers = self.update_customer_count(num_cashiers, line_values[cur_time_step] + queue_values[cur_time_step])
         last_updated = pygame.time.get_ticks()
 
         while active:
@@ -50,7 +50,7 @@ class visual():
             # Update current customers
             current_time = (pygame.time.get_ticks() - last_updated) / 1000
             if current_time > 1 and total_time_ticks > cur_time_step:
-                customers_to_cashiers = self.update_customer_count(num_cashiers, listCustomersInLine[cur_time_step])
+                customers_to_cashiers = self.update_customer_count(num_cashiers, line_values[cur_time_step] + queue_values[cur_time_step])
                 print_time = cur_time_step
                 cur_time_step += 1
                 last_updated = pygame.time.get_ticks()
@@ -58,10 +58,12 @@ class visual():
             elif cur_time_step >= total_time_ticks:
                 cur_time_step = 0
                 last_updated = pygame.time.get_ticks()
-                print_time = total_time_ticks
+                print_time = total_time_ticks - 1
 
             # Print out current time
             self.writeText("Current Time: " + str(print_time) + " Minutes", width=int(self.displayWidth / 2), height=25)
+            self.writeText("Items Left: " + str(int(items_left[print_time])), width=int(self.displayWidth / 2), height=50)
+            self.writeText("Customers Left: " + str(customer_left[print_time]), width=int(self.displayWidth / 2), height=75)
 
 
             # Print cashiers

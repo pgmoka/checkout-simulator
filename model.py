@@ -67,7 +67,10 @@ class model:
             self.list_of_items_checked.append(
                 self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
             #print("Items checked", self.list_of_items_checked[-1])
-
+        # print("Items", self.list_of_items_checked)
+        # print("Customers", self.list_of_customers_in_line)
+        # print("Queue", self.list_of_customers_on_cashier_queue)
+        # print("Customers Finished", self.list_of_customers_out_of_system)
         if show:
             plt.figure(1)
             plt.title("Customer out of system over time")
@@ -87,7 +90,7 @@ class model:
 
             plt.show()
         if showAnim:
-            visual().display_simulation(num_cashiers=4, listCustomersInLine=self.list_of_customers_in_line)
+            visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
 
         print("SIMULATION COMPLETE")
 
