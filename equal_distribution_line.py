@@ -54,7 +54,7 @@ class equal_distribution_line:
 
     total_number_of_items_in_system = 0
 
-    def __init__(self, number_of_cashiers, number_of_incoming_customers, \
+    def __init__(self, number_of_cashiers, number_of_incoming_customers,
                  number_of_automated_cashiers, minimum_wage, self_checkout_maintenance_cost):
         ''' Initializes line
         '''
