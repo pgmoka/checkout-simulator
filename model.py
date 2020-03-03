@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Create simulation code
+from visualization import visual
 import variables as v
 from random_line import random_line
 from equal_distribution_line import equal_distribution_line
@@ -42,7 +43,7 @@ class model:
         # Name:
         self.name = model_name
     
-    def execute_simulation(self, number_of_steps, show=False):
+    def execute_simulation(self, number_of_steps, show=False, showAnim=False):
         ''' Executes simulation with a number steps
         '''
         for i in range(number_of_steps):
@@ -83,6 +84,9 @@ class model:
             plt.plot(self.list_of_items_checked)
 
             plt.show()
+        if showAnim:
+            visual().display_simulation(num_cashiers=4, listCustomersLeft=self.list_of_customers_in_line)
+
         print("SIMULATION COMPLETE")
 
     def execute_phase_one(self):
