@@ -51,20 +51,22 @@ class model:
             self.execute_phase_two()
             self.execute_phase_three()
 
-            print(i)
             # Add list
             self.list_of_customers_out_of_system.append(
                 self.line.customers_that_left)
-            print("Customers left", self.list_of_customers_out_of_system[-1])
+            #print("Customers left", self.list_of_customers_out_of_system[-1])
+
             self.list_of_customers_in_line.append(
                 self.line.customers_waiting_to_queue)
-            print("Customers in line", self.list_of_customers_in_line[-1])
+            #print("Customers in line", self.list_of_customers_in_line[-1])
+
             self.list_of_customers_on_cashier_queue.append(
                 self.line.customers_being_served)
-            print("Customesr in queue", self.list_of_customers_on_cashier_queue[-1])
+            #print("Customesr in queue", self.list_of_customers_on_cashier_queue[-1])
+
             self.list_of_items_checked.append(
                 self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
-            print("Items checked", self.list_of_items_checked[-1])
+            #print("Items checked", self.list_of_items_checked[-1])
 
         if show:
             plt.figure(1)
@@ -85,7 +87,7 @@ class model:
 
             plt.show()
         if showAnim:
-            visual().display_simulation(num_cashiers=4, listCustomersLeft=self.list_of_customers_in_line)
+            visual().display_simulation(num_cashiers=4, listCustomersInLine=self.list_of_customers_in_line)
 
         print("SIMULATION COMPLETE")
 
