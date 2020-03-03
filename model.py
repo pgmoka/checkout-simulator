@@ -62,7 +62,7 @@ class model:
 
             self.list_of_customers_on_cashier_queue.append(
                 self.line.customers_being_served)
-            #print("Customesr in queue", self.list_of_customers_on_cashier_queue[-1])
+            #print("Customers in queue", self.list_of_customers_on_cashier_queue[-1])
 
             self.list_of_items_checked.append(
                 self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)

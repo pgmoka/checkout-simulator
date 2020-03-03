@@ -34,8 +34,10 @@ class visual():
 
     def display_simulation(self, num_cashiers=4, listCustomersLeft=None, listCustomersInLine=[x for x in range(10, -1, -1)], listItemsLeft=None):
         active = True
-        curTimeStep = 0
-        customers_to_cashiers = self.update_customer_count(num_cashiers, listCustomersInLine[curTimeStep])
+        print_time = 0
+        cur_time_step = 0
+        total_time_ticks = len(listCustomersInLine)
+        customers_to_cashiers = self.update_customer_count(num_cashiers, listCustomersInLine[cur_time_step])
         last_updated = pygame.time.get_ticks()
 
         while active:
@@ -46,11 +48,21 @@ class visual():
             self.screen.fill(self.black)
 
             # Update current customers
-            currentTime = (pygame.time.get_ticks() - last_updated) / 1000
-            if currentTime > 1 and len(listCustomersInLine) > curTimeStep:
-                customers_to_cashiers = self.update_customer_count(num_cashiers, listCustomersInLine[curTimeStep])
-                curTimeStep += 1
+            current_time = (pygame.time.get_ticks() - last_updated) / 1000
+            if current_time > 1 and total_time_ticks > cur_time_step:
+                customers_to_cashiers = self.update_customer_count(num_cashiers, listCustomersInLine[cur_time_step])
+                print_time = cur_time_step
+                cur_time_step += 1
                 last_updated = pygame.time.get_ticks()
+            # Reset simulation when we get to the end
+            elif cur_time_step >= total_time_ticks:
+                cur_time_step = 0
+                last_updated = pygame.time.get_ticks()
+                print_time = total_time_ticks
+
+            # Print out current time
+            self.writeText("Current Time: " + str(print_time) + " Minutes", width=int(self.displayWidth / 2), height=25)
+
 
             # Print cashiers
             dist = int(self.displayWidth / (num_cashiers + 1))
@@ -58,6 +70,7 @@ class visual():
                 xPos = dist * i
                 self.print_cashier(xPos, 300)
                 self.print_line(xPos, 300, customers_to_cashiers[i - 1])
+
             # Update screen
             pygame.display.flip()
             self.clock.tick(30)
@@ -73,10 +86,20 @@ class visual():
 
     def update_customer_count(self, num_cashiers, num_customers):
         cust_per_cashier = int(num_customers / num_cashiers)
-        customers_to_cashiers = [cust_per_cashier for x in range(1, num_cashiers)]
-        customers_to_cashiers.append(num_customers - sum(customers_to_cashiers))
+        customers_to_cashiers = [cust_per_cashier for x in range(0, num_cashiers)]
+        remainder = num_customers - sum(customers_to_cashiers)
+        for i in range(remainder):
+            customers_to_cashiers[i] += 1
         return customers_to_cashiers
 
+    def writeText(self, text, width=200, height=300, t_font=font, t_color=white):
+        textToWrite, textRect = self.textObj(text, t_font, t_color)
+        textRect.center = (width - 50, height)
+        self.screen.blit(textToWrite, textRect)
+
+    def textObj(self, text, t_font, t_color):
+        textSurface = t_font.render(text, True, t_color)
+        return textSurface, textSurface.get_rect()
 
 if __name__ == '__main__':
     visual().display_simulation()
