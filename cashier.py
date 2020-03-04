@@ -21,8 +21,10 @@ class cashier:
     # Implemented
     IPM = 0
 
-    # Not implemented
-    additional_chatter = 0
+    # % chance cashier will be talkative, 0-1
+    chitchatness = 0
+    #how much the cashier will chat for the current transaction
+    chatLevel = 0
 
     # Totals items checked by the cashier at the point
     # Implemented
@@ -45,7 +47,7 @@ class cashier:
         self.complete_queue = []
         self.cashier_queue = []
         self.IPM = IPM
-        self.additional_chatter = chitchatter
+        self.chitchatness = chitchatter
         self.self_checkout = self_checkout
         self.maintenance_cost = maintenance_cost
         self.forgetfulness = 0
@@ -75,11 +77,16 @@ class cashier:
         # Checks if line is empty
         if (not self.line_empty()):
 
+            #if this is the first interaction with the customer change there
+            #status from waiting to being helped
             if self.cashier_queue[-1].waiting == True:
                 self.cashier_queue[-1].waiting = False
                 self.cashier_queue[-1].being_helped = True
 
-
+                #if not a selfcheck out find how out much conversation will
+                #take place
+                if(not self.self_checkout):
+                    self.conversation()
 
 
             # Calculate time subtraction
@@ -97,6 +104,7 @@ class cashier:
             # if there are no items, customer leaves
             if (self.cashier_queue[-1].number_of_items == 0):
                 self.cashier_queue.pop()
+                self.chatLevel = 0
                 
                 if (not self.line_empty()):
                     if(self.self_checkout):
@@ -108,17 +116,35 @@ class cashier:
         return len(self.cashier_queue)
 
     def forgetful(self):
-        #roll random number between 0-1 and see if if it less than or greater
-        #than cashiers forgetfulness, if it is below than they will take
-        #longer to call up next customer
-        pass
+        """
+        Roll random number between 0-1 and see if if it less than or greater
+        than cashiers forgetfulness, if it is below than they will take
+        longer to call up next customer
+        """
+        return np.random.rand() < self.forgetfulness
 
     def conversation(self):
-        #roll random number for cashiers chattiness and customers
-        #if only one is true than cashier slows down slightly
-        #if both are true than cashier slows down considerably
-        #if both are false than cashier does not slow down at all
-        pass
+        """
+        This will set the level of conversation between the customer and
+        cashier, based on chat levels of each.
+
+        Default chat level is 0
+        """
+        customersChatChance = np.random.rand()
+        cashiersChatChance = np.random.rand()
+
+        if customersChatChance < self.cashier_queue[-1].chitchatness and \
+            cashiersChatChance < self.chitchatness:
+            self.chatLevel = 3
+
+        elif cashiersChatChance < self.chitchatness:
+            self.chatLevel = 2
+
+        elif customersChatChance < self.cashier_queue[-1].chitchatness:
+            self.chatLevel = 1
+
+        else:
+            self.chatLevel = 0
 
     def comparing_factor(self):
         return self.queue_size()*self.total_number_of_items_in_systems*self.IPM
