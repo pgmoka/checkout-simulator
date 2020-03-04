@@ -39,8 +39,6 @@ class cashier:
     #forgetfullness
     forgetfulness = 0
 
-
-
     def __init__(self, IPM, chitchatter, maintenance_cost, self_checkout=False):
         """ Initiates cashier
         """
@@ -63,8 +61,6 @@ class cashier:
         # self-checkout insert
         if(self.self_checkout and self.queue_size() == 1):
             self.IPM = self.cashier_queue[-1].IPM
-
-        
 
     def line_empty(self):
         ''' Checks if line is tempty
