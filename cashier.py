@@ -33,7 +33,11 @@ class cashier:
     self_checkout = False
 
     total_number_of_items_in_systems = 0
-    #forgetfullness 
+
+    #forgetfullness
+    forgetfulness = 0
+
+
 
     def __init__(self, IPM, chitchatter, maintenance_cost, self_checkout=False):
         """ Initiates cashier
@@ -44,6 +48,7 @@ class cashier:
         self.additional_chatter = chitchatter
         self.self_checkout = self_checkout
         self.maintenance_cost = maintenance_cost
+        self.forgetfulness = 0
 
     def add_customer_to_queue(self, customer):
         """ adds a customer to this cashier's queue
@@ -69,16 +74,26 @@ class cashier:
         '''
         # Checks if line is empty
         if (not self.line_empty()):
+
+            if self.cashier_queue[-1].waiting == True:
+                self.cashier_queue[-1].waiting = False
+                self.cashier_queue[-1].being_helped = True
+
+
+
+
             # Calculate time subtraction
-            subtract_me = self.IPM/v.TIME_STEP
+            subtract_me = self.IPM / v.TIME_STEP
             subtract_me = min(self.cashier_queue[-1].number_of_items, subtract_me)
+
             # adds min between IPM, and what the customer has in total
             self.cashier_queue[-1].number_of_items = self.cashier_queue[-1].number_of_items -\
                 min(self.cashier_queue[-1].number_of_items, subtract_me)
 
             # Adds to total items checked
-            self.total_items_checked = self.total_items_checked + \
-                subtract_me
+            self.total_items_checked = self.total_items_checked + subtract_me
+
+
             # if there are no items, customer leaves
             if (self.cashier_queue[-1].number_of_items == 0):
                 self.cashier_queue.pop()
@@ -91,6 +106,19 @@ class cashier:
         ''' returns size of the queue
         '''
         return len(self.cashier_queue)
+
+    def forgetful(self):
+        #roll random number between 0-1 and see if if it less than or greater
+        #than cashiers forgetfulness, if it is below than they will take
+        #longer to call up next customer
+        pass
+
+    def conversation(self):
+        #roll random number for cashiers chattiness and customers
+        #if only one is true than cashier slows down slightly
+        #if both are true than cashier slows down considerably
+        #if both are false than cashier does not slow down at all
+        pass
 
     def comparing_factor(self):
         return self.queue_size()*self.total_number_of_items_in_systems*self.IPM
