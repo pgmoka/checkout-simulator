@@ -63,23 +63,24 @@ class cashier:
         ''' Checkout items from customer being checkout
         '''
         # Checks if line is empty
-        if (not self.line_empty()):
+        if not self.line_empty():
             # Calculate subtraction factor
-            if (self.self_checkout):
+            if self.self_checkout:
                 subtract_me = self.cashier_queue[-1].IPM/v.TIME_STEP
             else:
                 # Calculate time subtraction
                 subtract_me = self.IPM/v.TIME_STEP
 
             # adds min between IPM, and what the customer has in total
+            self.cashier_queue[-1].number_items_checked = min(self.cashier_queue[-1].number_of_items, subtract_me)
             self.cashier_queue[-1].number_of_items = self.cashier_queue[-1].number_of_items -\
-                min(self.cashier_queue[-1].number_of_items, subtract_me)
+                self.cashier_queue[-1].number_items_checked
 
             # Adds to total items checked
             self.total_items_checked = self.total_items_checked + \
-                min(self.cashier_queue[-1].number_of_items, subtract_me)
+                self.cashier_queue[-1].number_items_checked
             # if there are no items, customer leaves
-            if (self.cashier_queue[-1].number_of_items == 0):
+            if self.cashier_queue[-1].number_of_items == 0:
                 self.cashier_queue.pop()
                 
     def queue_size(self):

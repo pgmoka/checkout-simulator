@@ -42,5 +42,7 @@ class customer:
         '''
 
         self.IPM = IPM
+        self.total_items = number_of_items
         self.number_of_items = number_of_items
         self.chitchatness = chitchatness
+        self.number_items_checked = 0

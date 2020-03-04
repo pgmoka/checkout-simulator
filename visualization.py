@@ -65,7 +65,7 @@ class visual():
         for i in range(num_cashiers):
             xPos = dist * (i + 1)
             self.print_cashier(xPos, 300, cashiers[i].self_checkout)
-            self.print_line(xPos, 300, len(cashiers[i].cashier_queue))
+            self.print_line(xPos, 300, len(cashiers[i].cashier_queue), cashiers[i].cashier_queue)
 
         # Update screen
         pygame.display.flip()
@@ -80,10 +80,20 @@ class visual():
             pygame.draw.rect(self.screen, self.blue, (x, y, 25, 25))
         pass
 
-    def print_line(self, x, y, num_customers=5):
-        for i in range(num_customers):
-            pygame.draw.rect(self.screen, self.red,
+    def print_line(self, x, y, num_customers=5, cashier_queue=None):
+        for i in range(num_customers - 1, -1, -1):
+            if cashier_queue is None:
+                pygame.draw.rect(self.screen, self.red,
                              (x - 30, y - (50 * i), 25, 25))
+            else:
+                if cashier_queue[i].number_of_items != 0:
+                    #print("num items", cashier_queue[i].number_of_items, "Checked items", cashier_queue[i].number_items_checked)
+                    transparency = int(255 * (cashier_queue[i].number_of_items) / cashier_queue[i].total_items)
+                else:
+                    transparency = 255
+                #print(transparency)
+                pygame.draw.rect(self.screen, (transparency, transparency, transparency),
+                                 (x - 30, y - (50 * i), 25, 25))
 
     def update_customer_count(self, num_cashiers, num_customers):
         cust_per_cashier = int(num_customers / num_cashiers)
