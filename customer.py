@@ -32,7 +32,7 @@ class customer:
 
     chitchatness = 0
 
-    def __init__(self, IPM, number_of_items, chitchatness):
+    def __init__(self, IPM, chitchatness):
         ''' Customer initialization method
         Precondition:
         - IPM: Customer's IPM. Used by self checkout
@@ -56,7 +56,9 @@ class customer:
         # Number for selection
         random_selector = np.random.rand()
         number_of_items = 0
-        if (random_selector < 0.8):
+        if (random_selector < 1):
+            number_of_items = int(np.random.rand() * 5)+3
+        elif (random_selector < 0.8):
             # for 0 - 30
             number_of_items = int(np.random.rand() * 30)
         elif (random_selector < 0.95):

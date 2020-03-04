@@ -53,6 +53,12 @@ class cashier:
         self.cashier_queue.insert(0, customer)
         self.complete_queue.append(customer)
 
+        # self-checkout insert
+        if(self.self_checkout and self.queue_size() == 1):
+            self.IPM = self.cashier_queue[-1].IPM
+
+        
+
     def line_empty(self):
         ''' Checks if line is tempty
         '''
@@ -63,32 +69,35 @@ class cashier:
         '''
         # Checks if line is empty
         if (not self.line_empty()):
-            # Calculate subtraction factor
-            if (self.self_checkout):
-                subtract_me = self.cashier_queue[-1].IPM/v.TIME_STEP
-            else:
-                # Calculate time subtraction
-                subtract_me = self.IPM/v.TIME_STEP
-
+            # Calculate time subtraction
+            subtract_me = self.IPM/v.TIME_STEP
+            subtract_me = min(self.cashier_queue[-1].number_of_items, subtract_me)
             # adds min between IPM, and what the customer has in total
             self.cashier_queue[-1].number_of_items = self.cashier_queue[-1].number_of_items -\
                 min(self.cashier_queue[-1].number_of_items, subtract_me)
 
             # Adds to total items checked
             self.total_items_checked = self.total_items_checked + \
-                min(self.cashier_queue[-1].number_of_items, subtract_me)
+                subtract_me
             # if there are no items, customer leaves
             if (self.cashier_queue[-1].number_of_items == 0):
                 self.cashier_queue.pop()
                 
+                if (not self.line_empty()):
+                    if(self.self_checkout):
+                        self.IPM = self.cashier_queue[-1].IPM
+
     def queue_size(self):
         ''' returns size of the queue
         '''
         return len(self.cashier_queue)
 
+    def comparing_factor(self):
+        return self.queue_size()*self.total_number_of_items_in_systems*self.IPM
+
     def __lt__(self, other):
         # sort for smallest to largest
-        return self.queue_size() < other.queue_size() 
+        return self.comparing_factor() < other.comparing_factor() 
 
 if __name__ == "__main__":
     ''' Cashier testing site
@@ -96,7 +105,7 @@ if __name__ == "__main__":
     test_cashier = cashier(45, 3, 9)
     test_cashier2 = cashier(42, 3, 9)
 
-    test_customer = customer(2, 6, 3)
+    test_customer = customer(2, 3)
 
     test_cashier.add_customer_to_queue(test_customer)
     if test_cashier.queue_size() == 1:
