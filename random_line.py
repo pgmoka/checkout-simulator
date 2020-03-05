@@ -98,4 +98,5 @@ def rej():
     # loop while condition is unsatisfied
     while (f(rand) <= uniform_rand):
         rand = r.uniform(0,1)
+
     return rand

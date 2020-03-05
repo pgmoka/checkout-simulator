@@ -85,9 +85,21 @@ class cashier:
                 if(not self.self_checkout):
                     self.conversation()
 
-
             # Calculate time subtraction
             subtract_me = self.IPM / v.TIME_STEP
+
+            #calculate effect chatter has on number of items that should be
+            #scanned
+            if self.chatLevel == 3:
+                subtract_me = subtract_me * .60
+
+            elif self.chatLevel == 2:
+                subtract_me = subtract_me * .70
+
+            elif self.chatLevel == 1:
+                subtract_me = subtract_me * .75
+
+
             subtract_me = min(self.cashier_queue[-1].number_of_items, subtract_me)
 
             # adds min between IPM, and what the customer has in total
