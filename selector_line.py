@@ -91,7 +91,7 @@ class selector_line(equal_distribution_line):
                                          v.CASHIER_STD_DEV_IPM),
                         int(np.random.rand() * v.CASHIER_CHITCHATNESS),
                         self.minimum_wage,
-                        forgetful = np.random.rand() * v.FORGET
+                        forgetful = rej() * v.FORGET
                     )
                 )
             else:
@@ -104,3 +104,27 @@ class selector_line(equal_distribution_line):
                         self_checkout=True
                     )
                 )
+def f(x):
+    ''' Uses function as seen in figure 9.3.12
+    Precondition:
+    - int x to execute function
+    Postcondition:
+    - result of equation as float
+    '''
+    # \pi\cdot\sin\left(\pi\cdot x\right)\
+    return np.pi*np.sin(np.pi*x)
+    # return -(9*x-9)**3
+    # return 0.1 - np.log10(x/2+0.75)
+
+
+def rej():
+    '''
+    Postcondition:
+    - result of equation as described in the book
+    '''
+    uniform_rand = r.uniform(f(1),f(0))
+    rand = r.uniform(0,1)
+    # loop while condition is unsatisfied
+    while (f(rand) <= uniform_rand):
+        rand = r.uniform(0,1)
+    return rand
