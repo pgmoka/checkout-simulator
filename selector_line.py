@@ -59,33 +59,17 @@ class selector_line(equal_distribution_line):
     def rotate_customers(self):
         ''' Create a list of customers
         '''
+        # Goes through customers:
         for individual_cashier_iterator in range(len(self.cashier_list)):
+
+            # Check if there is a customer in the list
             if (len(self.customer_list) > 0):
-                # Updates waiting queue:
-                self.customers_waiting_to_queue = self.customers_waiting_to_queue - 1
-                self.cashier_list[individual_cashier_iterator].add_customer_to_queue(self.customer_list.pop())
+
+                # checks if line is empty
+                if(self.cashier_list[individual_cashier_iterator].queue_size()==0):
+
+                    if(self.cashier_list[individual_cashier_iterator].forgetful()):
+                        # Updates waiting queue:
+                        self.customers_waiting_to_queue = self.customers_waiting_to_queue - 1
+                        self.cashier_list[individual_cashier_iterator].add_customer_to_queue(self.customer_list.pop())
     
-def f(x):
-    ''' Uses function as seen in figure 9.3.12
-    Precondition:
-    - int x to execute function
-    Postcondition:
-    - result of equation as float
-    '''
-    # \pi\cdot\sin\left(\pi\cdot x\right)\ 
-    # return np.pi*np.sin(np.pi*x)
-    # return -(9*x-9)**3
-    return 0.1 - np.log10(x/2+0.75)
-
-
-def rej():
-    '''
-    Postcondition:
-    - result of equation as described in the book
-    '''
-    uniform_rand = r.uniform(f(1),f(0))
-    rand = r.uniform(0,1)
-    # loop while condition is unsatisfied
-    while (f(rand) <= uniform_rand):
-        rand = r.uniform(0,1)
-    return rand
