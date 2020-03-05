@@ -1,13 +1,14 @@
-#=======================================================================
-#============================= Imports==================================
-#=======================================================================
+# =======================================================================
+# ============================= Imports==================================
+# =======================================================================
 
 import variables as v
 import numpy as np
 
-#=======================================================================
-#================================= Class ===============================
-#=======================================================================
+
+# =======================================================================
+# ================================= Class ===============================
+# =======================================================================
 
 class customer:
     ''' Saves information related to the customers
@@ -41,6 +42,7 @@ class customer:
 
         self.IPM = IPM
         self.number_of_items = self.number_of_items_per_customer()
+        self.total_items = self.number_of_items
         self.chitchatness = chitchatness
         self.waiting = True
         self.being_helped = False
@@ -56,19 +58,17 @@ class customer:
         # Number for selection
         random_selector = np.random.rand()
         number_of_items = 0
-        if (random_selector < 1):
-            number_of_items = int(np.random.rand() * 5)+3
 
-        elif (random_selector < 0.8):
+        if (random_selector < 0.8):
             # for 0 - 30
             number_of_items = int(np.random.rand() * 30)
 
         elif (random_selector < 0.95):
+
             # for 30 - 70
             number_of_items = int(np.random.normal(20, 8.9) + 30)
         else:
             # for 70-200
             number_of_items = int(np.random.lognormal(3, 0.63) + 70)
-
 
         return number_of_items

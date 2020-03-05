@@ -1,6 +1,6 @@
-#=======================================================================
-#============================= Imports==================================
-#=======================================================================
+# =======================================================================
+# ============================= Imports==================================
+# =======================================================================
 
 import variables as v
 import numpy as np
@@ -8,9 +8,10 @@ import numpy as np
 # Module for testing:
 from customer import customer
 
-#=======================================================================
-#================================= Class ===============================
-#=======================================================================
+
+# =======================================================================
+# ================================= Class ===============================
+# =======================================================================
 
 class cashier:
     # Cost to maintain cashier
@@ -90,15 +91,15 @@ class cashier:
             subtract_me = min(self.cashier_queue[-1].number_of_items, subtract_me)
 
             # adds min between IPM, and what the customer has in total
-            self.cashier_queue[-1].number_of_items = self.cashier_queue[-1].number_of_items -\
-                min(self.cashier_queue[-1].number_of_items, subtract_me)
+            self.cashier_queue[-1].number_items_checked = min(self.cashier_queue[-1].number_of_items, subtract_me)
+            self.cashier_queue[-1].number_of_items = self.cashier_queue[-1].number_of_items - \
+                                                     self.cashier_queue[-1].number_items_checked
 
             # Adds to total items checked
             self.total_items_checked = self.total_items_checked + subtract_me
 
-
             # if there are no items, customer leaves
-            if (self.cashier_queue[-1].number_of_items == 0):
+            if self.cashier_queue[-1].number_of_items == 0:
                 self.cashier_queue.pop()
                 self.chatLevel = 0
                 
@@ -162,7 +163,7 @@ if __name__ == "__main__":
         print("Customer addition works")
         print("Queue size works")
 
-    if(not test_cashier.self_checkout):
+    if (not test_cashier.self_checkout):
         print("Self-checkout casting works")
 
     test_cashier.checkout_current_customer_items()
@@ -174,15 +175,15 @@ if __name__ == "__main__":
 
     if test_cashier.queue_size() == 0:
         print("Pops out cashier correctly")
-    
-    print(test_cashier<test_cashier2)
-    print(test_cashier>test_cashier2)
+
+    print(test_cashier < test_cashier2)
+    print(test_cashier > test_cashier2)
 
     test_cashier.add_customer_to_queue(test_customer)
 
     # Comparison:
-    print(test_cashier<test_cashier2)
-    print(test_cashier>test_cashier2)
+    print(test_cashier < test_cashier2)
+    print(test_cashier > test_cashier2)
 
     sorter_list = [test_cashier, test_cashier2]
     sorter_list.sort()
