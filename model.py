@@ -12,6 +12,7 @@ from visualization import visual
 import variables as v
 from random_line import random_line
 from equal_distribution_line import equal_distribution_line
+from selector_line import selector_line
 from cashier import cashier
 
 #=======================================================================
@@ -96,7 +97,7 @@ class model:
 
             plt.show()
         if showAnim:
-            visual().display_simulation(self)
+            visual().print_env(self)
             #visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
 
         print("SIMULATION COMPLETE")
@@ -128,6 +129,6 @@ class model:
             return equal_distribution_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
                 self.minimum_wage, self.self_checkout_maintenance_cost)
         else:
-            return random_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
+            return selector_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
                 self.minimum_wage, self.self_checkout_maintenance_cost)
 
