@@ -4,7 +4,8 @@
 
 import variables as v
 import numpy as np
-import operator
+import random as r
+import matplotlib.pyplot as plt
 
 from cashier import cashier
 from customer import customer
@@ -55,23 +56,46 @@ class random_line(equal_distribution_line):
 
     total_number_of_items_in_system = 0
 
-    def create_customer_list(self):
+    def rotate_customers(self):
         ''' Create a list of customers
         '''
-        # Creates temporary list:
-        self.customer_list = []
+        number_of_customers_entering_queue = int(np.random.rand()*(self.number_of_cashiers-1)) +1
+        # test = []
+        # for i in range(1000):
+        #     test.append(int(rej()*self.number_of_cashiers))
+        # plt.hist(test)
+        # plt.show()
 
-        # Adds customer as numbers increase
-        for i in range(self.total_number_of_customers):
-            items = self.number_of_items_per_customer()
-            # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
-            self.total_number_of_items_in_system = self.total_number_of_items_in_system \
-                                                   + items
-            # Creates customer, and adds them to list:
-            self.customer_list.append \
-                    (
-                    customer( \
-                        np.random.normal(v.CUSTOMER_AVERAGE_IPM, v.CUSTOMER_STD_DEV_IPM), \
-                        items, \
-                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
-                )
+        for individual_cashier_iterator in range(number_of_customers_entering_queue):
+            if (len(self.customer_list) > 0):
+
+                position = int(rej()*self.number_of_cashiers)
+                # Updates waiting queue:
+                self.customers_waiting_to_queue = self.customers_waiting_to_queue - 1
+                self.cashier_list[position].add_customer_to_queue(self.customer_list.pop())
+                self.cashier_list.sort()
+    
+def f(x):
+    ''' Uses function as seen in figure 9.3.12
+    Precondition:
+    - int x to execute function
+    Postcondition:
+    - result of equation as float
+    '''
+    # \pi\cdot\sin\left(\pi\cdot x\right)\ 
+    # return np.pi*np.sin(np.pi*x)
+    # return -(9*x-9)**3
+    return 0.1 - np.log10(x/2+0.75)
+
+
+def rej():
+    '''
+    Postcondition:
+    - result of equation as described in the book
+    '''
+    uniform_rand = r.uniform(f(1),f(0))
+    rand = r.uniform(0,1)
+    # loop while condition is unsatisfied
+    while (f(rand) <= uniform_rand):
+        rand = r.uniform(0,1)
+    return rand
