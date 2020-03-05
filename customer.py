@@ -25,15 +25,13 @@ class customer:
 
     # language barrier maybe
 
-    #
-
     IPM = 0
 
     number_of_items = 0
 
     chitchatness = 0
 
-    def __init__(self, IPM, number_of_items, chitchatness):
+    def __init__(self, IPM, chitchatness):
         ''' Customer initialization method
         Precondition:
         - IPM: Customer's IPM. Used by self checkout
@@ -46,6 +44,8 @@ class customer:
         self.number_of_items = self.number_of_items_per_customer()
         self.total_items = self.number_of_items
         self.chitchatness = chitchatness
+        self.waiting = True
+        self.being_helped = False
 
     def number_of_items_per_customer(self):
         ''' calculates distribution of of items
@@ -58,13 +58,17 @@ class customer:
         # Number for selection
         random_selector = np.random.rand()
         number_of_items = 0
-        if random_selector < 0.8:
+
+        if (random_selector < 0.8):
             # for 0 - 30
             number_of_items = int(np.random.rand() * 30)
-        elif random_selector < 0.95:
+
+        elif (random_selector < 0.95):
+
             # for 30 - 70
             number_of_items = int(np.random.normal(20, 8.9) + 30)
         else:
             # for 70-200
             number_of_items = int(np.random.lognormal(3, 0.63) + 70)
+
         return number_of_items

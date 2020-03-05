@@ -113,19 +113,20 @@ class equal_distribution_line:
 
         # Adds customer as numbers increase
         for i in range(self.total_number_of_customers):
-            items = self.number_of_items_per_customer()
-            # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
-            self.total_number_of_items_in_system = self.total_number_of_items_in_system \
-                                                   + items
+            # items = self.number_of_items_per_customer()
+            # # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
+            # self.total_number_of_items_in_system = self.total_number_of_items_in_system \
+            #                                        + items
             # Creates customer, and adds them to list:
             self.customer_list.append \
                     (
                     customer( \
                         np.random.normal(v.CUSTOMER_AVERAGE_IPM, v.CUSTOMER_STD_DEV_IPM), \
-                        items, \
                         int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
                 )
 
+            self.total_number_of_items_in_system = self.total_number_of_items_in_system \
+                                                   + self.customer_list[-1].number_of_items
     def rotate_customers(self):
         ''' Create a list of customers
         '''
@@ -179,7 +180,9 @@ class equal_distribution_line:
         # Number for selection
         random_selector = np.random.rand()
         number_of_items = 0
-        if (random_selector < 0.8):
+        if (random_selector < 1):
+            number_of_items = int(np.random.rand() * 5)+3
+        elif (random_selector < 0.8):
             # for 0 - 30
             number_of_items = int(np.random.rand() * 30)
         elif (random_selector < 0.95):
