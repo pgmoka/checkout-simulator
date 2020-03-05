@@ -23,3 +23,6 @@ SELF_CHECKOUT_TIME = 0.85
 
 # In seconds
 TIME_STEP = 15
+
+# forgetfullness
+FORGET = 0.5

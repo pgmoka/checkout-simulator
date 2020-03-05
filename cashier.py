@@ -40,7 +40,7 @@ class cashier:
     #forgetfullness
     forgetfulness = 0
 
-    def __init__(self, IPM, chitchatter, maintenance_cost, self_checkout=False):
+    def __init__(self, IPM, chitchatter, maintenance_cost, forgetful = 0, self_checkout=False):
         """ Initiates cashier
         """
         self.complete_queue = []
@@ -49,7 +49,7 @@ class cashier:
         self.chitchatness = chitchatter
         self.self_checkout = self_checkout
         self.maintenance_cost = maintenance_cost
-        self.forgetfulness = 0
+        self.forgetfulness = forgetful
 
     def add_customer_to_queue(self, customer):
         """ adds a customer to this cashier's queue
