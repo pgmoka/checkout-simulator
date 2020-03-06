@@ -43,13 +43,13 @@ number_of_epochs_for_simulation = 20
 self_check_model = model("equal", 21, 10, 20)
 # self_check_model = model("random", 20, 4, 0)
 
-self_check_model = model("random", 20, 4, 0)
+self_check_model = model("random", 20, 4, 100)
 
 list_of_customers_out_of_system, \
         list_of_customers_in_line, \
         list_of_customers_on_cashier_queue,\
         list_of_items_checked,\
         cost_for_maintenance\
-            = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=False)
+            = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=False, showAnim=True)
 
 print("END OF EXECUTION")
