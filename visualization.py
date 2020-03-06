@@ -86,7 +86,7 @@ class visual():
     def print_both(self, cashier, queue, cashier_num, row, dist):
         xPos = dist * (cashier_num + 1)
         self.print_cashier(xPos, 300 + (50 * row), cashier)
-        self.print_line(xPos, 300 + (50 * row), len(cashier.cashier_queue), queue)
+        self.print_line(xPos, 300 + (100 * row), len(cashier.cashier_queue), queue)
 
     def print_cashier(self, x, y, cashier):
         mouse = pygame.mouse.get_pos()
