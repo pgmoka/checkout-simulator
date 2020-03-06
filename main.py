@@ -10,6 +10,19 @@ import matplotlib.pyplot as plt
 import variables as v
 from model import model
 
+# =======================================================================
+# =============================== Methods ===============================
+# =======================================================================
+
+def type_of_cashier_comparison():
+    self_check_model = model("equal", 20, 4, 0)
+    list_of_customers_out_of_system, \
+        list_of_customers_in_line, \
+        list_of_customers_on_cashier_queue,\
+        list_of_items_checked,\
+        cost_for_maintenance\
+            = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
+
 #=======================================================================
 #============================= Exectuion ===============================
 #=======================================================================
@@ -29,8 +42,12 @@ number_of_epochs_for_simulation = 20
 # -------------------------- Self-checkout_test:
 # self_check_model = model("equal", 20, 4, 0)
 # self_check_model = model("random", 20, 4, 0)
-self_check_model = model("selector", 20, 4, 0)
+self_check_model = model("random", 20, 4, 0)
 
-
-self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
+list_of_customers_out_of_system, \
+        list_of_customers_in_line, \
+        list_of_customers_on_cashier_queue,\
+        list_of_items_checked,\
+        cost_for_maintenance\
+            = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=False)
 print("END OF EXECUTION")
