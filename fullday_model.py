@@ -72,7 +72,7 @@ class Fullday:
         '''
 
 
-        for i in range( number_of_steps):
+        for i in range( self.hours_open * 60 * v.TIME_STEP ):
             self.execute_phase_one()
             self.execute_phase_two()
             self.execute_phase_three()
