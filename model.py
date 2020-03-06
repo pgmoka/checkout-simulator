@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 # Create simulation code
 from visualization import visual
 import variables as v
-from random_line import random_line
+from customer_selection_line import customer_selection_line
 from equal_distribution_line import equal_distribution_line
-from selector_line import selector_line
+from cashier_selector_line import cashier_selector_line
 from cashier import cashier
 
 #=======================================================================
@@ -127,13 +127,13 @@ class model:
         number_of_cashiers, number_of_selfcheckouts):
         ''' Helper method for the creation of lines
         '''
-        if(model_being_ran == "random"):
-            return random_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
+        if(model_being_ran == "customer"):
+            return customer_selection_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
                 self.minimum_wage, self.self_checkout_maintenance_cost)
         elif(model_being_ran =="equal"):
             return equal_distribution_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
                 self.minimum_wage, self.self_checkout_maintenance_cost)
         else:
-            return selector_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
+            return cashier_selector_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
                 self.minimum_wage, self.self_checkout_maintenance_cost)
 

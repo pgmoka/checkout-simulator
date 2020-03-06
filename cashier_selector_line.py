@@ -15,7 +15,7 @@ from equal_distribution_line import equal_distribution_line
 # ================================= Class ===============================
 # =======================================================================
 
-class selector_line(equal_distribution_line):
+class cashier_selector_line(equal_distribution_line):
     # List of customers in queue
     # Implemented
     customer_list = 0
