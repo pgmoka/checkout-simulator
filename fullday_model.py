@@ -72,7 +72,7 @@ class Fullday:
         '''
 
 
-        for i in range(number_of_steps):
+        for i in range( number_of_steps):
             self.execute_phase_one()
             self.execute_phase_two()
             self.execute_phase_three()
@@ -126,9 +126,16 @@ class Fullday:
 
         print("SIMULATION COMPLETE")
 
+    def choose_day_type(self, hourly_array, population, daytype):
+        if daytype == 'busy':
+            self.busyDay(hourly_array, population)
+        elif daytype == 'slow':
+            self.slowDay(hourly_array, population)
+        else:
+            self.normalDay(hourly_array, population)
 
 
-    def frontLoadedDay(self, hourly_array, population):
+    def busyDay(self, hourly_array, population):
         pass
 
     def normalDay(self, hourly_array, population):
