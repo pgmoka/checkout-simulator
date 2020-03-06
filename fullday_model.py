@@ -42,7 +42,7 @@ class Fullday:
                  number_of_cashiers,
                  number_of_selfcheckouts,
                  day_type = 'normal',
-                 minimum_wage=12,
+                 minimum_wage=17,
                  self_checkout_maintenance_cost=4,
                  model_name="Default Model"):
         '''
@@ -127,10 +127,13 @@ class Fullday:
         print("SIMULATION COMPLETE")
 
     def choose_day_type(self, hourly_array, population, daytype):
+
         if daytype == 'busy':
             self.busyDay(hourly_array, population)
+
         elif daytype == 'slow':
             self.slowDay(hourly_array, population)
+
         else:
             self.normalDay(hourly_array, population)
 
