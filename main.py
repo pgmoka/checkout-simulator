@@ -40,10 +40,10 @@ number_of_epochs_for_simulation = 20
 # model_line = random_line_model.line
 
 # -------------------------- Self-checkout_test:
-self_check_model = model("equal", 21, 10, 20)
-# self_check_model = model("random", 20, 4, 0)
+# self_check_model = model("customer", 21, 5, 2)
+self_check_model = model("cashier", 21, 5, 2)
 
-self_check_model = model("random", 20, 4, 100)
+# self_check_model = model("equal", 21, 5, 2)
 
 list_of_customers_out_of_system, \
         list_of_customers_in_line, \
