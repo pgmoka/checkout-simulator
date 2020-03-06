@@ -24,7 +24,7 @@ class model:
 
     def __init__(self, model_being_ran, number_of_customers, \
         number_of_cashiers, number_of_selfcheckouts,\
-        minimum_wage = 12, self_checkout_maintenance_cost=4, model_name="Default Model"):
+        minimum_wage = 17.50, self_checkout_maintenance_cost=2.19, model_name="Default Model"):
         '''Initializes method
         '''
 
@@ -99,6 +99,12 @@ class model:
             visual().print_env(self)
             #visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
 
+        return self.list_of_customers_out_of_system, \
+            self.list_of_customers_in_line, \
+            self.list_of_customers_on_cashier_queue,\
+            self.list_of_items_checked,\
+            self.line.cost_for_maintenance
+                
         print("SIMULATION COMPLETE")
 
     def execute_phase_one(self):
