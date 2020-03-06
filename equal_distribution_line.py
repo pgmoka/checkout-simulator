@@ -4,6 +4,7 @@
 
 import variables as v
 import numpy as np
+import matplotlib.pyplot as plt
 
 from cashier import cashier
 from customer import customer
@@ -55,14 +56,15 @@ class equal_distribution_line:
     total_number_of_items_in_system = 0
 
     def __init__(self, number_of_cashiers, number_of_incoming_customers,
-                 number_of_automated_cashiers, minimum_wage, self_checkout_maintenance_cost):
+                 number_of_automated_cashiers, minimum_wage, self_checkout_maintenance_cost,
+                 cashier_IPM_p_influence,customer_IPM_p_influence):
         ''' Initializes line
         '''
         self.cashier_list = []
         self.number_of_cashiers = number_of_cashiers
         self.total_number_of_customers = number_of_incoming_customers
         self.customers_waiting_to_queue = number_of_incoming_customers
-        self.create_customer_list()
+        self.create_customer_list(customer_IPM_p_influence)
         self.minimum_wage = minimum_wage
         self.self_checkout_maintenance_cost = self_checkout_maintenance_cost
 
@@ -72,11 +74,11 @@ class equal_distribution_line:
             np.concatenate( \
                 (np.ones(number_of_automated_cashiers, dtype=bool), np.zeros(number_of_cashiers, dtype=bool)))
 
-        self.create_cashier_list()
+        self.create_cashier_list(cashier_IPM_p_influence)
         self.update_total_maintenance_cost()
         print("Creation completed")
 
-    def create_cashier_list(self):
+    def create_cashier_list(self,cashier_IPM_p_influence):
         ''' creates list of cashiers
         Precondition:
         - Creation of self.automated_cashier_tracker
@@ -87,9 +89,14 @@ class equal_distribution_line:
             if (not i):
                 # Create IPM from normal distribution from global variables
                 # Create how chatty from global variables
+
+                # Transformations for binomial distribution:
+                # p = 1 - ((v.CASHIER_STD_DEV_IPM**2)/v.CASHIER_AVERAGE_IPM)
+                # n = v.CASHIER_AVERAGE_IPM/p
+
                 self.cashier_list.append(
                     cashier(
-                        np.random.normal(v.CASHIER_AVERAGE_IPM, v.CASHIER_STD_DEV_IPM),
+                        np.random.binomial(v.CASHIER_n,v.CASHIER_p+cashier_IPM_p_influence),
                         int(np.random.rand() * v.CASHIER_CHITCHATNESS),
                         self.minimum_wage
                     )
@@ -105,7 +112,7 @@ class equal_distribution_line:
                     )
                 )
 
-    def create_customer_list(self):
+    def create_customer_list(self, customer_IPM_p_influence):
         ''' Create a list of customers
         '''
         # Creates temporary list:
@@ -121,7 +128,7 @@ class equal_distribution_line:
             self.customer_list.append \
                     (
                     customer( \
-                        np.random.normal(v.CUSTOMER_AVERAGE_IPM, v.CUSTOMER_STD_DEV_IPM), \
+                        np.random.binomial(v.CUSTOMER_n, v.CUSTOMER_p+customer_IPM_p_influence), \
                         int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
                 )
 
