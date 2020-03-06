@@ -71,8 +71,7 @@ class model:
             #print("Items checked", self.list_of_items_checked[-1])
 
             if showAnim:
-                visual().print_env(self)
-                plt.pause(1)
+                showAnim = visual().print_env(self)
 
         # print("Items", self.list_of_items_checked)
         # print("Customers", self.list_of_customers_in_line)
