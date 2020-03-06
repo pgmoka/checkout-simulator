@@ -27,7 +27,7 @@ number_of_epochs_for_simulation = 20
 # model_line = random_line_model.line
 
 # -------------------------- Self-checkout_test:
-self_check_model = model("equal", 20, 4, 4)
+self_check_model = model("equal", 21, 10, 20)
 # self_check_model = model("random", 20, 4, 0)
 # self_check_model = model("selector", 20, 10, 0)
 
