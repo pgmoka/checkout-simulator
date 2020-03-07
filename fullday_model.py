@@ -83,7 +83,7 @@ class Fullday:
 
         for i in range( self.hours_open * 60 * v.TIME_STEP ):
 
-            if i % (60*15) == 0:
+            if i % 20 == 0:
                 self.execute_phase_zero(self.hourly_population[currentHour])
                 currentHour += 1
 
@@ -135,6 +135,7 @@ class Fullday:
             plt.plot(self.list_of_items_checked)
 
             plt.show()
+
         if showAnim:
             visual().print_env(self)
             # visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
@@ -188,7 +189,7 @@ class Fullday:
         #set array to be 12 entries evenly distributed from 0 to pi
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=1/self.hours_open)
+                                 step=1/ (self.hours_open*12))
 
         #fit array to sin(x) * 1.5
         hourly_array = np.sin(hourly_array) * 1.5
@@ -204,7 +205,7 @@ class Fullday:
         """
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=np.pi/self.hours_open)
+                                 step=np.pi/ (self.hours_open*6))
 
         hourly_array = np.sin(hourly_array)
 
@@ -218,8 +219,8 @@ class Fullday:
 
         """
         hourly_array = np.arange(start=0,
-                                 stop=np.pi + np.pi / self.hours_open,
-                                 step=np.pi/self.hours_open)
+                                 stop=np.pi,
+                                 step=np.pi/ (self.hours_open*6))
 
         hourly_array = np.sin(hourly_array) * .5
 
@@ -234,7 +235,7 @@ class Fullday:
         """
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=np.pi / self.hours_open)
+                                 step=np.pi / (self.hours_open*6))
 
         hourly_array = np.cos(hourly_array - .75)
         hourly_array = np.where(hourly_array > 0, hourly_array, .1)
@@ -250,7 +251,7 @@ class Fullday:
         """
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=np.pi / self.hours_open)
+                                 step=np.pi / (self.hours_open*6))
 
         hourly_array = np.cos(hourly_array - 2.25)
         hourly_array = np.where(hourly_array > 0, hourly_array, .1)

@@ -30,7 +30,7 @@ number_of_epochs_for_simulation = 20
 #self_check_model = model("equal", 20, 4, 0)
 #self_check_model = model("random", 20, 4, 0)
 #self_check_model = model("selector", 20, 4, 0)
-fulldayTest = Fullday('equal', 5, 6)
+fulldayTest = Fullday('equal', 5, 6, day_type = 'front')
 
 fulldayTest.execute_simulation(show=True, showAnim=True)
 
