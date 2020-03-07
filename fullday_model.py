@@ -87,7 +87,7 @@ class Fullday:
             if i == currentSegment:
                 self.execute_phase_zero(self.hourly_population[currentHour])
                 currentHour += 1
-                currentSegment += v.TIME_STEP
+                currentSegment += v.TIME_STEP * 2
 
             self.execute_phase_one()
             self.execute_phase_two()
@@ -186,7 +186,7 @@ class Fullday:
         #set array to be 12 entries evenly distributed from 0 to pi
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=1/ (self.hours_open*60))
+                                 step=1/ (self.hours_open*30))
 
         #fit array to sin(x) * 1.5
         hourly_array = np.sin(hourly_array) * 1.5
@@ -202,7 +202,7 @@ class Fullday:
         """
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=np.pi/ (self.hours_open*60))
+                                 step=np.pi/ (self.hours_open*30))
 
         hourly_array = np.sin(hourly_array)
 
@@ -217,7 +217,7 @@ class Fullday:
         """
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=np.pi/ (self.hours_open*60))
+                                 step=np.pi/ (self.hours_open*30))
 
         hourly_array = np.sin(hourly_array) * .5
 
@@ -232,7 +232,7 @@ class Fullday:
         """
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=np.pi / (self.hours_open*60))
+                                 step=np.pi / (self.hours_open*30))
 
         hourly_array = np.cos(hourly_array - .75)
         hourly_array = np.where(hourly_array > 0, hourly_array, .1)
@@ -248,7 +248,7 @@ class Fullday:
         """
         hourly_array = np.arange(start=0,
                                  stop=np.pi,
-                                 step=np.pi / (self.hours_open*60))
+                                 step=np.pi / (self.hours_open*30))
 
         hourly_array = np.cos(hourly_array - 2.25)
         hourly_array = np.where(hourly_array > 0, hourly_array, .1)
