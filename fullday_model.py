@@ -41,6 +41,7 @@ class Fullday:
                  number_of_customers,
                  number_of_cashiers,
                  number_of_selfcheckouts,
+                 population = 'normal',
                  day_type = 'normal',
                  minimum_wage=17,
                  self_checkout_maintenance_cost=4,
@@ -67,12 +68,15 @@ class Fullday:
         # Name:
         self.name = model_name
 
+        self.population = self.setPopulation(population)
+
     def execute_simulation(self, show=False, showAnim=False):
         ''' Executes simulation with a number steps
         '''
 
 
         for i in range( self.hours_open * 60 * v.TIME_STEP ):
+            self.execute_phase_zero()
             self.execute_phase_one()
             self.execute_phase_two()
             self.execute_phase_three()
@@ -126,65 +130,130 @@ class Fullday:
 
         print("SIMULATION COMPLETE")
 
-    def choose_day_type(self, hourly_array, population, daytype):
+    def choose_day_type(self, hourly_array, daytype):
+        """
+
+        """
 
         if daytype == 'busy':
-            self.busyDay(hourly_array, population)
+            self.busyDay(hourly_array)
 
         elif daytype == 'slow':
-            self.slowDay(hourly_array, population)
+            self.slowDay(hourly_array)
+
+        elif daytype == 'front':
+            self.frontLoaded(hourly_array)
+
+        elif daytype == 'back':
+            self.backLoaded(hourly_array)
 
         else:
-            self.normalDay(hourly_array, population)
+            self.normalDay()
+
+    def setPopulation(self, populationLevel):
+        """
+
+        """
+        if populationLevel == 'low':
+            #this is the number of customers per hour on a slow day
+            return self.hours_open * 100
+
+        elif populationLevel == 'high':
+            # this is the number of customers per hour on a busy day
+            return self.hours_open * 500
+
+        else:
+            # this is the number of customers per hour on a regular day
+            return self.hours_open * 300
 
 
-    def busyDay(self, hourly_array, population):
+    def busyDay(self, hourly_array):
+        """
+
+        """
+        fullDay = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         pass
 
-    def normalDay(self, hourly_array, population):
+    def normalDay(self, hourly_array):
+        """
+
+        """
+        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         pass
 
-    def slowDay(self, hourly_array, population):
+    def slowDay(self, hourly_array):
+        """
+
+        """
+        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         pass
 
+    def frontLoaded(self, hourly_array):
+        """
 
+        """
+        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        pass
+
+    def backLoaded(self, hourly_array):
+        """
+
+        """
+        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        pass
+
+    def execute_phase_zero(self, number_of_customers):
+        """
+        Will add customers to system
+        """
+        self.line.add_customers(number_of_customers)
 
     def execute_phase_one(self):
-        ''' Applies math related to the rotation of customers
+        '''
+        Applies math related to the rotation of customers
         '''
         self.line.rotate_customers()
 
     def execute_phase_two(self):
-        ''' Applies math related to the checkouts
+        '''
+        Applies math related to the checkouts
         '''
         self.line.apply_checkouts()
 
     def execute_phase_three(self):
-        ''' Applies math on updating system
+        '''
+        Applies math on updating system
         '''
         self.line.update_customers_out_of_system()
         self.line.update_checkedout_items()
 
     def create_line(self, model_being_ran, number_of_customers,
                     number_of_cashiers, number_of_selfcheckouts):
-        '''
-            Helper method for the creation of lines
-        '''
+        """
+        Initializes the line environment for the day
+
+        Whichever environemnt is being used will be initialized with the
+        intended amount of cashiers and self check outs. However it will
+        initialize the environment with 0 customers so that they can be added
+        later in predefined intervals.
+        """
         if (model_being_ran == "random"):
-            return random_line(number_of_cashiers, number_of_customers,
+            return random_line(number_of_cashiers,
+                               0,
                                number_of_selfcheckouts,
                                self.minimum_wage,
                                self.self_checkout_maintenance_cost)
 
         elif (model_being_ran == "equal"):
             return equal_distribution_line(number_of_cashiers,
-                                           number_of_customers,
+                                           0,
                                            number_of_selfcheckouts,
                                            self.minimum_wage,
                                            self.self_checkout_maintenance_cost)
 
         else:
-            return selector_line(number_of_cashiers, number_of_customers,
+            return selector_line(number_of_cashiers,
+                                 0,
                                  number_of_selfcheckouts,
                                  self.minimum_wage,
                                  self.self_checkout_maintenance_cost)
