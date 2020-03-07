@@ -35,7 +35,7 @@ class visual():
     def __init__(self):
         pass
 
-    def print_env(self, modelObj):
+    def print_env(self, modelObj, update_time=1000):
         # Pulls environment
         line = modelObj.line
         # Reference to cashiers
@@ -58,7 +58,7 @@ class visual():
                     return False
 
             # Is longer than a second
-            if (pygame.time.get_ticks() - startTimer) / 1000 > 1:
+            if (pygame.time.get_ticks() - startTimer) > update_time:
                 return True
             # Set background
             self.screen.fill(self.black)
