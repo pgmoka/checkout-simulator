@@ -230,5 +230,5 @@ class equal_distribution_line:
         else:
             # for 70-200
             number_of_items = int(np.random.lognormal(3, 0.63) + 70)
-            
+
         return number_of_items

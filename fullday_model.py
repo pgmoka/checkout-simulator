@@ -80,12 +80,14 @@ class Fullday:
 
         """
         currentHour = 0
+        currentSegment = 0
 
         for i in range( self.hours_open * 60 * v.TIME_STEP ):
 
-            if i % 75 == 0:
+            if i == currentSegment:
                 self.execute_phase_zero(self.hourly_population[currentHour])
                 currentHour += 1
+                currentSegment += 75
 
             self.execute_phase_one()
             self.execute_phase_two()
@@ -111,7 +113,7 @@ class Fullday:
 
             if showAnim:
                 visual().print_env(self, update_time=1)
-                plt.pause(1)
+                plt.pause(.01)
 
         # print("Items", self.list_of_items_checked)
         # print("Customers", self.list_of_customers_in_line)
@@ -135,10 +137,6 @@ class Fullday:
             plt.plot(self.list_of_items_checked)
 
             plt.show()
-
-        if showAnim:
-            visual().print_env(self)
-            # visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
 
         print("SIMULATION COMPLETE")
 
