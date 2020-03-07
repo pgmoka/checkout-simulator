@@ -15,7 +15,7 @@ from analysis_utils import *
 #============================= Exectuion ===============================
 #=======================================================================
 
-number_of_epochs_for_simulation = 20
+number_of_epochs_for_simulation = 30
 # -------------------------- start of testing:
 # # random_line tests:
 # random_line_model = model("random", 10, 2,0)
@@ -54,5 +54,8 @@ fulldayTest.execute_simulation(show=True, showAnim=True)
 #         list_of_items_checked,\
 #         cost_for_maintenance\
 #             = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=False, showAnim=True)
+
+sensitivity_cashierIPM_analysis(number_of_epochs_for_simulation)
+
 
 print("END OF EXECUTION")
