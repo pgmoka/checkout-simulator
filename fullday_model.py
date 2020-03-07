@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 # Create simulation code
 from visualization import visual
 import variables as v
-from random_line import random_line
+from customer_selection_line import customer_selection_line
 from equal_distribution_line import equal_distribution_line
-from selector_line import selector_line
+from cashier_selector_line import cashier_selector_line
 from cashier import cashier
 
 
@@ -83,7 +83,7 @@ class Fullday:
 
         for i in range( self.hours_open * 60 * v.TIME_STEP ):
 
-            if i % 20 == 0:
+            if i % 75 == 0:
                 self.execute_phase_zero(self.hourly_population[currentHour])
                 currentHour += 1
 
@@ -110,7 +110,7 @@ class Fullday:
             # print("Items checked", self.list_of_items_checked[-1])
 
             if showAnim:
-                visual().print_env(self)
+                visual().print_env(self, update_time=1)
                 plt.pause(1)
 
         # print("Items", self.list_of_items_checked)
@@ -297,23 +297,29 @@ class Fullday:
         later in predefined intervals.
         """
         if (model_being_ran == "random"):
-            return random_line(number_of_cashiers,
+            return customer_selection_line(number_of_cashiers,
                                number_of_customers,
                                number_of_selfcheckouts,
                                self.minimum_wage,
-                               self.self_checkout_maintenance_cost)
+                               self.self_checkout_maintenance_cost,
+                                0,
+                                0)
 
         elif (model_being_ran == "equal"):
             return equal_distribution_line(number_of_cashiers,
                                            number_of_customers,
                                            number_of_selfcheckouts,
                                            self.minimum_wage,
-                                           self.self_checkout_maintenance_cost)
+                                           self.self_checkout_maintenance_cost,
+                                           0,
+                                           0)
 
         else:
-            return selector_line(number_of_cashiers,
+            return cashier_selector_line(number_of_cashiers,
                                  number_of_customers,
                                  number_of_selfcheckouts,
                                  self.minimum_wage,
-                                 self.self_checkout_maintenance_cost)
+                                 self.self_checkout_maintenance_cost,
+                                 0,
+                                 0)
 
