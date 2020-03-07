@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 # Create simulation code
 import variables as v
 from model import model
+from fullday_model import Fullday
 from analysis_utils import *
-
 #=======================================================================
 #============================= Exectuion ===============================
 #=======================================================================
@@ -28,6 +28,14 @@ number_of_epochs_for_simulation = 30
 # model_line = random_line_model.line
 
 # -------------------------- Self-checkout_test:
+#self_check_model = model("equal", 20, 4, 0)
+#self_check_model = model("random", 20, 4, 0)
+#self_check_model = model("selector", 20, 4, 0)
+fulldayTest = Fullday('equal', 5, 6, day_type = 'front')
+
+fulldayTest.execute_simulation(show=True, showAnim=True)
+
+#self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
 # self_check_model = model("customer", 21, 5, 2)
 
 # p = 0.2
@@ -48,5 +56,6 @@ number_of_epochs_for_simulation = 30
 #             = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=False, showAnim=True)
 
 sensitivity_cashierIPM_analysis(number_of_epochs_for_simulation)
+
 
 print("END OF EXECUTION")
