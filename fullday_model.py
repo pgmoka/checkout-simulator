@@ -38,7 +38,6 @@ class Fullday:
 
     def __init__(self,
                  model_being_ran,
-                 number_of_customers,
                  number_of_cashiers,
                  number_of_selfcheckouts,
                  population = 'normal',
@@ -61,22 +60,33 @@ class Fullday:
         self.self_checkout_maintenance_cost = self_checkout_maintenance_cost
 
         # Environment tested selection:
-        self.line = self.create_line(model_being_ran, number_of_customers, \
+        self.line = self.create_line(model_being_ran,
+                                     0,
                                      number_of_cashiers,
                                      number_of_selfcheckouts)
 
         # Name:
         self.name = model_name
 
+        # set the population and configure how many customers will come in
+        # over the course of the day
         self.population = self.setPopulation(population)
+        self.day = day_type # save type of day for analysis sake
+        self.hourly_population = self.choose_day_type(day_type)
 
     def execute_simulation(self, show=False, showAnim=False):
-        ''' Executes simulation with a number steps
-        '''
+        """
 
+
+        """
+        currentHour = 0
 
         for i in range( self.hours_open * 60 * v.TIME_STEP ):
-            self.execute_phase_zero()
+
+            if i % (60*15) == 0:
+                self.execute_phase_zero(self.hourly_population[currentHour])
+                currentHour += 1
+
             self.execute_phase_one()
             self.execute_phase_two()
             self.execute_phase_three()
@@ -95,7 +105,8 @@ class Fullday:
             # print("Customers in queue", self.list_of_customers_on_cashier_queue[-1])
 
             self.list_of_items_checked.append(
-                self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
+                self.line.total_number_of_items_in_system -
+                self.line.total_number_of_checked_items)
             # print("Items checked", self.list_of_items_checked[-1])
 
             if showAnim:
@@ -130,25 +141,27 @@ class Fullday:
 
         print("SIMULATION COMPLETE")
 
-    def choose_day_type(self, hourly_array, daytype):
+    def choose_day_type(self, day_type):
         """
 
         """
 
-        if daytype == 'busy':
-            self.busyDay(hourly_array)
+        if day_type == 'busy':
+            hourly_array = self.busyDay()
 
-        elif daytype == 'slow':
-            self.slowDay(hourly_array)
+        elif day_type == 'slow':
+            hourly_array = self.slowDay()
 
-        elif daytype == 'front':
-            self.frontLoaded(hourly_array)
+        elif day_type == 'front':
+            hourly_array = self.frontLoaded()
 
-        elif daytype == 'back':
-            self.backLoaded(hourly_array)
+        elif day_type == 'back':
+            hourly_array = self.backLoaded()
 
         else:
-            self.normalDay()
+            hourly_array = self.normalDay()
+
+        return hourly_array*self.population
 
     def setPopulation(self, populationLevel):
         """
@@ -167,46 +180,91 @@ class Fullday:
             return self.hours_open * 300
 
 
-    def busyDay(self, hourly_array):
+    def busyDay(self):
+        """
+        Traditional busy day where the middle of the day is very busy while the
+        beginning and end of the day are not.
+        """
+        #set array to be 12 entries evenly distributed from 0 to pi
+        hourly_array = np.arange(start=0,
+                                 stop=np.pi,
+                                 step=1/self.hours_open)
+
+        #fit array to sin(x) * 1.5
+        hourly_array = np.sin(hourly_array) * 1.5
+
+        #normalize array to have a sum of 1
+        hourly_array = hourly_array/np.sum(hourly_array)
+
+        return hourly_array
+
+    def normalDay(self):
         """
 
         """
-        fullDay = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        pass
+        hourly_array = np.arange(start=0,
+                                 stop=np.pi,
+                                 step=np.pi/self.hours_open)
 
-    def normalDay(self, hourly_array):
+        hourly_array = np.sin(hourly_array)
+
+        #normalize array to have a sum of 1
+        hourly_array = hourly_array/np.sum(hourly_array)
+
+        return hourly_array
+
+    def slowDay(self):
         """
 
         """
-        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        pass
+        hourly_array = np.arange(start=0,
+                                 stop=np.pi + np.pi / self.hours_open,
+                                 step=np.pi/self.hours_open)
 
-    def slowDay(self, hourly_array):
+        hourly_array = np.sin(hourly_array) * .5
+
+        #normalize array to have a sum of 1
+        hourly_array = hourly_array/np.sum(hourly_array)
+
+        return hourly_array
+
+    def frontLoaded(self):
         """
 
         """
-        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        pass
+        hourly_array = np.arange(start=0,
+                                 stop=np.pi,
+                                 step=np.pi / self.hours_open)
 
-    def frontLoaded(self, hourly_array):
+        hourly_array = np.cos(hourly_array - .75)
+        hourly_array = np.where(hourly_array > 0, hourly_array, .1)
+
+        #normalize array to have a sum of 1
+        hourly_array = hourly_array/np.sum(hourly_array)
+
+        return hourly_array
+
+    def backLoaded(self):
         """
 
         """
-        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        pass
+        hourly_array = np.arange(start=0,
+                                 stop=np.pi,
+                                 step=np.pi / self.hours_open)
 
-    def backLoaded(self, hourly_array):
-        """
+        hourly_array = np.cos(hourly_array - 2.25)
+        hourly_array = np.where(hourly_array > 0, hourly_array, .1)
 
-        """
-        fullDay = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        pass
+        #normalize array to have a sum of 1
+        hourly_array = hourly_array/np.sum(hourly_array)
+
+        return hourly_array
 
     def execute_phase_zero(self, number_of_customers):
         """
         Will add customers to system
         """
-        self.line.add_customers(number_of_customers)
+        self.line.add_customers(int(number_of_customers))
 
     def execute_phase_one(self):
         '''
@@ -239,21 +297,21 @@ class Fullday:
         """
         if (model_being_ran == "random"):
             return random_line(number_of_cashiers,
-                               0,
+                               number_of_customers,
                                number_of_selfcheckouts,
                                self.minimum_wage,
                                self.self_checkout_maintenance_cost)
 
         elif (model_being_ran == "equal"):
             return equal_distribution_line(number_of_cashiers,
-                                           0,
+                                           number_of_customers,
                                            number_of_selfcheckouts,
                                            self.minimum_wage,
                                            self.self_checkout_maintenance_cost)
 
         else:
             return selector_line(number_of_cashiers,
-                                 0,
+                                 number_of_customers,
                                  number_of_selfcheckouts,
                                  self.minimum_wage,
                                  self.self_checkout_maintenance_cost)

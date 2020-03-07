@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # Create simulation code
 import variables as v
 from model import model
-
+from fullday_model import Fullday
 #=======================================================================
 #============================= Exectuion ===============================
 #=======================================================================
@@ -27,10 +27,12 @@ number_of_epochs_for_simulation = 20
 # model_line = random_line_model.line
 
 # -------------------------- Self-checkout_test:
-self_check_model = model("equal", 20, 4, 0)
+#self_check_model = model("equal", 20, 4, 0)
 #self_check_model = model("random", 20, 4, 0)
 #self_check_model = model("selector", 20, 4, 0)
+fulldayTest = Fullday('equal', 5, 6)
 
+fulldayTest.execute_simulation(show=True, showAnim=True)
 
-self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
+#self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
 print("END OF EXECUTION")
