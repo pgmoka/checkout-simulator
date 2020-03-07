@@ -56,19 +56,15 @@ class model:
             # Add list
             self.list_of_customers_out_of_system.append(
                 self.line.customers_that_left)
-            #print("Customers left", self.list_of_customers_out_of_system[-1])
 
             self.list_of_customers_in_line.append(
                 self.line.customers_waiting_to_queue)
-            #print("Customers in line", self.list_of_customers_in_line[-1])
 
             self.list_of_customers_on_cashier_queue.append(
                 self.line.customers_being_served)
-            #print("Customers in queue", self.list_of_customers_on_cashier_queue[-1])
 
             self.list_of_items_checked.append(
                 self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
-            #print("Items checked", self.list_of_items_checked[-1])
 
             if showAnim:
                 showAnim = visual().print_env(self, update_time=10)
