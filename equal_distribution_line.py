@@ -76,7 +76,6 @@ class equal_distribution_line:
 
         self.create_cashier_list(cashier_IPM_p_influence)
         self.update_total_maintenance_cost()
-        print("Creation completed")
 
     def create_cashier_list(self,cashier_IPM_p_influence):
         ''' creates list of cashiers
