@@ -134,6 +134,29 @@ class equal_distribution_line:
 
             self.total_number_of_items_in_system = self.total_number_of_items_in_system \
                                                    + self.customer_list[-1].number_of_items
+
+    def add_customers(self, number_added):
+
+        self.total_number_of_customers += number_added
+        self.customers_waiting_to_queue += number_added
+
+        # Adds customer as numbers increase
+        for i in range(number_added):
+            # items = self.number_of_items_per_customer()
+            # # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
+            # self.total_number_of_items_in_system = self.total_number_of_items_in_system \
+            #                                        + items
+            # Creates customer, and adds them to list:
+            self.customer_list.append(
+                    customer(
+                        np.random.normal(v.CUSTOMER_AVERAGE_IPM, v.CUSTOMER_STD_DEV_IPM),
+                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
+                    )
+
+            self.total_number_of_items_in_system = self.total_number_of_items_in_system \
+                                                   + self.customer_list[-1].number_of_items
+
+
     def rotate_customers(self):
         ''' Create a list of customers
         '''
