@@ -295,12 +295,12 @@ class Fullday:
         """
         if (model_being_ran == "random"):
             return customer_selection_line(number_of_cashiers,
-                               number_of_customers,
-                               number_of_selfcheckouts,
-                               self.minimum_wage,
-                               self.self_checkout_maintenance_cost,
-                                0,
-                                0)
+                                           number_of_customers,
+                                           number_of_selfcheckouts,
+                                           self.minimum_wage,
+                                           self.self_checkout_maintenance_cost,
+                                           0,
+                                           0)
 
         elif (model_being_ran == "equal"):
             return equal_distribution_line(number_of_cashiers,

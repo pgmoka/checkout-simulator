@@ -74,7 +74,7 @@ class cashier_selector_line(equal_distribution_line):
                         self.customers_waiting_to_queue = self.customers_waiting_to_queue - 1
                         self.cashier_list[individual_cashier_iterator].add_customer_to_queue(self.customer_list.pop())
 
-    def create_cashier_list(self):
+    def create_cashier_list(self, statistic):
         ''' creates list of cashiers
         Precondition:
         - Creation of self.automated_cashier_tracker
