@@ -40,6 +40,9 @@ class cashier:
     #forgetfullness
     forgetfulness = 0
 
+    #number of customers helped
+    helped = 0
+
     def __init__(self, IPM, chitchatter, maintenance_cost, forgetful = 0, self_checkout=False):
         """ Initiates cashier
         """
@@ -79,6 +82,7 @@ class cashier:
             if self.cashier_queue[-1].waiting == True:
                 self.cashier_queue[-1].waiting = False
                 self.cashier_queue[-1].being_helped = True
+                self.helped += 1
 
                 #if not a selfcheck out find how out much conversation will
                 #take place

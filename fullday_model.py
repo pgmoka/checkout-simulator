@@ -113,7 +113,7 @@ class Fullday:
 
             if showAnim:
                 visual().print_env(self, update_time=1)
-                plt.pause(.01)
+                #plt.pause(.01)
 
         # print("Items", self.list_of_items_checked)
         # print("Customers", self.list_of_customers_in_line)

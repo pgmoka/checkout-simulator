@@ -191,7 +191,7 @@ class visual():
             # Print statistics about the cashier at the top of the screen
 
             # Number of customers helped
-            helpedText = "Helped: " + str(0)
+            helpedText = "Helped: " + str(cashier.helped)
             self.text_box(helpedText, int(self.displayWidth / 6), 60, width=int(self.displayWidth / 6), height=25)
 
             # Cashiers Items Per Minute
