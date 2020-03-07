@@ -67,7 +67,7 @@ class model:
                 self.line.total_number_of_items_in_system - self.line.total_number_of_checked_items)
 
             if showAnim:
-                showAnim = visual().print_env(self, update_time=10)
+                showAnim = visual().print_env(self, update_time=.01)
 
         # print("Items", self.list_of_items_checked)
         # print("Customers", self.list_of_customers_in_line)

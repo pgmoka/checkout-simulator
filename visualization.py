@@ -38,7 +38,7 @@ class visual():
     def __init__(self):
         pass
 
-    def print_env(self, modelObj, update_time=1000):
+    def print_env(self, modelObj, update_time=1):
         """
         Visualizes a set of data stored inside a model object for the time
             specified in update_time.
@@ -82,7 +82,7 @@ class visual():
                     return False
 
             # Has this model been going for longer than the time in update_time?
-            if (pygame.time.get_ticks() - startTimer) > update_time:
+            if (pygame.time.get_ticks() - startTimer) > (update_time * 1000):
                 # The user didn't intervene, tell model
                 # to keep showing the animation
                 return True
@@ -162,7 +162,7 @@ class visual():
         self.print_cashier(xPos, height + (80 * row), cashier)
 
         # Print the cashier's line
-        self.print_line(xPos, height + (80 * row), len(cashier.cashier_queue), queue)
+        self.print_line(xPos, height + (80 * row), queue)
 
     def print_cashier(self, x, y, cashier):
         """
@@ -295,7 +295,7 @@ class visual():
         # Print a single customer block that disappears as the number of items it has goes down
         elif len(cashier_queue) > 0:
             # Set transparency by the number of items currently in the queue
-            if cashier_queue[-1].number_of_items >= 0:
+            if cashier_queue[-1].number_of_items >= 0 and cashier_queue[-1].total_items > 0:
                 # Block goes from white to black
                 transparency = int(255 * cashier_queue[-1].number_of_items / cashier_queue[-1].total_items)
             else:
