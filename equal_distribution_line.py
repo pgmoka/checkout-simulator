@@ -55,9 +55,15 @@ class equal_distribution_line:
 
     total_number_of_items_in_system = 0
 
-    def __init__(self, number_of_cashiers, number_of_incoming_customers,
-                 number_of_automated_cashiers, minimum_wage, self_checkout_maintenance_cost,
-                 cashier_IPM_p_influence,customer_IPM_p_influence):
+    def __init__(self,
+                 number_of_cashiers,
+                 number_of_incoming_customers,
+                 number_of_automated_cashiers,
+                 minimum_wage,
+                 self_checkout_maintenance_cost,
+                 cashier_IPM_p_influence,
+                 customer_IPM_p_influence):
+
         ''' Initializes line
         '''
         self.cashier_list = []
@@ -134,6 +140,29 @@ class equal_distribution_line:
 
             self.total_number_of_items_in_system = self.total_number_of_items_in_system \
                                                    + self.customer_list[-1].number_of_items
+
+    def add_customers(self, number_added):
+
+        self.total_number_of_customers += number_added
+        self.customers_waiting_to_queue += number_added
+
+        # Adds customer as numbers increase
+        for i in range(number_added):
+            # items = self.number_of_items_per_customer()
+            # # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
+            # self.total_number_of_items_in_system = self.total_number_of_items_in_system \
+            #                                        + items
+            # Creates customer, and adds them to list:
+            self.customer_list.append(
+                    customer(
+                        np.random.normal(v.CUSTOMER_AVERAGE_IPM, v.CUSTOMER_STD_DEV_IPM),
+                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
+                    )
+
+            self.total_number_of_items_in_system = self.total_number_of_items_in_system \
+                                                   + self.customer_list[-1].number_of_items
+
+
     def rotate_customers(self):
         ''' Create a list of customers
         '''
@@ -189,13 +218,17 @@ class equal_distribution_line:
         number_of_items = 0
         if (random_selector < 1):
             number_of_items = int(np.random.rand() * 5)+3
+
         elif (random_selector < 0.8):
             # for 0 - 30
             number_of_items = int(np.random.rand() * 30)
+
         elif (random_selector < 0.95):
             # for 30 - 70
             number_of_items = int(np.random.normal(20, 8.9) + 30)
+
         else:
             # for 70-200
             number_of_items = int(np.random.lognormal(3, 0.63) + 70)
+            
         return number_of_items
