@@ -1,6 +1,10 @@
 import pygame
 from pygame import display
 import variables as v
+from datetime import timedelta
+
+
+# TODO Start time
 
 
 # Class to preform animation logic via pygame
@@ -38,7 +42,7 @@ class visual():
     def __init__(self):
         pass
 
-    def print_env(self, modelObj, update_time=1):
+    def print_env(self, modelObj, update_time=1, start_time=None):
         """
         Visualizes a set of data stored inside a model object for the time
             specified in update_time.
@@ -64,6 +68,10 @@ class visual():
 
         # Model is updated by this many seconds each iteration
         cur_time_step = (60 / v.TIME_STEP) * len(item_list)
+
+        start_hour = None
+        if start_time is not None:
+            start_hour = timedelta(seconds=(start_time * 3600))
 
         # Tells the loop to keep displaying until a certain condition is met
         active = True
@@ -91,9 +99,14 @@ class visual():
             self.screen.fill(self.black)
 
             # Print Statistics about current timestep inside
-            # a text box at the top of the screen
-            self.text_box(str(cur_time_step) + " Seconds",
-                          int(self.displayWidth / 4), 0, width=int(self.displayWidth / 2), height=25)
+
+            if start_time is None:
+                # a text box at the top of the screen
+                self.text_box(str(cur_time_step) + " Seconds",
+                              int(self.displayWidth / 4), 0, width=int(self.displayWidth / 2), height=25)
+            else:
+                self.text_box(str(start_hour + timedelta(seconds=cur_time_step))[:-3],
+                              int(self.displayWidth / 4), 0, width=int(self.displayWidth / 2), height=25)
 
             # Print the customers waiting to go into line
             self.text_box("Customers Not in Line: " + str(int(cust_waiting[-1])),
