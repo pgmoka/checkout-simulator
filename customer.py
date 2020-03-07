@@ -31,7 +31,7 @@ class customer:
 
     chitchatness = 0
 
-    def __init__(self, IPM, chitchatness):
+    def __init__(self, IPM, chitchatness,item_creation_lever=0):
         ''' Customer initialization method
         Precondition:
         - IPM: Customer's IPM. Used by self checkout
@@ -41,13 +41,13 @@ class customer:
         '''
 
         self.IPM = IPM
-        self.number_of_items = self.number_of_items_per_customer()
+        self.number_of_items = self.number_of_items_per_customer(item_creation_lever)
         self.total_items = self.number_of_items
         self.chitchatness = chitchatness
         self.waiting = True
         self.being_helped = False
 
-    def number_of_items_per_customer(self):
+    def number_of_items_per_customer(self, item_creation_lever):
         ''' calculates distribution of of items
         '''
         # -(0 - 15)(uniform) = 40%
@@ -56,7 +56,8 @@ class customer:
         # -(70-200)(log distribution(major between 70-100)) = 15%
 
         # Number for selection
-        random_selector = np.random.rand()
+        random_selector = np.random.rand()+item_creation_lever
+        random_selector = random_selector % 1
         number_of_items = 0
 
         if (random_selector < 0.8):
@@ -64,9 +65,8 @@ class customer:
             number_of_items = int(np.random.rand() * 30)
 
         elif (random_selector < 0.95):
-
             # for 30 - 70
-            number_of_items = int(np.random.normal(20, 8.9) + 30)
+            number_of_items = int(np.random.binomial(100, 0.2) + 30)
         else:
             # for 70-200
             number_of_items = int(np.random.lognormal(3, 0.63) + 70)

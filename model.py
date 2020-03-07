@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 # Create simulation code
 from visualization import visual
 import variables as v
-from random_line import random_line
+from customer_selection_line import customer_selection_line
 from equal_distribution_line import equal_distribution_line
-from selector_line import selector_line
+from cashier_selector_line import cashier_selector_line
 from cashier import cashier
 
 #=======================================================================
@@ -23,8 +23,8 @@ class model:
     line = 0
 
     def __init__(self, model_being_ran, number_of_customers, \
-        number_of_cashiers, number_of_selfcheckouts,\
-        minimum_wage = 12, self_checkout_maintenance_cost=4, model_name="Default Model"):
+        number_of_cashiers, number_of_selfcheckouts, cashier_IPM_p_influence=0, customer_IPM_p_influence=0,\
+        minimum_wage = 17.50, self_checkout_maintenance_cost=2.19, model_name="Default Model"):
         '''Initializes method
         '''
 
@@ -40,7 +40,7 @@ class model:
 
         # Environment tested selection:
         self.line = self.create_line(model_being_ran, number_of_customers, \
-            number_of_cashiers, number_of_selfcheckouts)
+            number_of_cashiers, number_of_selfcheckouts,cashier_IPM_p_influence, customer_IPM_p_influence)
 
         # Name:
         self.name = model_name
@@ -71,8 +71,7 @@ class model:
             #print("Items checked", self.list_of_items_checked[-1])
 
             if showAnim:
-                visual().print_env(self)
-                plt.pause(1)
+                showAnim = visual().print_env(self, update_time=10)
 
         # print("Items", self.list_of_items_checked)
         # print("Customers", self.list_of_customers_in_line)
@@ -96,10 +95,13 @@ class model:
             plt.plot(self.list_of_items_checked)
 
             plt.show()
-        if showAnim:
-            visual().print_env(self)
-            #visual().display_simulation(num_cashiers=4, customer_left=self.list_of_customers_out_of_system, queue_values=self.list_of_customers_on_cashier_queue, line_values=self.list_of_customers_in_line, items_left=self.list_of_items_checked)
 
+        return self.list_of_customers_out_of_system, \
+            self.list_of_customers_in_line, \
+            self.list_of_customers_on_cashier_queue,\
+            self.list_of_items_checked,\
+            self.line.cost_for_maintenance
+                
         print("SIMULATION COMPLETE")
 
     def execute_phase_one(self):
@@ -119,16 +121,16 @@ class model:
         self.line.update_checkedout_items()
 
     def create_line(self, model_being_ran, number_of_customers, \
-        number_of_cashiers, number_of_selfcheckouts):
+        number_of_cashiers, number_of_selfcheckouts,cashier_IPM_p_influence,customer_IPM_p_influence):
         ''' Helper method for the creation of lines
         '''
-        if(model_being_ran == "random"):
-            return random_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
-                self.minimum_wage, self.self_checkout_maintenance_cost)
+        if(model_being_ran == "customer"):
+            return customer_selection_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
+                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence)
         elif(model_being_ran =="equal"):
             return equal_distribution_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
-                self.minimum_wage, self.self_checkout_maintenance_cost)
+                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence)
         else:
-            return selector_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
-                self.minimum_wage, self.self_checkout_maintenance_cost)
+            return cashier_selector_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
+                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence)
 

@@ -11,3 +11,6 @@ __pycache__/*
 .idea/modules.xml
 .idea/vcs.xml
 .idea/other.xml
+.idea/*
+/.idea
+
