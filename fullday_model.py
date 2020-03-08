@@ -19,6 +19,9 @@ from cashier import cashier
 # ================================= Class ===============================
 # =======================================================================
 
+HIGH_VALUE = 500
+NORMAL_VALUE = 300
+LOW_VALUE = 100
 
 """
 things needed for this 
@@ -167,15 +170,15 @@ class Fullday:
         """
         if populationLevel == 'low':
             #this is the number of customers per hour on a slow day
-            return self.hours_open * 100
+            return self.hours_open * LOW_VALUE
 
         elif populationLevel == 'high':
             # this is the number of customers per hour on a busy day
-            return self.hours_open * 500
+            return self.hours_open * HIGH_VALUE
 
         else:
             # this is the number of customers per hour on a regular day
-            return self.hours_open * 300
+            return self.hours_open * NORMAL_VALUE
 
 
     def busyDay(self):
@@ -293,14 +296,14 @@ class Fullday:
         initialize the environment with 0 customers so that they can be added
         later in predefined intervals.
         """
-        if (model_being_ran == "random"):
+        if (model_being_ran == "customer"):
             return customer_selection_line(number_of_cashiers,
-                               number_of_customers,
-                               number_of_selfcheckouts,
-                               self.minimum_wage,
-                               self.self_checkout_maintenance_cost,
-                                0,
-                                0)
+                                           number_of_customers,
+                                           number_of_selfcheckouts,
+                                           self.minimum_wage,
+                                           self.self_checkout_maintenance_cost,
+                                           0,
+                                           0)
 
         elif (model_being_ran == "equal"):
             return equal_distribution_line(number_of_cashiers,

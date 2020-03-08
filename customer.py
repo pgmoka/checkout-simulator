@@ -56,15 +56,15 @@ class customer:
         # -(70-200)(log distribution(major between 70-100)) = 15%
 
         # Number for selection
-        random_selector = np.random.rand()+item_creation_lever
+        random_selector = np.random.rand()
         random_selector = random_selector % 1
         number_of_items = 0
 
-        if (random_selector < 0.8):
+        if (random_selector < 0.8+item_creation_lever):
             # for 0 - 30
             number_of_items = int(np.random.rand() * 30)
 
-        elif (random_selector < 0.95):
+        elif (random_selector < 0.95+item_creation_lever):
             # for 30 - 70
             number_of_items = int(np.random.binomial(100, 0.2) + 30)
         else:

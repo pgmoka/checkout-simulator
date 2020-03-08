@@ -24,7 +24,7 @@ class model:
 
     def __init__(self, model_being_ran, number_of_customers, \
         number_of_cashiers, number_of_selfcheckouts, cashier_IPM_p_influence=0, customer_IPM_p_influence=0,\
-        minimum_wage = 17.50, self_checkout_maintenance_cost=2.19, model_name="Default Model"):
+        minimum_wage = 17.50, self_checkout_maintenance_cost=2.19, model_name="Default Model", item_creation_sensitivity=0):
         '''Initializes method
         '''
 
@@ -40,7 +40,8 @@ class model:
 
         # Environment tested selection:
         self.line = self.create_line(model_being_ran, number_of_customers, \
-            number_of_cashiers, number_of_selfcheckouts,cashier_IPM_p_influence, customer_IPM_p_influence)
+            number_of_cashiers, number_of_selfcheckouts,cashier_IPM_p_influence, customer_IPM_p_influence,\
+                item_creation_sensitivity_test=item_creation_sensitivity)
 
         # Name:
         self.name = model_name
@@ -117,16 +118,20 @@ class model:
         self.line.update_checkedout_items()
 
     def create_line(self, model_being_ran, number_of_customers, \
-        number_of_cashiers, number_of_selfcheckouts,cashier_IPM_p_influence,customer_IPM_p_influence):
+        number_of_cashiers, number_of_selfcheckouts,cashier_IPM_p_influence,customer_IPM_p_influence,\
+            item_creation_sensitivity_test=0):
         ''' Helper method for the creation of lines
         '''
         if(model_being_ran == "customer"):
             return customer_selection_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
-                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence)
+                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence,\
+                    item_creation_sensitivity_test=item_creation_sensitivity_test)
         elif(model_being_ran =="equal"):
             return equal_distribution_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
-                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence)
+                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence,\
+                    item_creation_sensitivity_test=item_creation_sensitivity_test)
         else:
             return cashier_selector_line(number_of_cashiers, number_of_customers,number_of_selfcheckouts,\
-                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence)
+                self.minimum_wage, self.self_checkout_maintenance_cost,cashier_IPM_p_influence,customer_IPM_p_influence,\
+                    item_creation_sensitivity_test=item_creation_sensitivity_test)
 
