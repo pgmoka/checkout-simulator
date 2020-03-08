@@ -31,9 +31,11 @@ number_of_epochs_for_simulation = 30
 #self_check_model = model("equal", 20, 4, 0)
 #self_check_model = model("random", 20, 4, 0)
 #self_check_model = model("selector", 20, 4, 0)
-fulldayTest = Fullday('customer', 5, 6, population = 'low', day_type = 'front')
 
-fulldayTest.execute_simulation(show=True, showAnim=True)
+# fulldayTest = Fullday('customer', 5, 6, population = 'low', day_type = 'front')
+
+
+# fulldayTest.execute_simulation(show=True, showAnim=True)
 
 #self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
 # self_check_model = model("customer", 21, 5, 2)
@@ -46,7 +48,7 @@ fulldayTest.execute_simulation(show=True, showAnim=True)
 
 # self_check_model = model("customer", 21, 5, 2,cashier_IPM_p_influence=0.1, customer_IPM_p_influence=0.2)
 
-# self_check_model = model("equal", 21, 5, 2)
+# self_check_model = model("equal", 200, 5, 2)
 
 # list_of_customers_out_of_system, \
 #         list_of_customers_in_line, \
@@ -55,7 +57,8 @@ fulldayTest.execute_simulation(show=True, showAnim=True)
 #         cost_for_maintenance\
 #             = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=False, showAnim=True)
 
-sensitivity_cashierIPM_analysis(number_of_epochs_for_simulation)
-
+# sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation)
+# sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulation)
+sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation)
 
 print("END OF EXECUTION")

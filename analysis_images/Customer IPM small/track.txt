@@ -1,0 +1,7 @@
+red -> equal
+green -> customer
+blue -> cashier
+30 epochs
+200 mean
+120 people
+50 cashiers
