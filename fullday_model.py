@@ -19,6 +19,9 @@ from cashier import cashier
 # ================================= Class ===============================
 # =======================================================================
 
+HIGH_VALUE = 500
+NORMAL_VALUE = 300
+LOW_VALUE = 100
 
 """
 things needed for this 
@@ -167,15 +170,15 @@ class Fullday:
         """
         if populationLevel == 'low':
             #this is the number of customers per hour on a slow day
-            return self.hours_open * 100
+            return self.hours_open * LOW_VALUE
 
         elif populationLevel == 'high':
             # this is the number of customers per hour on a busy day
-            return self.hours_open * 500
+            return self.hours_open * HIGH_VALUE
 
         else:
             # this is the number of customers per hour on a regular day
-            return self.hours_open * 300
+            return self.hours_open * NORMAL_VALUE
 
 
     def busyDay(self):
