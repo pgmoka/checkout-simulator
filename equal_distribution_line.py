@@ -62,7 +62,8 @@ class equal_distribution_line:
                  minimum_wage,
                  self_checkout_maintenance_cost,
                  cashier_IPM_p_influence,
-                 customer_IPM_p_influence):
+                 customer_IPM_p_influence,
+                 item_creation_sensitivity_test=0):
 
         ''' Initializes line
         '''
@@ -70,7 +71,7 @@ class equal_distribution_line:
         self.number_of_cashiers = number_of_cashiers
         self.total_number_of_customers = number_of_incoming_customers
         self.customers_waiting_to_queue = number_of_incoming_customers
-        self.create_customer_list(customer_IPM_p_influence)
+        self.create_customer_list(customer_IPM_p_influence, item_creation_sensitivity=item_creation_sensitivity_test)
         self.minimum_wage = minimum_wage
         self.self_checkout_maintenance_cost = self_checkout_maintenance_cost
 
@@ -102,7 +103,7 @@ class equal_distribution_line:
                 self.cashier_list.append(
                     cashier(
                         np.random.binomial(v.CASHIER_n,v.CASHIER_p+cashier_IPM_p_influence),
-                        np.random.rand() * v.CASHIER_CHITCHATNESS,
+                        int(np.random.rand() * v.CASHIER_CHITCHATNESS),
                         self.minimum_wage
                     )
                 )
@@ -117,7 +118,7 @@ class equal_distribution_line:
                     )
                 )
 
-    def create_customer_list(self, customer_IPM_p_influence):
+    def create_customer_list(self, customer_IPM_p_influence, item_creation_sensitivity=0):
         ''' Create a list of customers
         '''
         # Creates temporary list:
@@ -134,14 +135,16 @@ class equal_distribution_line:
                     (
                     customer( \
                         np.random.binomial(v.CUSTOMER_n, v.CUSTOMER_p+customer_IPM_p_influence), \
-                        np.random.rand() * v.CUSTOMER_CHITCHATNESS)
+                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS),\
+                        item_creation_lever=item_creation_sensitivity)
                 )
 
             self.total_number_of_items_in_system = self.total_number_of_items_in_system \
                                                    + self.customer_list[-1].number_of_items
 
-    def add_customers(self, number_added):
-
+    def add_customers(self, number_added,item_creation_sensitivity=0):
+        '''
+        '''
         self.total_number_of_customers += number_added
         self.customers_waiting_to_queue += number_added
 
@@ -153,10 +156,11 @@ class equal_distribution_line:
             #                                        + items
             # Creates customer, and adds them to list:
             self.customer_list.append(
-                    customer(
-                        np.random.normal(v.CUSTOMER_AVERAGE_IPM, v.CUSTOMER_STD_DEV_IPM),
-                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
-                    )
+                    customer(\
+                        np.random.binomial(v.CUSTOMER_n, v.CUSTOMER_p), \
+                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS), \
+                        item_creation_lever=item_creation_sensitivity)
+                        )
 
             self.total_number_of_items_in_system = self.total_number_of_items_in_system \
                                                    + self.customer_list[-1].number_of_items

@@ -59,13 +59,13 @@ class customer_selection_line(equal_distribution_line):
     def rotate_customers(self):
         ''' Create a list of customers
         '''
-        number_of_customers_entering_queue = int(np.random.rand()*(self.number_of_cashiers-1)) +1
+        # number_of_customers_entering_queue = int(np.random.rand()*(self.number_of_cashiers-1)) +1
         # test = []
         # for i in range(1000):
         #     test.append(int(rej()*self.number_of_cashiers))
         # plt.hist(test)
         # plt.show()
-        for individual_cashier_iterator in range(number_of_customers_entering_queue):
+        for individual_cashier_iterator in range(self.number_of_cashiers):
             if (len(self.customer_list) > 0):
                 # Updates waiting queue:
 
