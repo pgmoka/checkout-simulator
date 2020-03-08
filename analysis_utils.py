@@ -38,33 +38,35 @@ def configuration(number_of_epochs_for_simulation):
         - Number of customers in queue
         - Number checked items
     """
-    self_check_model = model("equal", 20, 4, 0, cashier_IPM_p_influence=0.1, customer_IPM_p_influence=0.2)
 
-    num_self_checkouts = []
-    avg_num_cust_left = []
+    for k in range(1, 5):
+        num_self_checkouts = []
+        avg_num_cust_left = []
+        cashiers_to_selfcheckout = k * 3
 
-    # Number of cashiers operating self checkouts
-    for i in range(10):
-        # Number of tests for sensitivity
-        num_self_checkouts.append(i)
-        cust_left = []
-        for j in range(100):
-            customers_left, \
-            customers_in_line, \
-            customers_in_queue, \
-            items_checked, \
-            maintenance_costs \
-                = self_check_model.execute_simulation(number_of_epochs_for_simulation,
-                                                      show=False, showAnim=False)
-            cust_left.append(customers_left[-1])
-        avg_num_cust_left.append(sum(cust_left) / 100)
+        # Number of cashiers operating self checkouts
+        for i in range(10):
+            # Number of tests for sensitivity
+            num_self_checkouts.append(i)
+            cust_left = []
+            for j in range(100):
+                self_check_model = model("equal", 20, 10 - i, i * cashiers_to_selfcheckout, cashier_IPM_p_influence=0.1, customer_IPM_p_influence=0.2)
+                customers_left, \
+                customers_in_line, \
+                customers_in_queue, \
+                items_checked, \
+                maintenance_costs \
+                    = self_check_model.execute_simulation(number_of_epochs_for_simulation,
+                                                          show=False, showAnim=False)
+                cust_left.append(customers_left[-1])
+            avg_num_cust_left.append(sum(cust_left) / 100)
 
-    plt.figure(1)
-    plt.title("Sensitivity Analysis for Customers Out of the System")
-    plt.xlabel("Cashiers Operating Self Checkouts")
-    plt.ylabel("Mean of Customers Out of System at %d" % number_of_epochs_for_simulation)
-    plt.plot(num_self_checkouts, avg_num_cust_left)
-    plt.show()
+        plt.figure(1)
+        plt.title("Sensitivity Analysis for Customers Out of the System With 1 Cashier Operation " + str(cashiers_to_selfcheckout) + " Self Checkouts")
+        plt.xlabel("Cashiers Operating Self Checkouts")
+        plt.ylabel("Mean of Customers Out of System at %d" % number_of_epochs_for_simulation)
+        plt.plot(num_self_checkouts, avg_num_cust_left)
+        plt.show()
     #plt.savefig("sens_analysis_list_of_customers_out_of_system.png")
     print("Test complete")
 
