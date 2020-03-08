@@ -293,7 +293,7 @@ class Fullday:
         initialize the environment with 0 customers so that they can be added
         later in predefined intervals.
         """
-        if (model_being_ran == "random"):
+        if (model_being_ran == "customer"):
             return customer_selection_line(number_of_cashiers,
                                            number_of_customers,
                                            number_of_selfcheckouts,

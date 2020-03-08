@@ -220,7 +220,7 @@ class visual():
             self.text_box(custText, int(self.displayWidth * 2 / 3), 60, width=int(self.displayWidth / 6), height=25)
 
             # Cashier's chitchat levels
-            chitText = "Chitchat: " + str(cashier.chitchatness)
+            chitText = "Chitchat: " + str(cashier.chatLevel)
             self.text_box(chitText, int(self.displayWidth / 3), 90, width=int(self.displayWidth / 6), height=25)
 
             # Empty box to make it look uniform

@@ -102,7 +102,7 @@ class equal_distribution_line:
                 self.cashier_list.append(
                     cashier(
                         np.random.binomial(v.CASHIER_n,v.CASHIER_p+cashier_IPM_p_influence),
-                        int(np.random.rand() * v.CASHIER_CHITCHATNESS),
+                        np.random.rand() * v.CASHIER_CHITCHATNESS,
                         self.minimum_wage
                     )
                 )
@@ -134,7 +134,7 @@ class equal_distribution_line:
                     (
                     customer( \
                         np.random.binomial(v.CUSTOMER_n, v.CUSTOMER_p+customer_IPM_p_influence), \
-                        int(np.random.rand() * v.CUSTOMER_CHITCHATNESS))
+                        np.random.rand() * v.CUSTOMER_CHITCHATNESS)
                 )
 
             self.total_number_of_items_in_system = self.total_number_of_items_in_system \
