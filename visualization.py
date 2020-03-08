@@ -4,9 +4,6 @@ import variables as v
 from datetime import timedelta
 
 
-# TODO Start time
-
-
 # Class to preform animation logic via pygame
 class visual():
     # Initialize pygame module
