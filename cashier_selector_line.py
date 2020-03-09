@@ -1,14 +1,38 @@
+'''
+-----------------------------------------------------------------------
+                      Additional Documentation
+
+Made by Zachary A Brader, Kieran Coito, Pedro Goncalves Mokarzel
+while attending University of Washington Bothell
+Made in 03/09/2020
+Based on instruction in CSS 458, 
+taught by professor Johnny Lin
+Notes:
+- Written for Python 3.7.3.
+- No executable
+- Modules necessary: numpy, random, and matplotlib.pyplot
+- External necessities: variables.py, customer.py, cashier.py, and
+equal_distribution_line.
+- Creates line environment for the use of mode
+- Holds lists with relevant to the line
+- Holds cashiers and customers
+- Used as a base for other lines
+- Line give a customer to cashiers when the cashier's queue is open
+
+=======================================================================
+'''
+
 # =======================================================================
 # ============================= Imports==================================
 # =======================================================================
 
-import variables as v
 import numpy as np
 import random as r
 import matplotlib.pyplot as plt
 
-from cashier import cashier
+import variables as v
 from customer import customer
+from cashier import cashier
 from equal_distribution_line import equal_distribution_line
 
 # =======================================================================
@@ -76,9 +100,15 @@ class cashier_selector_line(equal_distribution_line):
 
     def create_cashier_list(self, cashier_IPM_p_influence, chitchatness_influence = 0):
         ''' creates list of cashiers
+
         Precondition:
         - Creation of self.automated_cashier_tracker
         - Creation of self.customer_list
+        - cashier_IPM_p_influence: 
+        - chitchatness_influence: Default = 0
+
+        Postcondition:
+        - self.cashier_list is updated by having customers added to proper positions
         '''
         for i in self.automated_cashier_tracker:
             # Create normal cashier if list demands
@@ -104,9 +134,11 @@ class cashier_selector_line(equal_distribution_line):
                     )
                 )
 def f(x):
-    ''' Uses function as seen in figure 9.3.12
+    ''' Function for the creation of random parameters in the rejection method
+
     Precondition:
-    - int x to execute function
+    - x: int x to execute function
+
     Postcondition:
     - result of equation as float
     '''
@@ -117,7 +149,8 @@ def f(x):
 
 
 def rej():
-    '''
+    ''' Rejection method used for the creation of forgetfull
+
     Postcondition:
     - result of equation as described in the book
     '''

@@ -16,6 +16,8 @@ Notes:
 - Holds lists with relevant to the line
 - Holds cashiers and customers
 - Used as a base for other lines
+- Line will distribute customers from the cashier equally (one each) 
+for each update
 
 =======================================================================
 '''
@@ -95,15 +97,18 @@ class equal_distribution_line:
         ''' Initializes line
 
         Precondition:
-        - number_of_cashiers: 
-        - number_of_incoming_customers: 
-        - number_of_automated_cashiers: 
-        - minimum_wage: 
-        - self_checkout_maintenance_cost: 
-        - cashier_IPM_p_influence: 
-        - customer_IPM_p_influence: 
-        - item_creation_sensitivity_test: Default = 0
-        - chitchatness_influence: Default = 0
+        - number_of_cashiers: int of the number of cashiers to have in the environment
+        - number_of_incoming_customers: int of the number of cashier to initiate the line with in the begining of the 
+        environment
+        - number_of_automated_cashiers: int of the number of automated cashiers to have in the environment
+        - minimum_wage: int cost to maintain a cashier
+        - self_checkout_maintenance_cost: int cost to maintain an automated-cashier 
+        - cashier_IPM_p_influence: float number to add to the p in the binomial generation of the IPM of cashiers
+        - customer_IPM_p_influence: float number to add to the p in the binomial generation of the IPM of customers
+        - item_creation_sensitivity_test: float number to add to the probability in item creation.
+        Increasing this number will make it so the chance of generating smaller basket sizes increases. Default = 0
+        - chitchatness_influence: float number to add to the probability in chitchatness creation. Increasing
+        this number increases the chance of having higher chitchatness. Default = 0
 
         Postcondition:
         - Environment created
@@ -128,19 +133,20 @@ class equal_distribution_line:
 
     def create_cashier_list(self,cashier_IPM_p_influence,chitchatness_influence = 0):
         ''' creates list of cashiers
+
         Precondition:
         - Creation of self.automated_cashier_tracker
         - Creation of self.customer_list
+        - cashier_IPM_p_influence: float number to add to the p in the binomial generation of the IPM of cashiers
+        - chitchatness_influence: float number to add to the probability in chitchatness creation. Increasing
+        this number increases the chance of having higher chitchatness. Default = 0
+
+        Postcondition:
+        - list of cashiers created as Precondition dictated
         '''
         for i in self.automated_cashier_tracker:
             # Create normal cashier if list demands
             if (not i):
-                # Create IPM from normal distribution from global variables
-                # Create how chatty from global variables
-
-                # Transformations for binomial distribution:
-                # p = 1 - ((v.CASHIER_STD_DEV_IPM**2)/v.CASHIER_AVERAGE_IPM)
-                # n = v.CASHIER_AVERAGE_IPM/p
 
                 self.cashier_list.append(
                     cashier(
@@ -162,16 +168,20 @@ class equal_distribution_line:
 
     def create_customer_list(self, customer_IPM_p_influence, item_creation_sensitivity=0):
         ''' Create a list of customers
+
+        Precondition:
+        - customer_IPM_p_influence: float number to add to the p in the binomial generation of the IPM of customers
+        - item_creation_sensitivity: float number to add to the probability in item creation.
+        Increasing this number will make it so the chance of generating smaller basket sizes increases. Default = 0
+
+        Postcondition:
+        - self.customer_list is created
         '''
         # Creates temporary list:
         self.customer_list = []
 
         # Adds customer as numbers increase
         for i in range(self.total_number_of_customers):
-            # items = self.number_of_items_per_customer()
-            # # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
-            # self.total_number_of_items_in_system = self.total_number_of_items_in_system \
-            #                                        + items
             # Creates customer, and adds them to list:
             self.customer_list.append \
                     (
@@ -185,17 +195,18 @@ class equal_distribution_line:
                                                    + self.customer_list[-1].number_of_items
 
     def add_customers(self, number_added,item_creation_sensitivity=0):
-        '''
+        ''' Adds customer to the line system
+
+        Precondition:
+        - number_added: int number of customers to be added into the environment
+        - item_creation_sensitivity: float number to add to the probability in item creation for customer baskets.
+        Increasing this number will make it so the chance of generating smaller basket sizes increases. Default = 0
         '''
         self.total_number_of_customers += number_added
         self.customers_waiting_to_queue += number_added
 
         # Adds customer as numbers increase
         for i in range(number_added):
-            # items = self.number_of_items_per_customer()
-            # # items = int(np.random.normal(v.MEAN_NUMBER_OF_ITEMS_PER_CUSTOMER,v.STANDAR_DEVIATION_OF_ITEMS_FOR_CUSTOMER))
-            # self.total_number_of_items_in_system = self.total_number_of_items_in_system \
-            #                                        + items
             # Creates customer, and adds them to list:
             self.customer_list.append(
                     customer(\
@@ -209,7 +220,14 @@ class equal_distribution_line:
 
 
     def rotate_customers(self):
-        ''' Create a list of customers
+        ''' Rotate customers between the cashiers' queues from the lines
+        Customers aredistributed equally between cashiers, one each, no matter quantities
+
+        Precondition:
+        - Customers and cashier related lists created
+
+        Postcondition:
+        - Removal of customers in the environment list, and then the addition to queues
         '''
         for individual_cashier_iterator in range(len(self.cashier_list)):
             if (len(self.customer_list) > 0):
@@ -219,6 +237,12 @@ class equal_distribution_line:
 
     def update_customers_out_of_system(self):
         ''' updates number of customers that have left the system
+
+        Precondition:
+        - Initialization of related variables created
+
+        Postcondition:
+        - Updates inner tracking variables
         '''
         self.customers_being_served = 0
         for individual_cashier in self.cashier_list:
@@ -230,6 +254,12 @@ class equal_distribution_line:
 
     def update_checkedout_items(self):
         '''Updates total number of checked out items in the system
+        
+        Precondition:
+        - self.total_number_of_checked_items has been created
+
+        Postcondition:
+        - Update of self.total_number_of_checked_items
         '''
         total_now = 0
         for individual_cashier in self.cashier_list:
@@ -238,42 +268,29 @@ class equal_distribution_line:
         self.total_number_of_checked_items = total_now
 
     def apply_checkouts(self):
-        ''' Create a list of customers
+        ''' Applies the checkout process of each checkouts
+
+        Prcondition:
+        - self.cashier_list has been created
+
+        Postcondition:
+        - All cashiers in the self.cashier_list have executed
+        the checkout 
         '''
         for individual_cashier in self.cashier_list:
             individual_cashier.checkout_current_customer_items()
 
     def update_total_maintenance_cost(self):
         ''' updates cost for self maintenance of overall system
+
+        Precondition:
+        - self.cost_for_maintenance has been created
+
+        Postcondition:
+        - maintenance cost of the system is updated based on the current
+        queue
         '''
         for individual_cashier in self.cashier_list:
             self.cost_for_maintenance = self.cost_for_maintenance + \
                                         individual_cashier.maintenance_cost
 
-    def number_of_items_per_customer(self):
-        ''' calculates distribution of of items
-        '''
-        # -(0 - 15)(uniform) = 30% 
-        # -(15-30) (uniform)  = 30% 
-        # -(30-70)(normal->split in the middle) = 25% 
-        # -(70-200)(log distribution(major between 70-100)) = 15%
-
-        # Number for selection
-        random_selector = np.random.rand()
-        number_of_items = 0
-        if (random_selector < 1):
-            number_of_items = int(np.random.rand() * 5)+3
-
-        elif (random_selector < 0.8):
-            # for 0 - 30
-            number_of_items = int(np.random.rand() * 30)
-
-        elif (random_selector < 0.95):
-            # for 30 - 70
-            number_of_items = int(np.random.normal(20, 8.9) + 30)
-
-        else:
-            # for 70-200
-            number_of_items = int(np.random.lognormal(3, 0.63) + 70)
-
-        return number_of_items

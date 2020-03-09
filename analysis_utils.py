@@ -1,3 +1,21 @@
+'''
+-----------------------------------------------------------------------
+                      Additional Documentation
+
+Made by Zachary A Brader, Kieran Coito, Pedro Goncalves Mokarzel
+while attending University of Washington Bothell
+Made in 03/09/2020
+Based on instruction in CSS 458, 
+taught by professor Johnny Lin
+Notes:
+- Written for Python 3.7.3.
+- No executable
+- Modules necessary: numpy, matplotlib.pyplot
+- External necessities: variables.py, and model.py
+- Holds methods used for the analysis of our model
+
+=======================================================================
+'''
 # =======================================================================
 # ============================= Imports==================================
 # =======================================================================
@@ -76,6 +94,20 @@ def configuration(number_of_epochs_for_simulation):
 def sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = 200,\
     sensitivity_range = 10,number_of_people = 100):
     """ Sensitivity related to the IPM of cashier, test for all models type
+
+    Precondition:
+    - number_of_epochs_for_simulation: number of epochs each simulation is going to
+    be ran for
+    - number_of_av_simulations: Numbe of simulations that are going to be ran to
+    calculate the average. Default = 200
+    - sensitivity_range: Range for the sensitivity test. Default = 10
+    - number_of_people: number of people to enter the system. Default = 100
+
+    Postcondition:
+    - 4 png images saved to a file called "analysis_images"
+        - x-axis has the sensitivity test
+        - y-axis has the quantity related to the test
+        - Related to the outputs printed at the test.
     """
 
     # Numbers for simulation
@@ -142,6 +174,23 @@ def sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulatio
 def sensitivity_cashierIPM_analysis(number_of_epochs_for_simulation,model_name,number_of_av_simulations,sensitivity_range,\
     number_of_people = 100):
     """ Sensitivity related to the IPM of cashier, test for specific model type
+
+    Precondition:
+    - number_of_epochs_for_simulation: number of epochs used to run the simulation
+    - model_name,number_of_av_simulations: name of the model used during the test
+        - Chosen between "equal", "cashier", and "customer"
+    - sensitivity_range: range of sensitivity to be tested
+    - number_of_people: Number of people to go into the system begin. Default = 100
+
+    Postcondition:
+    - sens_analysis_list_of_customers_out_of_system: an int list of the average total number of
+    customers out of system at the end of the simulation
+    - sens_analysis_list_of_customers_in_line: an int list of the average customers in line
+     at the end of the simulation
+    - sens_analysis_list_of_customers_on_cashier_queue: an int list of the average customers on 
+    queues at the end of the simulation
+    - sens_analysis_list_of_customer_items_checked: an int list of the average total items checked
+     at the end of the simulation
     """
 
     # Sets up analysis list
@@ -205,6 +254,20 @@ def sensitivity_cashierIPM_analysis(number_of_epochs_for_simulation,model_name,n
 def sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = 200,\
     sensitivity_range = 10,number_of_people = 100):
     """ Sensitivity related to the IPM of customer, test for all models type
+
+    Precondition:
+    - number_of_epochs_for_simulation: number of epochs each simulation is going to
+    be ran for
+    - number_of_av_simulations: Numbe of simulations that are going to be ran to
+    calculate the average. Default = 200
+    - sensitivity_range: Range for the sensitivity test. Default = 10
+    - number_of_people: number of people to enter the system. Default = 100
+
+    Postcondition:
+    - 4 png images saved to a file called "analysis_images"
+        - x-axis has the sensitivity test
+        - y-axis has the quantity related to the test
+        - Related to the outputs printed at the test.
     """
 
     x_axis = np.arange(sensitivity_range)/100
@@ -272,6 +335,23 @@ def sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulati
 def sensitivity_customerIPM_analysis(number_of_epochs_for_simulation,model_name,number_of_av_simulations,sensitivity_range,\
     number_of_people = 240):
     """ Sensitivity related to the IPM of customer, test for specific model type
+
+    Precondition:
+    - number_of_epochs_for_simulation: number of epochs used to run the simulation
+    - model_name,number_of_av_simulations: name of the model used during the test
+        - Chosen between "equal", "cashier", and "customer"
+    - sensitivity_range: range of sensitivity to be tested
+    - number_of_people: Number of people to go into the system begin. Default = 100
+
+    Postcondition:
+    - sens_analysis_list_of_customers_out_of_system: an int list of the average total number of
+    customers out of system at the end of the simulation
+    - sens_analysis_list_of_customers_in_line: an int list of the average customers in line
+     at the end of the simulation
+    - sens_analysis_list_of_customers_on_cashier_queue: an int list of the average customers on 
+    queues at the end of the simulation
+    - sens_analysis_list_of_customer_items_checked: an int list of the average total items checked
+     at the end of the simulation
     """
 
     # Sets up analysis list
@@ -335,6 +415,20 @@ def sensitivity_customerIPM_analysis(number_of_epochs_for_simulation,model_name,
 def sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = 200,\
     sensitivity_range = 30,number_of_people = 100):
     """ Sensitivity related to the number of items, test for all models type
+
+    Precondition:
+    - number_of_epochs_for_simulation: number of epochs each simulation is going to
+    be ran for
+    - number_of_av_simulations: Numbe of simulations that are going to be ran to
+    calculate the average. Default = 200
+    - sensitivity_range: Range for the sensitivity test. Default = 10
+    - number_of_people: number of people to enter the system. Default = 100
+
+    Postcondition:
+    - 4 png images saved to a file called "analysis_images"
+        - x-axis has the sensitivity test
+        - y-axis has the quantity related to the test
+        - Related to the outputs printed at the test.
     """
 
     # Numbers for simulation
@@ -401,8 +495,25 @@ def sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation,
 
 def sensitivity_itemNumb_analysis(number_of_epochs_for_simulation,model_name,number_of_av_simulations,sensitivity_range,\
     number_of_people = 150):
-    '''
-    '''
+    """ Sensitivity related to the number of items in the customer's cashier, test for specific model type
+
+    Precondition:
+    - number_of_epochs_for_simulation: number of epochs used to run the simulation
+    - model_name,number_of_av_simulations: name of the model used during the test
+        - Chosen between "equal", "cashier", and "customer"
+    - sensitivity_range: range of sensitivity to be tested
+    - number_of_people: Number of people to go into the system begin. Default = 100
+
+    Postcondition:
+    - sens_analysis_list_of_customers_out_of_system: an int list of the average total number of
+    customers out of system at the end of the simulation
+    - sens_analysis_list_of_customers_in_line: an int list of the average customers in line
+     at the end of the simulation
+    - sens_analysis_list_of_customers_on_cashier_queue: an int list of the average customers on 
+    queues at the end of the simulation
+    - sens_analysis_list_of_customer_items_checked: an int list of the average total items checked
+     at the end of the simulation
+    """
 
     # Sets up analysis list
     sens_analysis_list_of_customers_out_of_system = []
@@ -466,7 +577,21 @@ def sensitivity_itemNumb_analysis(number_of_epochs_for_simulation,model_name,num
 
 def sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = 200,\
     sensitivity_range = 30,number_of_people = 100):
-    """ Sensitivity related to the number of items, test for all models type
+    """ Sensitivity related to the chitchatness of cashier, test for all models type
+
+    Precondition:
+    - number_of_epochs_for_simulation: number of epochs each simulation is going to
+    be ran for
+    - number_of_av_simulations: Numbe of simulations that are going to be ran to
+    calculate the average. Default = 200
+    - sensitivity_range: Range for the sensitivity test. Default = 10
+    - number_of_people: number of people to enter the system. Default = 100
+
+    Postcondition:
+    - 4 png images saved to a file called "analysis_images"
+        - x-axis has the sensitivity test
+        - y-axis has the quantity related to the test
+        - Related to the outputs printed at the test.
     """
 
     # Numbers for simulation

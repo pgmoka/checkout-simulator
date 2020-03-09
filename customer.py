@@ -1,10 +1,29 @@
+'''
+-----------------------------------------------------------------------
+                      Additional Documentation
+
+Made by Zachary A Brader, Kieran Coito, Pedro Goncalves Mokarzel
+while attending University of Washington Bothell
+Made in 03/09/2020
+Based on instruction in CSS 458, 
+taught by professor Johnny Lin
+Notes:
+- Written for Python 3.7.3.
+- No executable
+- Modules necessary: numpy
+- External necessities: variables.py
+- Used for holding the informations related to the customers
+- Internal method used for creation of items
+
+=======================================================================
+'''
+
 # =======================================================================
 # ============================= Imports==================================
 # =======================================================================
 
-import variables as v
 import numpy as np
-
+import variables as v
 
 # =======================================================================
 # ================================= Class ===============================
@@ -33,11 +52,17 @@ class customer:
 
     def __init__(self, IPM, chitchatness,item_creation_lever=0):
         ''' Customer initialization method
+
         Precondition:
         - IPM: Customer's IPM. Used by self checkout
         - number_of_items: Number of items carried by
         customer
         - chitchatness: how chit chatti the customer is
+        - item_creation_lever: Default = 0
+
+        Postcondition:
+        - Creation of customer, with information provided, and
+        the number of items based on a random variable
         '''
 
         self.IPM = IPM
@@ -48,7 +73,16 @@ class customer:
         self.being_helped = False
 
     def number_of_items_per_customer(self, item_creation_lever):
-        ''' calculates distribution of of items
+        ''' calculates distribution of of items for customer
+
+        Precondition:
+        - item_creation_lever: float to be added to the probability. This
+        makes it so, the larger the probability the number of smaller items
+        increases
+
+        Postcondition:
+        - Returns a random integer that is the number of items
+        that the customer has in their basket
         '''
         # -(0 - 15)(uniform) = 40%
         # -(15-30) (uniform)  = 40%
