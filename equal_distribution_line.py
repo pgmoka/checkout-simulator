@@ -1,11 +1,33 @@
+'''
+-----------------------------------------------------------------------
+                      Additional Documentation
+
+Made by Zachary A Brader, Kieran Coito, Pedro Goncalves Mokarzel
+while attending University of Washington Bothell
+Made in 03/09/2020
+Based on instruction in CSS 458, 
+taught by professor Johnny Lin
+Notes:
+- Written for Python 3.7.3.
+- No executable
+- Modules necessary: numpy, matplotlib.pyplot
+- External necessities: variables.py, customer.py, and cashier.py.
+- Creates line environment for the use of mode
+- Holds lists with relevant to the line
+- Holds cashiers and customers
+- Used as a base for other lines
+
+=======================================================================
+'''
+
 # =======================================================================
 # ============================= Imports==================================
 # =======================================================================
 
-import variables as v
 import numpy as np
 import matplotlib.pyplot as plt
 
+import variables as v
 from cashier import cashier
 from customer import customer
 
@@ -15,6 +37,10 @@ from customer import customer
 # =======================================================================
 
 class equal_distribution_line:
+    ''' Environment for the model
+    When customers go to cashiers, they distribute themselves evenly 
+    between the cashiers
+    '''
     # List of customers in queue
     # Implemented
     customer_list = 0
@@ -67,6 +93,21 @@ class equal_distribution_line:
                  chitchatness_influence=0):
 
         ''' Initializes line
+
+        Precondition:
+        - number_of_cashiers: 
+        - number_of_incoming_customers: 
+        - number_of_automated_cashiers: 
+        - minimum_wage: 
+        - self_checkout_maintenance_cost: 
+        - cashier_IPM_p_influence: 
+        - customer_IPM_p_influence: 
+        - item_creation_sensitivity_test: Default = 0
+        - chitchatness_influence: Default = 0
+
+        Postcondition:
+        - Environment created
+        - Lists with execution information properly created
         '''
         self.cashier_list = []
         self.number_of_cashiers = number_of_cashiers

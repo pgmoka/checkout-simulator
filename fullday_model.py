@@ -1,3 +1,24 @@
+'''
+-----------------------------------------------------------------------
+                      Additional Documentation
+
+Made by Zachary A Brader, Kieran Coito, Pedro Goncalves Mokarzel
+while attending University of Washington Bothell
+Made in 03/09/2020
+Based on instruction in CSS 458, 
+taught by professor Johnny Lin
+Notes:
+- Written for Python 3.7.3.
+- No executable
+- Modules necessary: numpy, matplotlib.pyplot
+- External necessities: variables.py, customer_selection_line.py,
+equal_distribution_line.py, cashier_selector_line.py, and cashier.py.
+- Runs model with the population of a day trickleling into the line
+- Holds relevant information
+
+=======================================================================
+'''
+
 # =======================================================================
 # ============================= Imports==================================
 # =======================================================================

@@ -1,3 +1,23 @@
+'''
+-----------------------------------------------------------------------
+                      Additional Documentation
+
+Made by Zachary A Brader, Kieran Coito, Pedro Goncalves Mokarzel
+while attending University of Washington Bothell
+Made in 03/09/2020
+Based on instruction in CSS 458, 
+taught by professor Johnny Lin
+Notes:
+- Written for Python 3.7.3.
+- To execute, run "main.py".
+- Modules necessary: numpy, matplotlib.pyplot
+- External necessities: variables.py, model.py, fullday_model.py, and
+analysis_utils.py.
+- Executes simulation
+- Declares methods for automated analysis execution
+
+=======================================================================
+'''
 #=======================================================================
 #============================= Imports==================================
 #=======================================================================
@@ -12,8 +32,17 @@ from model import model
 from fullday_model import Fullday
 from analysis_utils import *
 
+#=======================================================================
+#============================= Method ==================================
+#=======================================================================
 
 def execute_all_sensitvity_tests():
+    ''' Automated method for executing all of the sensitivity test types
+
+    Postcondition:
+    - Prints images to the file "analysis_images".
+    - A total of 32 images will be printed
+    '''
     average_simulation_numb = 200
     number_of_epochs_for_simulation = 30
 

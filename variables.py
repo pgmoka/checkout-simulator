@@ -1,3 +1,21 @@
+'''
+-----------------------------------------------------------------------
+                      Additional Documentation
+
+Made by Zachary A Brader, Kieran Coito, Pedro Goncalves Mokarzel
+while attending University of Washington Bothell
+Made in 03/09/2020
+Based on instruction in CSS 458, 
+taught by professor Johnny Lin
+Notes:
+- Written for Python 3.7.3.
+- No executable
+- File hold global variables necessary for the overall creation, and
+maintenance of the model
+
+=======================================================================
+'''
+
 # --- Cashier number:
 NUMBER_OF_CASHIER = 5
 
