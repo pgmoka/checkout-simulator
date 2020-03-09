@@ -11,11 +11,40 @@ import variables as v
 from model import model
 from fullday_model import Fullday
 from analysis_utils import *
+
+
+def execute_all_sensitvity_tests():
+    average_simulation_numb = 200
+    number_of_epochs_for_simulation = 30
+
+    # Testing cashierIPM
+    sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 100)
+    sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 20)
+
+    average_simulation_numb = 100
+    number_of_epochs_for_simulation = 500
+
+    # Testing customerIPM
+    sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 400)
+    sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 60)
+
+    average_simulation_numb = 200
+    number_of_epochs_for_simulation = 30
+
+    sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 150)
+    sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 30)
+
+    average_simulation_numb = 200
+    number_of_epochs_for_simulation = 20
+
+    sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 20)
+    sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 40)
+
 #=======================================================================
 #============================= Exectuion ===============================
 #=======================================================================
 
-number_of_epochs_for_simulation = 30
+
 # -------------------------- start of testing:
 # # random_line tests:
 # random_line_model = model("random", 10, 2,0)
@@ -46,19 +75,40 @@ number_of_epochs_for_simulation = 30
 # # plt.hist(np.random.normal(20, 8.9,1000))
 # plt.show()
 
-# self_check_model = model("customer", 21, 5, 2,cashier_IPM_p_influence=0.1, customer_IPM_p_influence=0.2)
-
-# self_check_model = model("equal", 200, 5, 2)
+# self_check_model = model("customer", 21, 5, 2,cashier_IPM_p_influence=0.1, chitchatness_influence=0.2)
 
 # list_of_customers_out_of_system, \
 #         list_of_customers_in_line, \
 #         list_of_customers_on_cashier_queue,\
 #         list_of_items_checked,\
 #         cost_for_maintenance\
-#             = self_check_model.execute_simulation(number_of_epochs_for_simulation, show=False, showAnim=True)
+#             = self_check_model.execute_simulation(1000, show=False, showAnim=True)
 
-# sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation)
-# sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulation)
-sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation)
+# average_simulation_numb = 200
+# number_of_epochs_for_simulation = 30
+
+# # Testing cashierIPM
+# sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 100)
+# sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 20)
+
+# average_simulation_numb = 100
+# number_of_epochs_for_simulation = 500
+
+# # Testing customerIPM
+# sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 400)
+# sensitivity_customerIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 60)
+
+# average_simulation_numb = 200
+# number_of_epochs_for_simulation = 30
+
+# sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 150)
+# sensitivity_itemNumb_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 30)
+
+average_simulation_numb = 200
+number_of_epochs_for_simulation = 20
+
+sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 20)
+sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 40)
+
 
 print("END OF EXECUTION")
