@@ -63,7 +63,8 @@ class equal_distribution_line:
                  self_checkout_maintenance_cost,
                  cashier_IPM_p_influence,
                  customer_IPM_p_influence,
-                 item_creation_sensitivity_test=0):
+                 item_creation_sensitivity_test=0,
+                 chitchatness_influence=0):
 
         ''' Initializes line
         '''
@@ -81,10 +82,10 @@ class equal_distribution_line:
             np.concatenate( \
                 (np.ones(number_of_automated_cashiers, dtype=bool), np.zeros(number_of_cashiers, dtype=bool)))
 
-        self.create_cashier_list(cashier_IPM_p_influence)
+        self.create_cashier_list(cashier_IPM_p_influence, chitchatness_influence=chitchatness_influence)
         self.update_total_maintenance_cost()
 
-    def create_cashier_list(self,cashier_IPM_p_influence):
+    def create_cashier_list(self,cashier_IPM_p_influence,chitchatness_influence = 0):
         ''' creates list of cashiers
         Precondition:
         - Creation of self.automated_cashier_tracker
@@ -103,7 +104,7 @@ class equal_distribution_line:
                 self.cashier_list.append(
                     cashier(
                         np.random.binomial(v.CASHIER_n,v.CASHIER_p+cashier_IPM_p_influence),
-                        int(np.random.rand() * v.CASHIER_CHITCHATNESS),
+                        int((np.random.rand() * v.CASHIER_CHITCHATNESS)+chitchatness_influence),
                         self.minimum_wage
                     )
                 )

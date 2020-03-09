@@ -74,7 +74,7 @@ class cashier_selector_line(equal_distribution_line):
                         self.customers_waiting_to_queue = self.customers_waiting_to_queue - 1
                         self.cashier_list[individual_cashier_iterator].add_customer_to_queue(self.customer_list.pop())
 
-    def create_cashier_list(self, cashier_IPM_p_influence):
+    def create_cashier_list(self, cashier_IPM_p_influence, chitchatness_influence = 0):
         ''' creates list of cashiers
         Precondition:
         - Creation of self.automated_cashier_tracker
@@ -88,7 +88,7 @@ class cashier_selector_line(equal_distribution_line):
                 self.cashier_list.append(
                     cashier(
                         np.random.binomial(v.CASHIER_n,v.CASHIER_p+cashier_IPM_p_influence),
-                        int(np.random.rand() * v.CASHIER_CHITCHATNESS),
+                        int((np.random.rand() * v.CASHIER_CHITCHATNESS)+chitchatness_influence),
                         self.minimum_wage,
                         forgetful = rej() * v.FORGET
                     )

@@ -65,7 +65,7 @@ class customer_selection_line(equal_distribution_line):
         #     test.append(int(rej()*self.number_of_cashiers))
         # plt.hist(test)
         # plt.show()
-        for individual_cashier_iterator in range(self.number_of_cashiers):
+        for individual_cashier_iterator in range(len(self.cashier_list)):
             if (len(self.customer_list) > 0):
                 # Updates waiting queue:
 
