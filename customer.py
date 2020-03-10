@@ -65,7 +65,7 @@ class customer:
         the number of items based on a random variable
         '''
 
-        self.IPM = IPM
+        self.IPM = IPM + 3
         self.number_of_items = self.number_of_items_per_customer(item_creation_lever)
         self.total_items = self.number_of_items
         self.chitchatness = chitchatness

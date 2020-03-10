@@ -96,7 +96,7 @@ class cashier:
         - customer: customer to be added to the cashier queue
 
         Postcondition:
-        - Customer has bees added to the queue. Related tracking variiables updated
+        - Customer has bees added to the queue. Related tracking variables updated
         """
         self.total_number_of_items_in_systems = \
             self.total_number_of_items_in_systems + customer.number_of_items

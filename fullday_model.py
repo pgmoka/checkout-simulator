@@ -40,25 +40,16 @@ from cashier import cashier
 # ================================= Class ===============================
 # =======================================================================
 
+#Variables that can be changed to change model behavior
 HIGH_VALUE = 500
 NORMAL_VALUE = 300
 LOW_VALUE = 100
-
-"""
-things needed for this 
-
--method in equal distribution line that allows for customers outside of init 
- system to be added
- 
--day will always be 12 hours 
-
-
-"""
+HOURS_OF_OPERATION = 12
 
 class Fullday:
     line = 0
 
-    hours_open = 12
+    hours_open = HOURS_OF_OPERATION
 
     def __init__(self,
                  model_being_ran,
@@ -138,10 +129,6 @@ class Fullday:
             if showAnim:
                 showAnim = visual().print_env(self, update_time=.01, start_time=9)
 
-        # print("Items", self.list_of_items_checked)
-        # print("Customers", self.list_of_customers_in_line)
-        # print("Queue", self.list_of_customers_on_cashier_queue)
-        # print("Customers Finished", self.list_of_customers_out_of_system)
         if show:
             plt.figure(1)
             plt.title("Customer out of system over time")

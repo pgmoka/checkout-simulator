@@ -90,10 +90,9 @@ def execute_all_sensitvity_tests():
 #self_check_model = model("random", 20, 4, 0)
 #self_check_model = model("selector", 20, 4, 0)
 
-# fulldayTest = Fullday('customer', 5, 6, population = 'low', day_type = 'front')
+fulldayTest = Fullday('equal', 5, 6, day_type = 'front')
 
-
-# fulldayTest.execute_simulation(show=True, showAnim=True)
+fulldayTest.execute_simulation(show=True, showAnim=True)
 
 #self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
 # self_check_model = model("customer", 21, 5, 2)
