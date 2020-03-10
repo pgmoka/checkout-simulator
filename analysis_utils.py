@@ -74,7 +74,7 @@ def configuration(number_of_epochs_for_simulation, number_of_av_simulations=200,
 
 
 def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model_name, number_of_av_simulations,
-                                    sensitivity_range, number_of_people=100, cashiers_to_self_checkouts=3):
+                                    sensitivity_range=10, number_of_people=100, cashiers_to_self_checkouts=3):
     num_self_checkouts = []
     avg_num_cust_left = []
     avg_num_cust_not_in_line = []
@@ -83,7 +83,7 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
     avg_num_maintenance = []
 
     # Number of cashiers operating self checkouts
-    for i in range(10):
+    for i in range(sensitivity_range):
         # Number of tests for sensitivity
         num_self_checkouts.append(i)
         cust_left = []
