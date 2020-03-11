@@ -33,25 +33,160 @@ from model import model
 # =============================== Methods ===============================
 # =======================================================================
 
-# ----------------------------- Configuration ---------------------------
 
-"""
-Pedro Notes:
- - The outer loop for loop
- - Customer
- - Cashier IPMS
- - 4 Images based on each generated list
- - Y axis list quantity
- - X axis related to number of cashiers operating self checkout (0 - 10)
- - One graph for each configuration
- - 3, 6, 9, 12
- - Only care about the final state of system
- - 
-"""
+# ----------------------------- Mean and Lag ---------------------------
+
+
+def mean_values(number_of_epochs_for_simulation, model_name="equal",
+                number_of_av_simulations=200, number_of_people=100,
+                configCashiers=10, configSelfCheck=10, show=False):
+    mean_cust_left = np.zeros(number_of_epochs_for_simulation)
+    mean_cust_waiting = np.zeros(number_of_epochs_for_simulation)
+    mean_cust_queue = np.zeros(number_of_epochs_for_simulation)
+    mean_items_checked = np.zeros(number_of_epochs_for_simulation)
+    mean_maintenance = np.zeros(number_of_epochs_for_simulation)
+    for j in range(number_of_av_simulations):
+        self_check_model = model(model_name, number_of_people, configCashiers, configSelfCheck,
+                                 cashier_IPM_p_influence=0.1,
+                                 customer_IPM_p_influence=0.2)
+        customers_left, \
+        customers_in_line, \
+        customers_in_queue, \
+        items_checked, \
+        maintenance_costs \
+            = self_check_model.execute_simulation(number_of_epochs_for_simulation,
+                                                  show=False, showAnim=False)
+
+        mean_cust_left += np.array(customers_left)
+        mean_cust_waiting += np.array(customers_in_line)
+        mean_cust_queue += np.array(customers_in_queue)
+        mean_items_checked += np.array(items_checked)
+        mean_maintenance += np.array(maintenance_costs)
+
+    mean_cust_left /= number_of_av_simulations
+    mean_cust_waiting /= number_of_av_simulations
+    mean_cust_queue /= number_of_av_simulations
+    mean_items_checked /= number_of_av_simulations
+    mean_maintenance /= number_of_av_simulations
+
+    if show:
+        plot_means(model_name, number_of_epochs_for_simulation, \
+               mean_cust_left, mean_cust_waiting, mean_cust_queue, \
+               mean_items_checked, mean_maintenance)
+
+    return model_name, number_of_epochs_for_simulation, \
+           mean_cust_left, mean_cust_waiting, mean_cust_queue, \
+           mean_items_checked, mean_maintenance
+
+
+def plot_means(model_name, number_of_epochs_for_simulation,
+               mean_cust_left, mean_cust_waiting, mean_cust_queue,
+               mean_items_checked, mean_maintenance):
+    plt.figure(1)
+    plt.clf()
+    plt.title("Mean Values for Customers Out of System")
+    plt.xlabel("Number of Epochs")
+    plt.ylabel("Mean of Customers Out of System")
+    plt.plot(np.array([x for x in range(number_of_epochs_for_simulation)]),
+             mean_cust_left)
+    plt.savefig(join("analysis_images", "mean", model_name + "_mean_cust_out_" +
+                     str(number_of_epochs_for_simulation) + "_epochs.png"))
+
+    plt.figure(2)
+    plt.clf()
+    plt.title("Mean Values for Customers In Queues")
+    plt.xlabel("Number of Epochs")
+    plt.ylabel("Mean of Customers Being Helped")
+    plt.plot(np.array([x for x in range(number_of_epochs_for_simulation)]),
+             mean_cust_queue)
+    plt.savefig(join("analysis_images", "mean", model_name + "_mean_cust_in_queue_" +
+                     str(number_of_epochs_for_simulation) + "_epochs.png"))
+
+    plt.figure(3)
+    plt.clf()
+    plt.title("Mean Values for Items Checked")
+    plt.xlabel("Number of Epochs")
+    plt.ylabel("Items Checked")
+    plt.plot(np.array([x for x in range(number_of_epochs_for_simulation)]),
+             mean_items_checked)
+    plt.savefig(join("analysis_images", "mean", model_name + "_mean_items_checked_" +
+                     str(number_of_epochs_for_simulation) + "_epochs.png"))
+
+    plt.figure(4)
+    plt.clf()
+    plt.title("Mean Values for Maintenance Costs")
+    plt.xlabel("Number of Epochs")
+    plt.ylabel("Mean of Maintenance Costs")
+    plt.plot(np.array([x for x in range(number_of_epochs_for_simulation)]),
+             mean_maintenance)
+    plt.savefig(join("analysis_images", "mean", model_name + "_mean_maintenance_" +
+                     str(number_of_epochs_for_simulation) + "_epochs.png"))
+
+
+def lag_correlation_analysis(number_of_epochs_for_simulation,
+                number_of_av_simulations=200, number_of_people=100,
+                configCashiers=10, configSelfCheck=10, size_lag=10):
+    models = ['equal', 'cashier', 'customer']
+
+    for i in range(len(models)):
+        model_name = models[i]
+        a, b, cust_left, cust_waiting, cust_queue, items_checked, maintenance = \
+            mean_values(number_of_epochs_for_simulation, model_name,number_of_av_simulations,
+                    number_of_people, configCashiers, configSelfCheck, False)
+
+        lag_correlation_plot(cust_left, title="Customers Left", model_name=model_name)
+        lag_correlation_plot(cust_queue, title="Customers In Queues", model_name=model_name)
+        lag_correlation_plot(cust_left, title="Items Checked", model_name=model_name)
+        lag_correlation_plot(cust_left, title="Maintenance Costs", model_name=model_name)
+
+
+def lag_correlation_plot(a, size_lag=10, title="", model_name=""):
+    lagCorrelationZero = [correlate(np.array(a), np.array(a))]
+    lagCorrelationPos = []
+    lagCorrelationNeg = []
+    lagNeg = []
+    lagPos = []
+    for i in range(size_lag, 0, -1):
+        lagCorrelationNeg.append(correlate(np.array(a[i:-1]), np.array(a[1:-i])))
+        lagNeg.append(i * -1)
+    for i in range(1, size_lag + 1):
+        lagPos.append(i)
+        lagCorrelationPos.append(correlate(np.array(a[1:-i]), np.array(a[i:-1])))
+    plt.figure(1)
+    plt.clf()
+    # Plot the array
+    plt.plot(np.concatenate([np.array(lagNeg), np.array([0]), np.array(lagPos)]),
+             np.concatenate([np.array(lagCorrelationNeg), np.array(lagCorrelationZero), np.array(lagCorrelationPos)]),
+             '-')
+    # Add an x-label
+    plt.xlabel("Lag")
+    # Add a y-label
+    plt.ylabel("Correlation")
+    plt.title(title)
+    plt.savefig(join("analysis_images", "lag", model_name + "_" + title +  ".png"))
+
+
+def average(x):
+    return np.sum(x) / float(np.size(x))
+
+
+def variance(x):
+    temp = (x - average(x)) ** 2
+    temp = np.sum(temp)
+    return temp / (np.size(x) - 1)
+
+
+def correlate(x, y):
+    num = np.sum((x - average(x)) * (y - average(y)))
+    den = (np.size(x) - 1) * np.sqrt(variance(x) * np.sqrt(variance(y)))
+    return num / den
+
+
+# ----------------------------- Configuration ---------------------------
 
 
 def configuration(number_of_epochs_for_simulation, number_of_av_simulations=200,
-                                                   sensitivity_range=10, number_of_people=100):
+                  sensitivity_range=10, number_of_people=100):
     """Makes tests relative to config, involving:
         - Number of customers out of system
         - Number of customers in line
@@ -61,20 +196,20 @@ def configuration(number_of_epochs_for_simulation, number_of_av_simulations=200,
 
     for k in range(1, 5):
         sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, "equal",
-                                              number_of_av_simulations, sensitivity_range, number_of_people, 3*k)
+                                              number_of_av_simulations, sensitivity_range, number_of_people, 3 * k)
 
     for k in range(1, 5):
         sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, "customer",
-                                              number_of_av_simulations, sensitivity_range, number_of_people, 3*k)
+                                              number_of_av_simulations, sensitivity_range, number_of_people, 3 * k)
 
     for k in range(1, 5):
         sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, "cashier",
-                                              number_of_av_simulations, sensitivity_range, number_of_people, 3*k)
+                                              number_of_av_simulations, sensitivity_range, number_of_people, 3 * k)
     print("Test complete")
 
 
 def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model_name, number_of_av_simulations,
-                                    sensitivity_range=10, number_of_people=100, cashiers_to_self_checkouts=3):
+                                          sensitivity_range=10, number_of_people=100, cashiers_to_self_checkouts=3):
     num_self_checkouts = []
     avg_num_cust_left = []
     avg_num_cust_not_in_line = []
@@ -124,16 +259,6 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
     plt.savefig(join("analysis_images", "configuration", model_name +
                      "_cashier_to_" + str(cashiers_to_self_checkouts) +
                      "_checkouts_list_of_customers_out_of_system.png"))
-
-    # plt.figure(2)
-    # plt.clf()
-    # plt.title("Sensitivity Analysis for Customers Not in Line with Different Configurations")
-    # plt.xlabel("Cashiers Operating Self Checkouts\n(1 Cashier = " + str(cashiers_to_self_checkouts) + " Self Checkouts)")
-    # plt.ylabel("Mean of Customers Still In Line at %d" % number_of_epochs_for_simulation)
-    # plt.plot(num_self_checkouts, avg_num_cust_not_in_line)
-    # plt.savefig(join("analysis_images", "configuration", model_name + "_cashier_to_" + str(
-    #     cashiers_to_self_checkouts) + "_checkouts_cust_waiting_outside_lines.png"))
-
     plt.figure(3)
     plt.clf()
     plt.title("Sensitivity Analysis for Customers In Cashier's Lines with Different Configurations")
@@ -164,7 +289,8 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
     plt.savefig(join("analysis_images", "configuration", model_name + "_cashier_to_" + str(
         cashiers_to_self_checkouts) + "_checkouts_maintenance_costs.png"))
 
-    #plt.show()
+    # plt.show()
+
 
 # ------------------------------- Sensitivity ---------------------------
 
@@ -829,7 +955,7 @@ def sensitivity_chitchatness_analysis(number_of_epochs_for_simulation, model_nam
 
 
 def sensitivity_customer_number_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations=200, \
-                                                    sensitivity_range=80, number_of_people=100):
+                                                       sensitivity_range=80, number_of_people=100):
     """ Sensitivity related number of customers in the system, test for all models type
 
     Precondition:
@@ -854,20 +980,20 @@ def sensitivity_customer_number_analysis_for_all_lines(number_of_epochs_for_simu
     sens_analysis_list_of_customers_out_of_system_CUSTOMER, sens_analysis_list_of_customers_in_line_CUSTOMER, \
     sens_analysis_list_of_customers_on_cashier_queue_CUSTOMER, sens_analysis_list_of_customer_items_checked_CUSTOMER = \
         sensitivity_number_of_customers_analysis(number_of_epochs_for_simulation, "customer", number_of_av_simulations,
-                                          sensitivity_range, \
-                                          number_of_people=number_of_people)
+                                                 sensitivity_range, \
+                                                 number_of_people=number_of_people)
 
     sens_analysis_list_of_customers_out_of_system_CASHIER, sens_analysis_list_of_customers_in_line_CASHIER, \
     sens_analysis_list_of_customers_on_cashier_queue_CASHIER, sens_analysis_list_of_customer_items_checked_CASHIER = \
         sensitivity_number_of_customers_analysis(number_of_epochs_for_simulation, "cashier", number_of_av_simulations,
-                                          sensitivity_range, \
-                                          number_of_people=number_of_people)
+                                                 sensitivity_range, \
+                                                 number_of_people=number_of_people)
 
     sens_analysis_list_of_customers_out_of_system_EQUAL, sens_analysis_list_of_customers_in_line_EQUAL, \
     sens_analysis_list_of_customers_on_cashier_queue_EQUAL, sens_analysis_list_of_customer_items_checked_EQUAL = \
         sensitivity_number_of_customers_analysis(number_of_epochs_for_simulation, "equal", number_of_av_simulations,
-                                          sensitivity_range, \
-                                          number_of_people=number_of_people)
+                                                 sensitivity_range, \
+                                                 number_of_people=number_of_people)
 
     # Prints number of customers out of system
     plt.figure(14)
@@ -878,7 +1004,8 @@ def sensitivity_customer_number_analysis_for_all_lines(number_of_epochs_for_simu
     plt.plot(x_axis, sens_analysis_list_of_customers_out_of_system_CUSTOMER, 'g', \
              x_axis, sens_analysis_list_of_customers_out_of_system_CASHIER, 'b', \
              x_axis, sens_analysis_list_of_customers_out_of_system_EQUAL, 'r')
-    plt.savefig("analysis_images\\number_of_customers_sens_analysis_list_of_customers_out_of_system_%d.png" % number_of_people)
+    plt.savefig(
+        "analysis_images\\number_of_customers_sens_analysis_list_of_customers_out_of_system_%d.png" % number_of_people)
 
     plt.figure(15)
     plt.clf()
@@ -888,17 +1015,20 @@ def sensitivity_customer_number_analysis_for_all_lines(number_of_epochs_for_simu
     plt.plot(x_axis, sens_analysis_list_of_customers_in_line_CUSTOMER, 'g', \
              x_axis, sens_analysis_list_of_customers_in_line_CASHIER, 'b', \
              x_axis, sens_analysis_list_of_customers_in_line_EQUAL, 'r')
-    plt.savefig("analysis_images\\number_of_customers_sens_analysis_list_of_customers_in_line_%d.png" % number_of_people)
+    plt.savefig(
+        "analysis_images\\number_of_customers_sens_analysis_list_of_customers_in_line_%d.png" % number_of_people)
 
     plt.figure(16)
     plt.clf()
     plt.title("Sensitivity Customers in Queue Average of %d" % number_of_av_simulations)
     plt.xlabel("Increment in the Number of Customers")
-    plt.ylabel("Percentage of Mean of Cashiers on Queue in the End of Simulation at %d Epochs" % number_of_epochs_for_simulation)
+    plt.ylabel(
+        "Percentage of Mean of Cashiers on Queue in the End of Simulation at %d Epochs" % number_of_epochs_for_simulation)
     plt.plot(x_axis, sens_analysis_list_of_customers_on_cashier_queue_CUSTOMER, 'g', \
              x_axis, sens_analysis_list_of_customers_on_cashier_queue_CASHIER, 'b', \
              x_axis, sens_analysis_list_of_customers_on_cashier_queue_EQUAL, 'r')
-    plt.savefig("analysis_images\\number_of_customers_sens_analysis_list_of_customers_on_cashier_queue_%d.png" % number_of_people)
+    plt.savefig(
+        "analysis_images\\number_of_customers_sens_analysis_list_of_customers_on_cashier_queue_%d.png" % number_of_people)
 
     plt.figure(17)
     plt.clf()
@@ -912,8 +1042,8 @@ def sensitivity_customer_number_analysis_for_all_lines(number_of_epochs_for_simu
 
 
 def sensitivity_number_of_customers_analysis(number_of_epochs_for_simulation, model_name, number_of_av_simulations,
-                                    sensitivity_range, \
-                                    number_of_people=150):
+                                             sensitivity_range, \
+                                             number_of_people=150):
     """ Sensitivity related to the number of customers in the system, test for specific model type
 
     Precondition:
@@ -951,7 +1081,7 @@ def sensitivity_number_of_customers_analysis(number_of_epochs_for_simulation, mo
 
         # Number of simulations used for average of simulation
         for i in range(number_of_av_simulations):
-            self_check_model = model(model_name, number_of_people+(item_iterator), 10, 0)
+            self_check_model = model(model_name, number_of_people + (item_iterator), 10, 0)
 
             list_of_customers_out_of_system, \
             list_of_customers_in_line, \
