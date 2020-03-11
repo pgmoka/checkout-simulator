@@ -143,7 +143,11 @@ number_of_epochs_for_simulation = 20
 # sensitivity_customer_number_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 5)
 
 #mean_values(number_of_epochs_for_simulation, show=True)
-lag_correlation_analysis(number_of_epochs_for_simulation
-                         )
+#lag_correlation_analysis(number_of_epochs_for_simulation)
+
+#full_day_analysis_backLoaded()
+#full_day_analysis_frontLoaded()
+#full_day_analysis_normal()
+
 
 print("END OF EXECUTION")

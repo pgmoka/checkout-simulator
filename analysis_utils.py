@@ -28,6 +28,7 @@ from os.path import join
 # Create simulation code
 import variables as v
 from model import model
+from fullday_model import Fullday
 
 # =======================================================================
 # =============================== Methods ===============================
@@ -1120,3 +1121,206 @@ def sensitivity_number_of_customers_analysis(number_of_epochs_for_simulation, mo
 
     return sens_analysis_list_of_customers_out_of_system, sens_analysis_list_of_customers_in_line, \
            sens_analysis_list_of_customers_on_cashier_queue, sens_analysis_list_of_customer_items_checked
+
+
+def full_day_analysis_frontLoaded():
+    """
+
+    """
+    #list_of_customers_out_of_system
+    #list_of_customers_in_line
+    #list_of_customers_on_cashier_queue
+    #list_of_items_checked
+
+    # run full day simulation for all three line types
+    equal = Fullday('equal', 6, 4, day_type='front')
+    customer = Fullday('customer', 6, 4, day_type='front')
+    cashier = Fullday('cashier', 6, 4, day_type='front')
+    equal.execute_simulation()
+    customer.execute_simulation()
+    cashier.execute_simulation()
+
+    customers_out = plt.plot(equal.list_of_customers_out_of_system,
+                            'r',
+                            customer.list_of_customers_out_of_system,
+                            'b',
+                            cashier.list_of_customers_out_of_system,
+                            'g')
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers who have left the store")
+    plt.title("Customers out of the system over a full day")
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.savefig("customers_out_frontloaded.png")
+    plt.show()
+
+    customers_in_line = plt.plot(equal.list_of_customers_in_line,
+                                 'r',
+                                 customer.list_of_customers_in_line,
+                                 'b',
+                                 cashier.list_of_customers_in_line,
+                                 'g')
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers not line")
+    plt.title("Customers not in line over time")
+    plt.savefig("customers_not_line_frontloaded.png")
+    plt.show()
+
+    customer_in_queue = plt.plot(equal.list_of_customers_on_cashier_queue,
+                                 'r',
+                                 customer.list_of_customers_on_cashier_queue,
+                                 'b',
+                                 cashier.list_of_customers_on_cashier_queue,
+                                 'g')
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers in specific cashier queues")
+    plt.title("Customers in line over time")
+    plt.savefig("customers_in_queue_frontloaded.png")
+    plt.show()
+
+    items_check = plt.plot(equal.list_of_items_checked, 'r',
+                           customer.list_of_items_checked, 'b',
+                           cashier.list_of_items_checked, 'g')
+
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Numer of items scanned out of the store")
+    plt.title("Items scanned out of the store over time")
+    plt.savefig("items_out_frontloaded.png")
+    plt.show()
+
+
+
+def full_day_analysis_backLoaded():
+    """
+
+    """
+    #run full day simulation for all three line types
+    equal = Fullday('equal', 6, 4, day_type='back')
+    customer = Fullday('customer', 6, 4, day_type='back')
+    cashier = Fullday('cashier', 6, 4, day_type='back')
+    equal.execute_simulation()
+    customer.execute_simulation()
+    cashier.execute_simulation()
+
+
+    time_axis = np.arange(start=9, step=(12 * 60 * v.TIME_STEP))
+    customers_out = plt.plot(equal.list_of_customers_out_of_system,
+                            'r',
+                            customer.list_of_customers_out_of_system,
+                            'b',
+                            cashier.list_of_customers_out_of_system,
+                            'g')
+
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers who have left the store")
+    plt.title("Customers out of the system over a full day")
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.savefig("customers_out_backloaded.png")
+    plt.show()
+
+    customers_in_line = plt.plot(equal.list_of_customers_in_line,
+                                 'r',
+                                 customer.list_of_customers_in_line,
+                                 'b',
+                                 cashier.list_of_customers_in_line,
+                                 'g')
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers not line")
+    plt.title("Customers not in line over time")
+    plt.savefig("customers_not_line_backloaded.png")
+    plt.show()
+
+    customer_in_queue = plt.plot(equal.list_of_customers_on_cashier_queue,
+                                 'r',
+                                 customer.list_of_customers_on_cashier_queue,
+                                 'b',
+                                 cashier.list_of_customers_on_cashier_queue,
+                                 'g')
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers in specific cashier queues")
+    plt.title("Customers in line over time")
+    plt.savefig("customers_in_queue_backloaded.png")
+    plt.show()
+
+    items_check = plt.plot(equal.list_of_items_checked, 'r',
+                           customer.list_of_items_checked, 'b',
+                           cashier.list_of_items_checked, 'g')
+
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Numer of items scanned out of the store")
+    plt.title("Items scanned out of the store over time")
+    plt.savefig("items_out_backloaded.png")
+    plt.show()
+
+
+def full_day_analysis_normal():
+    """
+
+    """
+
+    # run full day simulation for all three line types
+    equal = Fullday('equal', 6, 4)
+    customer = Fullday('customer', 6, 4)
+    cashier = Fullday('cashier', 6, 4)
+    equal.execute_simulation()
+    customer.execute_simulation()
+    cashier.execute_simulation()
+
+    time_axis = np.arange(start=9, step=(12 * 60 * v.TIME_STEP))
+
+    customers_out = plt.plot(equal.list_of_customers_out_of_system,
+                            'r',
+                            customer.list_of_customers_out_of_system,
+                            'b',
+                            cashier.list_of_customers_out_of_system,
+                            'g')
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers who have left the store")
+    plt.title("Customers out of the system over a full day")
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.savefig("customers_out_normal.png")
+    plt.show()
+
+    customers_in_line = plt.plot(equal.list_of_customers_in_line,
+                                 'r',
+                                 customer.list_of_customers_in_line,
+                                 'b',
+                                 cashier.list_of_customers_in_line,
+                                 'g')
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers not line")
+    plt.title("Customers not in line over time")
+    plt.savefig("customers_not_line_normal.png")
+    plt.show()
+
+    customer_in_queue = plt.plot(equal.list_of_customers_on_cashier_queue,
+                                 'r',
+                                 customer.list_of_customers_on_cashier_queue,
+                                 'b',
+                                 cashier.list_of_customers_on_cashier_queue,
+                                 'g')
+
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Customers in specific cashier queues")
+    plt.title("Customers in line over time")
+    plt.savefig("customers_in_queue_normal.png")
+    plt.show()
+
+    items_check = plt.plot(equal.list_of_items_checked, 'r',
+                           customer.list_of_items_checked, 'b',
+                           cashier.list_of_items_checked, 'g')
+
+    plt.legend(["Equal Line", "Customer select line", "Cashier select line"])
+    plt.xlabel("Time in epochs (4 second increments)")
+    plt.ylabel("Numer of items scanned out of the store")
+    plt.title("Items scanned out of the store over time")
+    plt.savefig("items_out_normal.png")
+    plt.show()
+
