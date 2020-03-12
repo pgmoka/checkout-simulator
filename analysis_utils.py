@@ -35,7 +35,7 @@ from fullday_model import Fullday
 # =======================================================================
 
 
-# ----------------------------- Mean, Lag, Lag Analysis ---------------------------
+# ----------------------------- Mean ---------------------------
 
 
 def mean_values(number_of_epochs_for_simulation, model_name="equal",
@@ -122,66 +122,6 @@ def plot_means(model_name, number_of_epochs_for_simulation,
              mean_maintenance)
     plt.savefig(join("analysis_images", "mean", model_name + "_mean_maintenance_" +
                      str(number_of_epochs_for_simulation) + "_epochs.png"))
-
-
-def lag_correlation_analysis(number_of_epochs_for_simulation,
-                number_of_av_simulations=200, number_of_people=100,
-                configCashiers=10, configSelfCheck=10, size_lag=10):
-    models = ['equal', 'cashier', 'customer']
-
-    for i in range(len(models)):
-        model_name = models[i]
-        a, b, cust_left, cust_waiting, cust_queue, items_checked, maintenance = \
-            mean_values(number_of_epochs_for_simulation, model_name,number_of_av_simulations,
-                    number_of_people, configCashiers, configSelfCheck, False)
-
-        lag_correlation_plot(cust_left, title="Customers Left", model_name=model_name)
-        lag_correlation_plot(cust_queue, title="Customers In Queues", model_name=model_name)
-        lag_correlation_plot(cust_left, title="Items Checked", model_name=model_name)
-        lag_correlation_plot(cust_left, title="Maintenance Costs", model_name=model_name)
-
-
-def lag_correlation_plot(a, b, size_lag=10, title="", model_name=""):
-    lagCorrelationZero = [correlate(np.array(a), np.array(a))]
-    lagCorrelationPos = []
-    lagCorrelationNeg = []
-    lagNeg = []
-    lagPos = []
-    for i in range(size_lag, 0, -1):
-        lagCorrelationNeg.append(correlate(np.array(a[i:-1]), np.array(a[1:-i])))
-        lagNeg.append(i * -1)
-    for i in range(1, size_lag + 1):
-        lagPos.append(i)
-        lagCorrelationPos.append(correlate(np.array(a[1:-i]), np.array(a[i:-1])))
-    plt.figure(1)
-    plt.clf()
-    # Plot the array
-    plt.plot(np.concatenate([np.array(lagNeg), np.array([0]), np.array(lagPos)]),
-             np.concatenate([np.array(lagCorrelationNeg), np.array(lagCorrelationZero), np.array(lagCorrelationPos)]),
-             '-')
-    # Add an x-label
-    plt.xlabel("Lag")
-    # Add a y-label
-    plt.ylabel("Correlation")
-    plt.title(title)
-    plt.savefig(join("analysis_images", "lag", model_name + "_" + title +  ".png"))
-
-
-def average(x):
-    return np.sum(x) / float(np.size(x))
-
-
-def variance(x):
-    temp = (x - average(x)) ** 2
-    temp = np.sum(temp)
-    return temp / (np.size(x) - 1)
-
-
-def correlate(x, y):
-    num = np.sum((x - average(x)) * (y - average(y)))
-    den = (np.size(x) - 1) * np.sqrt(variance(x) * np.sqrt(variance(y)))
-    return num / den
-
 
 # ----------------------------- Configuration ---------------------------
 
