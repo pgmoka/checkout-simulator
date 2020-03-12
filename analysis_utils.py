@@ -35,7 +35,7 @@ from fullday_model import Fullday
 # =======================================================================
 
 
-# ----------------------------- Mean and Lag ---------------------------
+# ----------------------------- Mean, Lag, Lag Analysis ---------------------------
 
 
 def mean_values(number_of_epochs_for_simulation, model_name="equal",
@@ -141,7 +141,7 @@ def lag_correlation_analysis(number_of_epochs_for_simulation,
         lag_correlation_plot(cust_left, title="Maintenance Costs", model_name=model_name)
 
 
-def lag_correlation_plot(a, size_lag=10, title="", model_name=""):
+def lag_correlation_plot(a, b, size_lag=10, title="", model_name=""):
     lagCorrelationZero = [correlate(np.array(a), np.array(a))]
     lagCorrelationPos = []
     lagCorrelationNeg = []
@@ -188,21 +188,39 @@ def correlate(x, y):
 
 def configuration(number_of_epochs_for_simulation, number_of_av_simulations=200,
                   sensitivity_range=10, number_of_people=100):
-    """Makes tests relative to config, involving:
+    """ Makes tests relative to config, involving:
         - Number of customers out of system
         - Number of customers in queue
         - Number checked items
         - Costs of Maintenance
+
+        This will be preformed for all types of lines.
+
+        Precondition:
+        - number_of_epochs_for_simulation: number of epochs each simulation is going to
+        be ran for
+        - number_of_av_simulations: Numbe of simulations that are going to be ran to
+        calculate the average. Default = 200
+        - sensitivity_range: Range for the sensitivity test. Default = 10
+        - number_of_people: number of people to enter the system. Default = 100
+
+        Postcondition:
+        - 4 png images stored inside analysis_images/configuration that will show
+            the final average results of an average of a set number of tests for
+            a certain configuration.
     """
 
+    # Preform tests using equal distribution line
     for k in range(1, 5):
         sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, "equal",
                                               number_of_av_simulations, sensitivity_range, number_of_people, 3 * k)
 
+    # Preform tests using customer line
     for k in range(1, 5):
         sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, "customer",
                                               number_of_av_simulations, sensitivity_range, number_of_people, 3 * k)
 
+    # Preform tests using cashier line
     for k in range(1, 5):
         sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, "cashier",
                                               number_of_av_simulations, sensitivity_range, number_of_people, 3 * k)
@@ -211,6 +229,26 @@ def configuration(number_of_epochs_for_simulation, number_of_av_simulations=200,
 
 def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model_name, number_of_av_simulations,
                                           sensitivity_range=10, number_of_people=100, cashiers_to_self_checkouts=3):
+    ''' Preform a number of tests and gather the average values for each tracked
+        piece of data.
+
+
+        Precondition:
+        - number_of_epochs_for_simulation: number of epochs each simulation is going to
+        be ran for
+        - number_of_av_simulations: Numbe of simulations that are going to be ran to
+        calculate the average. Default = 200
+        - sensitivity_range: Range for the sensitivity test. Default = 10
+        - number_of_people: number of people to enter the system. Default = 100
+        - cashiers_to_self_checkouts: The number of self checkouts to replace a single
+        cashier with. Default = 3
+
+        Postcondition:
+        - 5 png images stored inside analysis_images/configuration that will show
+            the final average results of an average of a set number of tests for
+            a certain configuration.
+    '''
+    # Create a set of variables to store averages and time
     num_self_checkouts = []
     avg_num_cust_left = []
     avg_num_cust_not_in_line = []
@@ -227,6 +265,8 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
         cust_queue = []
         items = []
         maintenance = []
+
+        # Run a number of simulations to get the average
         for j in range(number_of_av_simulations):
             self_check_model = model(model_name, number_of_people, 10 - i, i * cashiers_to_self_checkouts,
                                      cashier_IPM_p_influence=0.1,
@@ -238,19 +278,21 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
             maintenance_costs \
                 = self_check_model.execute_simulation(number_of_epochs_for_simulation,
                                                       show=False, showAnim=False)
-
+            # Add the average to the array
             cust_left.append(customers_left[-1])
             maintenance.append(maintenance_costs)
             items.append(items_checked[-1])
             cust_line.append(customers_in_line[-1])
             cust_queue.append(customers_in_queue[-1])
 
+        # Return the average of this configuration into an array
         avg_num_cust_left.append(sum(cust_left) / number_of_av_simulations)
         avg_num_cust_being_helped.append(sum(cust_queue) / number_of_av_simulations)
         avg_num_items_checked.append(sum(items) / number_of_av_simulations)
         avg_num_maintenance.append(sum(maintenance) / number_of_av_simulations)
         avg_num_cust_not_in_line.append(sum(cust_line) / number_of_av_simulations)
 
+    # Plot each set of data
     plt.figure(1)
     plt.clf()
     plt.title("Sensitivity Analysis for Customers Helped with Different Configurations")
@@ -302,6 +344,7 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
         cashiers_to_self_checkouts) + "_checkouts_maintenance_costs.png"))
 
 # ------------------------------- Sensitivity ---------------------------
+
 
 def sensitivity_cashierIPM_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations=200,
                                                   sensitivity_range=10, number_of_people=100):
