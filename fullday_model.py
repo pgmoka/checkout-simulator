@@ -127,7 +127,7 @@ class Fullday:
             # print("Items checked", self.list_of_items_checked[-1])
 
             if showAnim:
-                showAnim = visual().print_env(self, update_time=.01, start_time=9)
+                showAnim = visual().print_env(self, update_time=.0001, start_time=9)
 
         if show:
             plt.figure(1)

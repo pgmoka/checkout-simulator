@@ -189,9 +189,9 @@ def configuration(number_of_epochs_for_simulation, number_of_av_simulations=200,
                   sensitivity_range=10, number_of_people=100):
     """Makes tests relative to config, involving:
         - Number of customers out of system
-        - Number of customers in line
         - Number of customers in queue
         - Number checked items
+        - Costs of Maintenance
     """
 
     for k in range(1, 5):
@@ -259,6 +259,17 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
     plt.savefig(join("analysis_images", "configuration", model_name +
                      "_cashier_to_" + str(cashiers_to_self_checkouts) +
                      "_checkouts_list_of_customers_out_of_system.png"))
+
+    plt.figure(2)
+    plt.clf()
+    plt.title("Sensitivity Analysis for Customers Waiting with Different Configurations")
+    plt.xlabel("Cashiers Operating Self Checkouts")
+    plt.ylabel("Mean of Customers Waiting at %d" % number_of_epochs_for_simulation)
+    plt.plot(num_self_checkouts, avg_num_cust_not_in_line)
+    plt.savefig(join("analysis_images", "configuration", model_name +
+                     "_cashier_to_" + str(cashiers_to_self_checkouts) +
+                     "_checkouts_list_of_cust_waiting.png"))
+
     plt.figure(3)
     plt.clf()
     plt.title("Sensitivity Analysis for Customers In Cashier's Lines with Different Configurations")
@@ -288,9 +299,6 @@ def sensitivity_cashiers_to_self_checkout(number_of_epochs_for_simulation, model
     plt.plot(num_self_checkouts, avg_num_maintenance)
     plt.savefig(join("analysis_images", "configuration", model_name + "_cashier_to_" + str(
         cashiers_to_self_checkouts) + "_checkouts_maintenance_costs.png"))
-
-    # plt.show()
-
 
 # ------------------------------- Sensitivity ---------------------------
 

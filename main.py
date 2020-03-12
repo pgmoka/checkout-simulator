@@ -92,7 +92,7 @@ def execute_all_sensitvity_tests():
 
 # fulldayTest = Fullday('equal', 5, 6, day_type = 'front')
 #
-# fulldayTest.execute_simulation(show=True, showAnim=True)
+# fulldayTest.execute_simulation(show=False, showAnim=True)
 
 #self_check_model.execute_simulation(number_of_epochs_for_simulation, show=True, showAnim=True)
 # self_check_model = model("customer", 21, 5, 2)
@@ -135,7 +135,7 @@ def execute_all_sensitvity_tests():
 average_simulation_numb = 200
 number_of_epochs_for_simulation = 20
 
-# configuration(number_of_epochs_for_simulation)
+configuration(number_of_epochs_for_simulation)
 
 # sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 20)
 # sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 40)
@@ -143,7 +143,6 @@ number_of_epochs_for_simulation = 20
 # sensitivity_customer_number_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 5)
 
 #mean_values(number_of_epochs_for_simulation, show=True)
-lag_correlation_analysis(number_of_epochs_for_simulation
-                         )
+#lag_correlation_analysis(number_of_epochs_for_simulation)
 
 print("END OF EXECUTION")
