@@ -145,4 +145,8 @@ configuration(number_of_epochs_for_simulation)
 #mean_values(number_of_epochs_for_simulation, show=True)
 #lag_correlation_analysis(number_of_epochs_for_simulation)
 
+#full_day_analysis_backLoaded()
+#full_day_analysis_frontLoaded()
+#full_day_analysis_normal()
+
 print("END OF EXECUTION")
