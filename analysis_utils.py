@@ -38,14 +38,79 @@ from fullday_model import Fullday
 # ----------------------------- Mean ---------------------------
 
 
-def mean_values(number_of_epochs_for_simulation, model_name="equal",
-                number_of_av_simulations=200, number_of_people=100,
-                configCashiers=10, configSelfCheck=10, show=False):
+def plot_all_mean_values(number_of_epochs_for_simulation, number_of_av_simulations=200,
+                         number_of_people=100, configCashiers=10, configSelfCheck=10):
+    """ Preform a number of simulations and get the average values over the
+            course of a day.
+
+            This will be preformed for the specified type of line.
+
+            Precondition:
+            - number_of_epochs_for_simulation: number of epochs each simulation is going to
+            be ran for
+            - number_of_av_simulations: Number of simulations that are going to be ran to
+            calculate the average. Default = 200
+            - sensitivity_range: Range for the sensitivity test. Default = 10
+            - number_of_people: number of people to enter the system. Default = 100
+            - configCashiers: Number of cashiers inside the tests configuration.
+                Default = 10
+            - configSelfCheck: Number of self checkouts inside the tests configuration.
+                Default = 10
+
+            Postcondition:
+            - A number png images stored inside analysis_images/means that will show
+                the final average results of an average of a set number of tests for
+                each of the lines
+    """
+    print("Gathering equal line averages...")
+    plot_mean_values(number_of_epochs_for_simulation, "equal",
+                     number_of_av_simulations, number_of_people,
+                     configCashiers, configSelfCheck)
+
+    print("Gathering cashier line averages")
+    plot_mean_values(number_of_epochs_for_simulation, "cashier",
+                     number_of_av_simulations, number_of_people,
+                     configCashiers, configSelfCheck)
+
+    print("Gathering customer line averages...")
+    plot_mean_values(number_of_epochs_for_simulation, "customer",
+                     number_of_av_simulations, number_of_people,
+                     configCashiers, configSelfCheck)
+
+def plot_mean_values(number_of_epochs_for_simulation, model_name="equal",
+                     number_of_av_simulations=200, number_of_people=100,
+                     configCashiers=10, configSelfCheck=10):
+    """ Preform a number of simulations and get the average values over the
+        course of a day.
+
+        This will be preformed for the specified type of line.
+
+        Precondition:
+        - number_of_epochs_for_simulation: number of epochs each simulation is going to
+        be ran for
+        - model_name: Type of line to use. Default = "equal"
+        - number_of_av_simulations: Number of simulations that are going to be ran to
+        calculate the average. Default = 200
+        - sensitivity_range: Range for the sensitivity test. Default = 10
+        - number_of_people: number of people to enter the system. Default = 100
+        - configCashiers: Number of cashiers inside the tests configuration.
+            Default = 10
+        - configSelfCheck: Number of self checkouts inside the tests configuration.
+            Default = 10
+
+        Postcondition:
+        - 4 png images stored inside analysis_images/configuration that will show
+            the final average results of an average of a set number of tests for
+            a certain configuration.
+    """
+    # Create a group of lists to store the data
     mean_cust_left = np.zeros(number_of_epochs_for_simulation)
     mean_cust_waiting = np.zeros(number_of_epochs_for_simulation)
     mean_cust_queue = np.zeros(number_of_epochs_for_simulation)
     mean_items_checked = np.zeros(number_of_epochs_for_simulation)
     mean_maintenance = np.zeros(number_of_epochs_for_simulation)
+
+    # Preform a number of simulations
     for j in range(number_of_av_simulations):
         self_check_model = model(model_name, number_of_people, configCashiers, configSelfCheck,
                                  cashier_IPM_p_influence=0.1,
@@ -58,31 +123,21 @@ def mean_values(number_of_epochs_for_simulation, model_name="equal",
             = self_check_model.execute_simulation(number_of_epochs_for_simulation,
                                                   show=False, showAnim=False)
 
+        # Add the values over the day to the lists
         mean_cust_left += np.array(customers_left)
         mean_cust_waiting += np.array(customers_in_line)
         mean_cust_queue += np.array(customers_in_queue)
         mean_items_checked += np.array(items_checked)
         mean_maintenance += np.array(maintenance_costs)
 
+    # Get the averages of the day
     mean_cust_left /= number_of_av_simulations
     mean_cust_waiting /= number_of_av_simulations
     mean_cust_queue /= number_of_av_simulations
     mean_items_checked /= number_of_av_simulations
     mean_maintenance /= number_of_av_simulations
 
-    if show:
-        plot_means(model_name, number_of_epochs_for_simulation, \
-               mean_cust_left, mean_cust_waiting, mean_cust_queue, \
-               mean_items_checked, mean_maintenance)
-
-    return model_name, number_of_epochs_for_simulation, \
-           mean_cust_left, mean_cust_waiting, mean_cust_queue, \
-           mean_items_checked, mean_maintenance
-
-
-def plot_means(model_name, number_of_epochs_for_simulation,
-               mean_cust_left, mean_cust_waiting, mean_cust_queue,
-               mean_items_checked, mean_maintenance):
+    # Plot trackable data
     plt.figure(1)
     plt.clf()
     plt.title("Mean Values for Customers Out of System")
