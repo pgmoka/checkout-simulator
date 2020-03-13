@@ -354,7 +354,6 @@ class visual():
                 pygame.draw.rect(self.screen, (transparency, transparency, transparency),
                              (x - 30, y, 25, 25))
             except Exception as E:
-                print(E, "Transparency is", transparency, "Number of items left", cashier_queue[-1].number_of_items, "Total items", cashier_queue[-1].total_items)
                 pygame.draw.rect(self.screen, (255, 255, 255),
                                  (x - 30, y, 25, 25))
         # If there is more than 1 person in line
