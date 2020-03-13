@@ -17,18 +17,18 @@ Notes:
 =======================================================================
 '''
 
-#=======================================================================
-#============================= Imports==================================
-#=======================================================================
+# =======================================================================
+# ============================= Imports =================================
+# =======================================================================
 
 import pygame
 from pygame import display
 import variables as v
 from datetime import timedelta
 
-#=======================================================================
-#================================= Class ===============================
-#=======================================================================
+# =======================================================================
+# ================================= Class ===============================
+# =======================================================================
 
 # Class to preform animation logic via pygame
 class visual():
@@ -66,16 +66,18 @@ class visual():
         pass
 
     def print_env(self, modelObj, update_time=1, start_time=None):
-        """
-        Visualizes a set of data stored inside a model object for the time
+        """ Visualizes a set of data stored inside a model object for the time
             specified in update_time.
 
-        :param modelObj: The current state of the model to visualize.
-        :param update_time: The time to display the visualization for.
-            This number is in milliseconds, so 1000 ms = 1 second.
-        :return: Prints an environment that shows both the cashiers and customers,
-            and allows the user to determine statistics about the cashier or customer
-            by hovering over them with the mouse.
+            Preconditions:
+            - modelObj: The current state of the model to visualize.
+            - update_time: The time to display the visualization for.
+                This number is in milliseconds, so 1000 ms = 1 second.
+
+            Postcondition:
+            - Prints an environment that shows both the cashiers and customers,
+                and allows the user to determine statistics about the cashier or customer
+                by hovering over them with the mouse.
         """
 
         # Pulls environment
@@ -143,11 +145,13 @@ class visual():
             self.clock.tick(30)
 
     def print_floor(self, cashiers):
-        """
-        Takes in the list of all the current cashiers and displays them on the screen
+        """ Takes in the list of all the current cashiers and displays them on the screen
 
-        :param cashiers: A list of all the cashiers from our model object
-        :return: The animation will now display all the cashiers correctly
+            Precondition:
+            - cashiers: A list of all the cashiers from our model object
+
+            Postcondition:
+             - The animation will now display all the cashiers correctly
         """
         # Store the total number of cashiers for readability
         num_cashiers = len(cashiers)
@@ -175,17 +179,19 @@ class visual():
                     return
 
     def print_both(self, cashier, queue, cashier_num, row, dist):
-        """
-        Print a single cashier and their customers
+        """ Print a single cashier and their customers
 
-        :param cashier: A cashier object
-        :param queue: The list of customers attached to a cashier object
-        :param cashier_num: This correlates to the column number of the cashier; It is
-            used to find the the x value
-        :param row: Which row the cashier is on; This is used to find the y value
-        :param dist: The distance between each cashier on the x-axis
-        :return: A cashier is visualized on the screen with their current line. As well,
-            the user can interact with them by hovering over them
+            Postcondition:
+            - cashier: A cashier object
+            - queue: The list of customers attached to a cashier object
+            - cashier_num: This correlates to the column number of the cashier; It is
+                used to find the the x value
+            - row: Which row the cashier is on; This is used to find the y value
+            - dist: The distance between each cashier on the x-axis
+
+            Postcondition:
+            - A cashier is visualized on the screen with their current line. As well,
+                the user can interact with them by hovering over them
         """
 
         # Where to print the cashier on the x axis
@@ -201,14 +207,16 @@ class visual():
         self.print_line(xPos, height + (80 * row), queue)
 
     def print_cashier(self, x, y, cashier):
-        """
-        Print a single cashier object
+        """ Print a single cashier object
 
-        :param x: The x coordinate of the cashier on the screen
-        :param y: The y coordinate of the cashier on the screen
-        :param cashier: The cashier object to print
-        :return: Prints a visual box to represent a cashier. Upon hovering
-            over it, statistics about that specific cashier will appear
+            Precondition:
+            - x: The x coordinate of the cashier on the screen
+            - y: The y coordinate of the cashier on the screen
+            - cashier: The cashier object to print
+
+            Postcondition:
+            - Prints a visual box to represent a cashier. Upon hovering
+                over it, statistics about that specific cashier will appear
         """
 
         # Check the mouse's position
@@ -260,18 +268,20 @@ class visual():
         pass
 
     def print_final_cashier(self, x, y, num_cashiers, num_checkouts, num_custs):
-        """
-        A final block to hold the unshown cashiers and self-checkouts
+        """ A final block to hold the unshown cashiers and self-checkouts
 
-        :param x: The x-position of the block
-        :param y: The y-position of the block
-        :param num_cashiers: Total number of regular cashiers
-        :param num_checkouts: Total number of self-checkouts
-        :param num_custs: Total number of customers inside the cashiers' and
-            self checkouts' lines
-        :return: Print a box at the specified coordinates that will tell the
-            user about the number of cashiers, self checkouts, and customer's being
-            helped when the user hovers over it.
+            Precondition:
+            - x: The x-position of the block
+            - y: The y-position of the block
+            - num_cashiers: Total number of regular cashiers
+            - num_checkouts: Total number of self-checkouts
+            - num_custs: Total number of customers inside the cashiers' and
+                self checkouts' lines
+
+            Postcondition:
+             Print a box at the specified coordinates that will tell the
+                user about the number of cashiers, self checkouts, and customer's being
+                helped when the user hovers over it.
         """
 
         # Get the mouse's position
@@ -302,16 +312,18 @@ class visual():
         pass
 
     def print_line(self, x, y, cashier_queue=None):
-        """
-        Prints the customer's in line for the cashier
+        """ Prints the customer's in line for the cashier
 
-        :param x: The starting x coordinate to print the customer's at
-        :param y: The starting y coordinate to print the customer's at
-        :param cashier_queue: The list of customers in line
-        :return: Two seperate boxes. The first, which is right next to the cashier,
-            shows the current customer being helped, and will slowly disappear over time as it's items
-            are checked out. The second is a non interactable block that shows the number of customers
-            in line for the current cashier
+            Precondition:
+            - x: The starting x coordinate to print the customer's at
+            - y: The starting y coordinate to print the customer's at
+            - cashier_queue: The list of customers in line
+
+            Postcondition:
+            - Two seperate boxes. The first, which is right next to the cashier,
+                shows the current customer being helped, and will slowly disappear over time as it's items
+                are checked out. The second is a non interactable block that shows the number of customers
+                in line for the current cashier
         """
 
         # Get the mouse's position
@@ -342,7 +354,6 @@ class visual():
                 pygame.draw.rect(self.screen, (transparency, transparency, transparency),
                              (x - 30, y, 25, 25))
             except Exception as E:
-                print(E, "Transparency is", transparency, "Number of items left", cashier_queue[-1].number_of_items, "Total items", cashier_queue[-1].total_items)
                 pygame.draw.rect(self.screen, (255, 255, 255),
                                  (x - 30, y, 25, 25))
         # If there is more than 1 person in line
@@ -361,13 +372,15 @@ class visual():
             self.screen.blit(textSurf, textRect)
 
     def textObj(self, text, t_font, t_color):
-        """
-        Used to get the necessary references to make and print text to screen
+        """ Used to get the necessary references to make and print text to screen
 
-        :param text: A string to display; Numbers of any type must be passed through str()
-        :param t_font: The font to print this text in
-        :param t_color: The color to show this text with
-        :return: The components to write text to screen
+            Precondition:
+            - text: A string to display; Numbers of any type must be passed through str()
+            - t_font: The font to print this text in
+            - t_color: The color to show this text with
+
+            Postcondition:
+            - The components to write text to screen
         """
 
         # Render the text using the specified font
@@ -377,18 +390,19 @@ class visual():
         return textSurface, textSurface.get_rect()
 
     def text_box(self, text, x, y, width, height):
-        """
-        Used to quickly display a solid rectangle with text inside of it
+        """ Used to quickly display a solid rectangle with text inside of it
 
-        :param text: Text to display; Must be of type string, pass numbers through
-            str(number) conversion before sending it here
-        :param x: The x position of the rectangle and text on screen
-        :param y: The y position of the rectangle and text on screen
-        :param width: How wide the background rectangle should be; Does
-            not effect the text
-        :param height: How long the background rectable should be; Does
-            not effect the text
-        :return: A simple text box on screen
+            Precondition:
+            - text: Text to display; Must be of type string, pass numbers through
+                str(number) conversion before sending it here
+            - x: The x position of the rectangle and text on screen
+            - y: The y position of the rectangle and text on screen
+            - width: How wide the background rectangle should be; Does
+                not effect the text
+            - height: How long the background rectable should be; Does
+                not effect the text
+            Postcondition:
+            - A simple text box on screen
         """
 
         # Draw a green rectangle

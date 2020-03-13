@@ -135,7 +135,10 @@ def execute_all_sensitvity_tests():
 average_simulation_numb = 200
 number_of_epochs_for_simulation = 20
 
+
 #configuration(number_of_epochs_for_simulation)
+#plot_all_mean_values(number_of_epochs_for_simulation)
+
 
 # sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 20)
 # sensitivity_chitchatness_analysis_for_all_lines(number_of_epochs_for_simulation, number_of_av_simulations = average_simulation_numb, number_of_people = 40)
