@@ -1133,12 +1133,15 @@ def sensitivity_number_of_customers_analysis(number_of_epochs_for_simulation, mo
 
 def full_day_analysis_frontLoaded():
     """
+    This will run three full day models for a "frontloaded" population
+    distribution which will cover each line type
 
+    It will then graph the major statistics customers out of system,
+    items out of the system, customers in queue, and customers not in queue.
+
+    It will graph these statistics over the course of the day that is being
+    simulated.
     """
-    #list_of_customers_out_of_system
-    #list_of_customers_in_line
-    #list_of_customers_on_cashier_queue
-    #list_of_items_checked
 
     # run full day simulation for all three line types
     equal = Fullday('equal', 6, 4, day_type='front')
@@ -1202,7 +1205,14 @@ def full_day_analysis_frontLoaded():
 
 def full_day_analysis_backLoaded():
     """
+    This will run three full day models for a "backloaded" population
+    distribution which will cover each line type
 
+    It will then graph the major statistics customers out of system,
+    items out of the system, customers in queue, and customers not in queue.
+
+    It will graph these statistics over the course of the day that is being
+    simulated.
     """
     #run full day simulation for all three line types
     equal = Fullday('equal', 6, 4, day_type='back')
@@ -1268,7 +1278,14 @@ def full_day_analysis_backLoaded():
 
 def full_day_analysis_normal():
     """
+    This will run three full day models for a "normal" population distribution
+    which will cover each line type
 
+    It will then graph the major statistics customers out of system,
+    items out of the system, customers in queue, and customers not in queue.
+
+    It will graph these statistics over the course of the day that is being
+    simulated.
     """
 
     # run full day simulation for all three line types
@@ -1332,3 +1349,11 @@ def full_day_analysis_normal():
     plt.savefig("items_out_normal.png")
     plt.show()
 
+def fullday_analysis():
+    """
+    This method will execute all full day analysis
+    """
+
+    full_day_analysis_normal()
+    full_day_analysis_backLoaded()
+    full_day_analysis_frontLoaded()
